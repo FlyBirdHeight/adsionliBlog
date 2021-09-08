@@ -15,15 +15,31 @@ const routes = [
     name: 'About',
     component: () => import('../views/About.vue')
   },{
-    path: "/first",
-    name: 'First',
-    redirect: '/first/structure-function',
-    component: () => import('@/views/first/first.vue'),
+    path: "/third",
+    name: 'Third',
+    redirect: '/third/structure-function',
+    component: () => import('@/views/es6/第三章/index.vue'),
     children: [
       {
         path: 'structure-function',
         name: 'StructureFunction',
-        component: () => import('../views/first/structure-function.vue')
+        component: () => import('../views/es6/第三章/structure-function.vue')
+      }
+    ]
+  },{
+    path: "/seventh",
+    name: 'Seventh',
+    component: () => import('@/views/es6/第七章/index.vue'),
+  },{
+    path: "/test",
+    name: 'Test',
+    redirect: '/test/change_data',
+    component: () => import('@/views/test/index.vue'),
+    children: [
+      {
+        path: 'change_data',
+        name: 'ChangeData',
+        component: () => import('../views/test/change_data.vue')
       }
     ]
   }

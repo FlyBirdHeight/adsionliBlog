@@ -1,19 +1,8 @@
-# prepare_face
+# 个人面试准备
 
-## Project setup
-```
-npm install
-```
+## ES6标准入门书籍阅读代码实践
+1. 其文件目录为src/views/es6，除了新增的函数api未做记录，其余大部分都进行代码实现，当前进度第七章(2021.09.08)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 面试题练习
+1. 文件目录src/views/test
+2. 面试题包括师兄叙述其面试过程中问到的题目，以及在牛客网及相关面试网站上网友分享得到，其实现都是按照自己的思考方式进行实现，仅供参考

@@ -14,7 +14,7 @@ const routes = [
     path: '/about',
     name: 'About',
     component: () => import('../views/About.vue')
-  },{
+  }, {
     path: "/third",
     name: 'Third',
     redirect: '/third/structure-function',
@@ -26,11 +26,23 @@ const routes = [
         component: () => import('../views/es6/第三章/structure-function.vue')
       }
     ]
-  },{
+  }, {
     path: "/seventh",
     name: 'Seventh',
     component: () => import('@/views/es6/第七章/index.vue'),
-  },{
+    children: [
+      {
+        path: "first",
+        name: 'SeventhFirst',
+        component: () => import('@/views/es6/第七章/first.vue'),
+      },
+      {
+        path: "second",
+        name: 'SeventhSecond',
+        component: () => import('@/views/es6/第七章/second.vue'),
+      }
+    ]
+  }, {
     path: "/test",
     name: 'Test',
     redirect: '/test/change_data',

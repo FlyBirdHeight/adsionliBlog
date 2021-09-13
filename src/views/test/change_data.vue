@@ -15,7 +15,7 @@ var findParent = (pre, data) => {
   if (typeof data[pre] == 'undefined') {
     pre = pre.substr(0, pre.length - 2)
     return findParent(pre, data)
-  } else {
+  } else {  
     return data[pre].id
   }
 }

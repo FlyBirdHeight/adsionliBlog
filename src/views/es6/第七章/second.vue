@@ -177,18 +177,59 @@
         </div>
         <div class="code">
           <p class="note">//ES5实现的函数嵌套</p>
+          <p class="code_font">const pipeline = (...func) =></p>
+          <p class="code_font tab_1">var funcs.reduce((a, b) => b(a), val);</p>
+          <p class="code_font">const plus1 = a => a + 1;</p>
+          <p class="code_font">const mult1 = a => a * 2;</p>
+          <p class="code_font">const addThenMult = pipeline(plus1, mult1);</p>
+          <p class="code_font">addThenMult(5);</p>
+        </div>
+        <div class="paragraph top-margin bottom-marigin">
+          <el-button style="position: relative; left: 72%" type="danger" @click="pipelineRes = ''">重置</el-button>
+          <el-button style="position: relative; left: 75%" @click="showPipelineFunction">运行嵌套函数</el-button>
+        </div>
+        <div
+          style="height:30px;font-size:25px; font-weight: bolder; color:rgb(255, 0, 0); margin-top: 15px; margin-bottom: 40px"
+        >
+          嵌套函数结果: {{ pipelineRes }}
+        </div>
+        <div class="top-margin summary">
+          <span
+            >在函数嵌套中，如果使用了箭头函数进行嵌套，那么上一个函数的输出就可以作为下一个函数的输入,
+            也就是说在嵌套函数的最后一个执行函数中，可以调用前面输出的全部参数值，且无需特殊操作！</span
+          >
+          <br />
+          <span
+            >对于上面给出的pipeline示例，就是在传入一个value后，传入到下一个reduce处理函数中，然后通过设置callback方法及initValue,来完成相加的操作！</span
+          >
+          <span>其展开后的写法如下</span>
+          <div class="code">
+            <p class="code_font">var funcs = (...func) => (val) => {</p>
+            <p class="code_font tab_1">return func.reduce(function(a, b) {</p>
+            <p class="code_font tab_2">return b(a);</p>
+            <p class="code_font tab_1">}, val)</p>
+            <p class="code_font">}</p>
+            <p class="code_font">let res = funcs(plus1, mult1)(5)</p>
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
+import Seventh from '@/funcs/seventh/seventh.js'
 export default {
   data() {
     return {
       functionName: '',
+      pipelineRes: '',
+      seventh: undefined,
     }
+  },
+  mounted() {
+    this.seventh = new Seventh()
   },
   methods: {
     /**
@@ -245,6 +286,17 @@ export default {
       let foo = () => {}
       this.functionName = foo.bind({}).name
     },
+    /**
+     * @method showPipelineFunction 显示嵌套函数结果
+     */
+    showPipelineFunction() {
+      const pipeline = (...func) => (val) => func.reduce((a, b) => b(a), val)
+      const plus1 = (a) => a + 1
+      const mult1 = (a) => a * 2
+      const addThenMult = pipeline(plus1, mult1)
+
+      this.pipelineRes = addThenMult(5)
+    },
   },
 }
 </script>
@@ -278,10 +330,13 @@ export default {
   font-size: 16px;
 }
 .tab_1 {
-  text-indent: 50px;
+  text-indent: 75px;
 }
 .tab_2 {
-  text-indent: 90px;
+  text-indent: 100px;
+}
+.tab_3 {
+  text-indent: 125px;
 }
 .note {
   color: #ac5715;
@@ -308,11 +363,21 @@ export default {
 .summary span {
   padding-left: 30px;
 }
+.summary .code {
+  background-color: #f8f8f8;
+  padding: 10px;
+  color: #000;
+  width: 50%;
+  margin-left: 25%;
+  border-radius: 15px;
+  text-align: left;
+  text-indent: 35px;
+  border: 1px solid #f8f8f8;
+  margin: 0px;
+  width: 100%;
+}
 .font_emphasize {
   font-weight: bolder;
   color: rgb(255, 0, 0);
-}
-.tab_3 {
-  text-indent: 125px;
 }
 </style>

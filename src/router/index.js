@@ -54,6 +54,18 @@ const routes = [
         component: () => import('../views/test/change_data.vue')
       }
     ]
+  }, {
+    path: "/face",
+    name: "Face",
+    redirect: '/face/constructor',
+    component: () => import('@/views/face/index.vue'),
+    children: [
+      {
+        path: 'constructor',
+        name: 'Constructor',
+        component: () => import('../views/face/construct_prototype/index.vue')
+      }
+    ]
   }
 ]
 

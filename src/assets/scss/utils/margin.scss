@@ -1,0 +1,31 @@
+$i: 0;
+@while $i < 1000 {
+    .ml-#{$i} {
+        margin-left: $i * 1px;
+    }
+    $i: $i + 10;
+}
+
+$i: 0;
+@while $i < 1000 {
+    .mr-#{$i} {
+        margin-right: $i * 1px;
+    }
+    $i: $i + 10;
+}
+
+$i: 0;
+@while $i < 1000 {
+    .mt-#{$i} {
+        margin-top: $i * 1px;
+    }
+    $i: $i + 10;
+}
+
+$i: 0;
+@while $i < 1000 {
+    .mb-#{$i} {
+        margin-bottom: $i * 1px;
+    }
+    $i: $i + 10;
+}

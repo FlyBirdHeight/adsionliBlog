@@ -1,16 +1,16 @@
 <template>
-  <div>
+  <div class="page">
     <div>
       <h1>第七章：函数的拓展 7.2-7.5</h1>
     </div>
     <div>
-      <div class="top-margin">
+      <div class="mt-10">
         <h2>7.2 rest对象</h2>
         <div>
-          <el-button class="left-margin" @click="functionRestReplaceArgument(1, 2, 3, 4, 5)">
+          <el-button class="ml-10" @click="functionRestReplaceArgument(1, 2, 3, 4, 5)">
             传入rest对象取代arguments对象来获取实参传入
           </el-button>
-          <el-button class="left-margin" @click="functionRestSort(4, 5, 1, 3, 2)">
+          <el-button class="ml-10" @click="functionRestSort(4, 5, 1, 3, 2)">
             传入rest对象并排序
           </el-button>
         </div>
@@ -21,9 +21,9 @@
         </p>
       </div>
       <el-divider></el-divider>
-      <div class="top-margin">
+      <div class="mt-10">
         <h2>7.3 严格模式的使用</h2>
-        <div class="top-margin">
+        <div class="mt-10">
           <p style="text-indent:25px">
             在ES5中函数<font style="font-weight:bolder">可以使用严格模式'use strict'</font>。
           </p>
@@ -59,7 +59,7 @@
         </div>
       </div>
       <el-divider></el-divider>
-      <div class="top-margin">
+      <div class="mt-10">
         <h2>7.4 函数的name属性</h2>
         <h4>(个人感觉在写组件时候很有用，在初始化的时候，可以设置启用什么函数方法)</h4>
         <div class="paragraph">
@@ -80,7 +80,7 @@
         </div>
       </div>
       <el-divider></el-divider>
-      <div class="top-margin bottom-marigin">
+      <div class="mt-10 mb-10">
         <h2>7.5 箭头函数</h2>
         <h3>这里不做什么展开了就写一些好玩的箭头函数的使用方法</h3>
         <div class="code">
@@ -104,12 +104,12 @@
           <p class="note">//当返回的是一个obj对象时，最外层需要加一个(), 来防止误读：</p>
           <p class="code_font">let func = () => ({ a: 5, b: 6})</p>
         </div>
-        <div class="top-margin summary">
+        <div class="mt-10 summary">
           <span>
             箭头函数的表达式比起一般的函数声明或者函数表达式来的更加简洁，但是这也会造成一定限制，其不加{}的时候只能执行一步操作，且这部操作实际是return操作，需要记住!
           </span>
         </div>
-        <div class="top-margin summary">
+        <div class="mt-10 summary">
           <span>箭头函数的注意事项：</span>
           <br />
           <span
@@ -153,7 +153,7 @@
             </p>
           </div>
         </div>
-        <div class="top-margin paragraph">
+        <div class="mt-10 paragraph">
           <p>
             使用箭头函数有一个非常好的好处，就是在对象中使用箭头函数时，可以固化箭头函数中的this，防止其被外部对象的this给污染，因为其在定义的时候就会被固化this的对象！
           </p>
@@ -171,7 +171,7 @@
           <p class="code_font tab_1">}</p>
           <p class="code_font">};</p>
         </div>
-        <div class="top-margin paragraph">
+        <div class="mt-10 paragraph">
           <p>箭头函数的嵌套使用比起ES5中的函数声明嵌套来说会使其流程更加简洁直观，易于阅读</p>
           <h5>代码示例：</h5>
         </div>
@@ -184,7 +184,7 @@
           <p class="code_font">const addThenMult = pipeline(plus1, mult1);</p>
           <p class="code_font">addThenMult(5);</p>
         </div>
-        <div class="paragraph top-margin bottom-marigin">
+        <div class="paragraph mt-10 mb-10">
           <el-button style="position: relative; left: 72%" type="danger" @click="pipelineRes = ''">重置</el-button>
           <el-button style="position: relative; left: 75%" @click="showPipelineFunction">运行嵌套函数</el-button>
         </div>
@@ -193,7 +193,7 @@
         >
           嵌套函数结果: {{ pipelineRes }}
         </div>
-        <div class="top-margin summary">
+        <div class="mt-10 summary">
           <span
             >在函数嵌套中，如果使用了箭头函数进行嵌套，那么上一个函数的输出就可以作为下一个函数的输入,
             也就是说在嵌套函数的最后一个执行函数中，可以调用前面输出的全部参数值，且无需特殊操作！</span
@@ -302,82 +302,5 @@ export default {
 </script>
 
 <style>
-.left-margin {
-  margin-left: 10px;
-}
-.top-margin {
-  margin-top: 10px;
-}
-.right-margin {
-  margin-right: 10px;
-}
-.bottom-marigin {
-  margin-bottom: 20px;
-}
-.code {
-  background-color: #f8f8f8;
-  padding: 10px;
-  color: #000;
-  width: 50%;
-  margin-left: 25%;
-  border-radius: 15px;
-  text-align: left;
-  text-indent: 35px;
-  border: 1px solid #f8f8f8;
-}
-.code_font {
-  font-weight: bolder;
-  font-size: 16px;
-}
-.tab_1 {
-  text-indent: 75px;
-}
-.tab_2 {
-  text-indent: 100px;
-}
-.tab_3 {
-  text-indent: 125px;
-}
-.note {
-  color: #ac5715;
-}
-.paragraph {
-  margin-left: 20%;
-  margin-right: 20%;
-  text-align: left;
-}
-.paragraph p {
-  text-indent: 30px;
-}
-.summary {
-  color: #afafaf;
-  border-left: 3px solid #dfe2e5;
-  background-color: #ffffff;
-  font-size: 16px;
-  font-weight: bolder;
-  padding: 10px;
-  text-align: left;
-  margin-left: 25%;
-  margin-right: 25%;
-}
-.summary span {
-  padding-left: 30px;
-}
-.summary .code {
-  background-color: #f8f8f8;
-  padding: 10px;
-  color: #000;
-  width: 50%;
-  margin-left: 25%;
-  border-radius: 15px;
-  text-align: left;
-  text-indent: 35px;
-  border: 1px solid #f8f8f8;
-  margin: 0px;
-  width: 100%;
-}
-.font_emphasize {
-  font-weight: bolder;
-  color: rgb(255, 0, 0);
-}
+
 </style>

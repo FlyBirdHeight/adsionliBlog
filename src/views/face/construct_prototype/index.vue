@@ -10,7 +10,7 @@
         <p class="code_font">Object.getPropertyOf(f)</p>
         <p class="code_font note">Object.getPropertyOf方法返回的是指定对象的现实原型->prototype</p>
       </div>
-      <div class="paragraph top-margin bottom-marigin">
+      <div class="paragraph mt-10 mb-10">
         <el-button style="position: relative; left: 72%" type="danger" @click="pipelineRes = ''">重置</el-button>
         <el-button style="position: relative; left: 75%" @click="useGetPropertyOf">运行</el-button>
       </div>

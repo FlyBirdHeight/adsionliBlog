@@ -1,26 +1,24 @@
-
 .page {
-  margin-left: 20%;
-  margin-right: 20%;
+  margin-left: 10px;
+  margin-right: 10px;
   .title {
     h1 {
-      color: #000000;
+      color: $titleColor;
       font-weight: bolder;
     }
   }
   .font_emphasize {
     font-weight: bolder;
-    color: rgb(255, 0, 0);
+    color: $fontEmphasize;
   }
 
   .code {
-    background-color: #f8f8f8;
+    background-color: $codeBackColor;
     padding: 10px;
-    color: #000;
-    width: 100%;
+    color: $codeColor;
     border-radius: 15px;
     text-align: left;
-    text-indent: 35px;
+    text-indent: $codeTextIndent;
     border: 1px solid #f8f8f8;
     .code_font {
       font-weight: bolder;
@@ -29,7 +27,6 @@
   }
 
   .paragraph {
-
     text-align: left;
     p {
       text-indent: 30px;
@@ -37,28 +34,26 @@
   }
 
   .summary {
-    color: #afafaf;
+    color: $summaryColor;
     border-left: 3px solid #dfe2e5;
-    background-color: #ffffff;
+    background-color: $summaryBackColor;
     font-size: 16px;
     font-weight: bolder;
     padding: 10px;
     text-align: left;
-    margin-left: 25%;
-    margin-right: 25%;
+    margin-left: 10px;
+    margin-right: 10px;
     span {
       padding-left: 30px;
     }
 
     .code {
-      background-color: #f8f8f8;
+      background-color: $codeBackColor;
       padding: 10px;
-      color: #000;
-      width: 50%;
-      margin-left: 25%;
+      color: $codeColor;
       border-radius: 15px;
       text-align: left;
-      text-indent: 35px;
+      text-indent: $codeTextIndent;
       border: 1px solid #f8f8f8;
       margin: 0px;
       width: 100%;

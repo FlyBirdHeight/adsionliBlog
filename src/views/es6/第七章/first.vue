@@ -4,44 +4,44 @@
       <h1>第七章：函数的拓展 7.1</h1>
     </div>
     <div>
-      <div class="top-margin">
-        <el-button @click="setStructureFunction('http:127.0.0.1')" class="left-margin">
+      <div class="mt-10">
+        <el-button @click="setStructureFunction('http:127.0.0.1')" class="ml-10">
           测试函数解构参数调用,错误调用
         </el-button>
-        <el-button @click="setStructureFunction('http:127.0.0.1', {})" class="left-margin">
+        <el-button @click="setStructureFunction('http:127.0.0.1', {})" class="ml-10">
           测试函数解构参数调用,传入空对象
         </el-button>
-        <el-button @click="setStructureFunction('http:127.0.0.1', { body: { list: '1' } })" class="left-margin">
+        <el-button @click="setStructureFunction('http:127.0.0.1', { body: { list: '1' } })" class="ml-10">
           测试函数解构参数调用,传入携带值对象
         </el-button>
-        <el-button @click="setTwoStructureFunction('http:127.0.0.1')" class="left-margin">
+        <el-button @click="setTwoStructureFunction('http:127.0.0.1')" class="ml-10">
           测试函数解构参数调用,双重默认值
         </el-button>
       </div>
-      <div class="top-margin">
-        <el-button @click="setStructureFunctionDefaultObj({})" class="left-margin">
+      <div class="mt-10">
+        <el-button @click="setStructureFunctionDefaultObj({})" class="ml-10">
           设置解构函数声明，默认值对象时的情况,传入空对象
         </el-button>
-        <el-button @click="setStructureFunctionDefaultObj({ x: 1 })" class="left-margin">
+        <el-button @click="setStructureFunctionDefaultObj({ x: 1 })" class="ml-10">
           设置解构函数声明，默认值对象时的情况,传入对象
         </el-button>
-        <el-button @click="setStructureFunctionDefaultObj()" class="left-margin">
+        <el-button @click="setStructureFunctionDefaultObj()" class="ml-10">
           设置解构函数声明，默认值对象时的情况,不传
         </el-button>
       </div>
-      <div class="top-margin">
-        <span class="right-margin">函数的length属性:</span>
+      <div class="mt-10">
+        <span class="mr-10">函数的length属性:</span>
         <el-button @click="getFunctionLength()">函数的length属性</el-button>
       </div>
-      <div class="top-margin">
-        <span class="right-margin">函数参数作用域问题:</span>
-        <el-button class="left-margin" @click="functionArea()">函数两个参数下，函数内部作用</el-button>
-        <el-button class="left-margin" @click="functionAreaOne()">函数单参数下，函数外部作用域传入内部作用域</el-button>
-        <el-button class="left-margin" @click="functionAreaInside()">
+      <div class="mt-10">
+        <span class="mr-10">函数参数作用域问题:</span>
+        <el-button class="ml-10" @click="functionArea()">函数两个参数下，函数内部作用</el-button>
+        <el-button class="ml-10" @click="functionAreaOne()">函数单参数下，函数外部作用域传入内部作用域</el-button>
+        <el-button class="ml-10" @click="functionAreaInside()">
           函数两个参数下，函数内部作用，其中一个是匿名函数，且函数内部重新声明X
         </el-button>
         <p>
-          <el-button class="left-margin" @click="functionAreaInsideTwo()">
+          <el-button class="ml-10" @click="functionAreaInsideTwo()">
             函数两个参数下，函数内部作用，其中一个是匿名函数,函数内部不重新声明X
           </el-button>
         </p>
@@ -156,13 +156,5 @@ export default {
 </script>
 
 <style>
-.left-margin {
-  margin-left: 10px;
-}
-.top-margin {
-  margin-top: 10px;
-}
-.right-margin {
-  margin-right: 10px;
-}
+
 </style>

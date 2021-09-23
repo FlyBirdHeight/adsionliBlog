@@ -1,0 +1,9 @@
+//top right bottom left
+@mixin marginSet($value...) {
+  margin: $value;
+}
+
+//top right bottom left
+@mixin paddingSet($value...) {
+  padding: $value;
+}

@@ -1,4 +1,4 @@
-$i: $codeTextIndent + 2em;
+$i: 3em;
 $tab: 1;
 @while $i < 15em {
   .tab_#{$tab} {

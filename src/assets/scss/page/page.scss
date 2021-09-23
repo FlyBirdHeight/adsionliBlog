@@ -1,28 +1,30 @@
 .page {
-  margin-left: 10px;
-  margin-right: 10px;
+  @include marginSet(0 10px 0 10px);
   .title {
     h1 {
-      color: $titleColor;
+      color: getPageValue('utils', 'titleColor');
       font-weight: bolder;
     }
   }
   .font_emphasize {
     font-weight: bolder;
-    color: $fontEmphasize;
+    color: getPageValue('utils', 'fontEmphasize');
   }
 
   .code {
-    background-color: $codeBackColor;
-    padding: 10px;
-    color: $codeColor;
+    background-color: getPageValue('code', 'backColor');
+    @include paddingSet(10px);
+    color: getPageValue('code', 'color');
     border-radius: 15px;
     text-align: left;
-    text-indent: $codeTextIndent;
+    text-indent: getPageValue('code', 'textIndent');
     border: 1px solid #f8f8f8;
     .code_font {
       font-weight: bolder;
       font-size: 16px;
+    }
+    .note {
+      color: getPageValue('utils', 'noteColor');
     }
   }
 
@@ -34,28 +36,27 @@
   }
 
   .summary {
-    color: $summaryColor;
+    color: getPageValue('summary', 'color');
     border-left: 3px solid #dfe2e5;
-    background-color: $summaryBackColor;
+    background-color: getPageValue('summary', 'backColor');
     font-size: 16px;
     font-weight: bolder;
-    padding: 10px;
+    @include paddingSet(10px);
     text-align: left;
-    margin-left: 10px;
-    margin-right: 10px;
+    @include marginSet(0 10px 0 10px);
     span {
-      padding-left: 30px;
+      @include paddingSet(0 0 0 10px);
     }
 
     .code {
-      background-color: $codeBackColor;
-      padding: 10px;
-      color: $codeColor;
+      background-color: getPageValue('code', 'backColor');
+      @include paddingSet(10px);
+      color: getPageValue('code', 'color');
       border-radius: 15px;
       text-align: left;
-      text-indent: $codeTextIndent;
+      text-indent: getPageValue('code', 'textIndent');
       border: 1px solid #f8f8f8;
-      margin: 0px;
+      @include marginSet(0);
       width: 100%;
     }
   }

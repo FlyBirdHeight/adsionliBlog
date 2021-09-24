@@ -8,7 +8,8 @@
       <div class="code">
         <p class="code_font">function f(){}</p>
         <p class="code_font">Object.getPropertyOf(f)</p>
-        <p class="code_font note">Object.getPropertyOf方法返回的是指定对象的现实原型->prototype</p>
+        <p class="code_font note">//Object.getPropertyOf方法返回的是指定对象的现实原型->prototype</p>
+        <p class="code_font">let a = f1.prototype.constructor.__proto__</p>
       </div>
       <div class="paragraph mt-10 mb-10">
         <el-button style="position: relative; left: 72%" type="danger" @click="pipelineRes = ''">重置</el-button>
@@ -16,7 +17,7 @@
       </div>
       <div class="paragraph">运行结果：</div>
       <div class="code">
-        <p class="code_font">{{isEqualPrototype}}</p>
+        <p class="code_font">{{ isEqualPrototype }}</p>
       </div>
     </div>
     <div class="foot"></div>
@@ -45,6 +46,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

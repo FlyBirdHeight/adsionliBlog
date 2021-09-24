@@ -66,6 +66,18 @@ const routes = [
         component: () => import('../views/face/construct_prototype/index.vue')
       }
     ]
+  }, {
+    path: "/utils",
+    name: 'Utils',
+    redirect: '/utils/regular',
+    component: () => import('@/views/utils/index.vue'),
+    children: [
+      {
+        path: 'regular',
+        name: 'Regular',
+        component: () => import('../views/utils/regular/index.vue')
+      }
+    ]
   }
 ]
 

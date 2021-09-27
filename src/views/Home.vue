@@ -1,18 +1,18 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <div class="page"></div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
-  }
+  mounted() {
+    this.$store.commit('SET_SIDEBAR_COVER', {
+      titleName: 'adsionli',
+      subTitleName: '失意得意切莫在意，顺境逆境切莫止境',
+      createTime: '',
+      tags: [],
+    })
+  },
+  components: {},
 }
 </script>

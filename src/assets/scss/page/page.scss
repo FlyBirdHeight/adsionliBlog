@@ -1,5 +1,5 @@
 .page {
-  @include marginSet(70px 10px 0 10px);
+  @include marginSet(60px 10px 0 10px);
   .title {
     h1 {
       color: getPageValue('utils', 'titleColor');

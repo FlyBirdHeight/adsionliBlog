@@ -1,10 +1,15 @@
 $structure: (
   toolbar: (
-      backColor: #333,
-      color: rgba(255, 255, 255, 0.8),
-      fontFamily: "-apple-system, 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB', STHeiti, 'Microsoft YaHei',
+    backColor: #333,
+    color: rgba(255, 255, 255, 0.8),
+    fontFamily:
+      "-apple-system, 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB', STHeiti, 'Microsoft YaHei',
       'Microsoft JhengHei', 'Source Han Sans SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Noto Sans SC',
       'Source Han Sans TC', 'Noto Sans CJK TC', 'WenQuanYi Micro Hei', SimSun, san",
+  ),
+  header: (
+    backColor: #333,
+    color: rgba(255, 255, 255, 0.8),
   ),
 );
 

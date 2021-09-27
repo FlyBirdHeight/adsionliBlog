@@ -1,6 +1,8 @@
 <template>
   <div class="toolbar">
-    <div class="blogName">adsionli</div>
+    <div class="blogName">
+      <a href="/">adsionli</a>
+    </div>
     <div class="toolbar-list">
       <ul>
         <li v-for="(value, index) in menuList" :key="index">
@@ -13,10 +15,7 @@
         <i class="iconfont icon-menu"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item 
-          v-for="(value, index) in menuList" 
-          :key="index" 
-          :command="value.routeLink">
+        <el-dropdown-item v-for="(value, index) in menuList" :key="index" :command="value.routeLink">
           {{ value.label }}
         </el-dropdown-item>
       </el-dropdown-menu>
@@ -38,8 +37,7 @@ export default {
      * @method goOtherRoute 跳转其他路由
      */
     goOtherRoute(routeLink) {
-      console.log(123);
-      console.log(routeLink)
+      this.$router.push({ path: routeLink })
     },
   },
 }

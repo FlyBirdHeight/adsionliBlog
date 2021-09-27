@@ -14,9 +14,16 @@
     float: left;
     font-weight: bolder;
     margin-left: 10px;
+    a {
+      color: getStructureValue('toolbar', 'color');
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 
   .toolbar-list {
+    font-weight: bolder;
     font-family: getStructureValue('toolbar', 'fontFamily');
     font-weight: bolder;
     @media screen and (max-width: 480px) {
@@ -41,7 +48,7 @@
           letter-spacing: 1px;
 
           &:hover {
-              cursor: pointer;
+            cursor: pointer;
           }
         }
       }

@@ -1,0 +1,40 @@
+.header {
+  @include paddingSet(85px 0 55px 0);
+  color: getStructureValue('header', 'color');
+  background-color: getStructureValue('header', 'backColor');
+
+  .subTitle {
+    font-family: -apple-system, 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB', STHeiti, 'Microsoft YaHei',
+      'Microsoft JhengHei', 'Source Han Sans SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Noto Sans SC',
+      'Source Han Sans TC', 'Noto Sans CJK TC', 'WenQuanYi Micro Hei', SimSun, sans-serif;
+    line-height: 1.7;
+    font-size: 18px;
+    line-height: 1.1;
+    display: block;
+    font-weight: 300;
+    margin: 10px 0 0;
+  }
+
+  .createTime {
+    font-family: Lora, 'Times New Roman', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 18px;
+  }
+
+  .tags {
+    .tags_label {
+      color: getStructureValue('header', 'color');
+      background-color: getStructureValue('header', 'backColor');
+      border: 1px solid getStructureValue('header', 'color');
+      border-radius: 999em;
+      @include paddingSet(5px 10px);
+      @include marginSet(0 10px 6px 0);
+      font-size: 14px;
+      line-height: 24px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

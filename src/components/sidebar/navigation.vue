@@ -37,7 +37,9 @@ export default {
      * @method goOtherRoute 跳转其他路由
      */
     goOtherRoute(routeLink) {
-      this.$router.push({ path: routeLink })
+      if (this.$route.path != routeLink) {
+        this.$router.push({ path: routeLink })
+      }
     },
   },
 }

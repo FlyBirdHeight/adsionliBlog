@@ -1,0 +1,90 @@
+{
+    "data": [{
+        "label": "字母（Letter） L:",
+        "child": [{
+            "label": "小写（lowercase） Ll"
+        },{
+            "label": "修饰（modifier） Lm"
+        },{
+            "label": "首字母大写（titlecase） Lt"
+        },{
+            "label": "大写（uppercase） Lu"
+        },{
+            "label": "其它（other） Lo"
+        }]
+    },{
+        "label": "数字（Number） N:",
+        "child": [{
+            "label": "十进制数字（decimal digit） Nd"
+        },{
+            "label": "字母数字（letter number） Nl"
+        },{
+            "label": "其它（other） No"
+        }]
+    },{
+        "label": "标点符号（Punctuation） P:",
+        "child": [{
+            "label": "链接符（connector） Pc"
+        },{
+            "label": "横杠（dash） Pd"
+        },{
+            "label": "起始引用号（initial quote） Pi"
+        },{
+            "label": "结束引用号（final quote） Pf"
+        },{
+            "label": "开（open） Ps"
+        },{
+            "label": "闭（close） Pe"
+        },{
+            "label": "其它（other） Po"
+        }]
+    },{
+        "label": "标记（Mark） M (accents etc):",
+        "child": [{
+            "label": "间隔合并（spacing combining） Mc"
+        },{
+            "label": "封闭（enclosing） Me"
+        },{
+            "label": "非间隔（non-spacing） Mn"
+        }]
+    },{
+        "label": "符号（Symbol） S:",
+        "child": [{
+            "label": "货币（currency） Sc"
+        },{
+            "label": "修饰（modifier） Sk"
+        },{
+            "label": "数学（math） Sm"
+        },{
+            "label": "其它（other） So"
+        }]
+    },{
+        "label": "分隔符（Separator） Z:",
+        "child": [{
+            "label": "行（line） Zl"
+        },{
+            "label": "段落（paragraph） Zp"
+        },{
+            "label": "空格（space） Zs"
+        }]
+    },{
+        "label": "其它（Other） C",
+        "child": [{
+            "label": "控制符（control） Cc"
+        },{
+            "label": "格式（format） Cf"
+        },{
+            "label": "未分配（not assigned） Cn"
+        },{
+            "label": "私有（private use） Co"
+        },{
+            "label": "代理伪字符（surrogate） Cs"
+        }]
+    },{
+        "label": "等等..."
+    }],
+    "structure": {
+        "children": "child",
+        "label": "label"
+    }
+}

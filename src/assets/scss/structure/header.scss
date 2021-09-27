@@ -4,22 +4,11 @@
   background-color: getStructureValue('header', 'backColor');
 
   .subTitle {
-    font-family: -apple-system, 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB', STHeiti, 'Microsoft YaHei',
-      'Microsoft JhengHei', 'Source Han Sans SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Noto Sans SC',
-      'Source Han Sans TC', 'Noto Sans CJK TC', 'WenQuanYi Micro Hei', SimSun, sans-serif;
-    line-height: 1.7;
-    font-size: 18px;
-    line-height: 1.1;
-    display: block;
-    font-weight: 300;
-    margin: 10px 0 0;
+    @include subTitle(18px);
   }
 
   .createTime {
-    font-family: Lora, 'Times New Roman', serif;
-    font-style: italic;
-    font-weight: 300;
-    font-size: 18px;
+    @include createTime(18px);
   }
 
   .tags {

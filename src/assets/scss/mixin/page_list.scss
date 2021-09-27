@@ -1,0 +1,22 @@
+@mixin title() {}
+
+@mixin subTitle($fontSize, $fontColor : null) {
+    font-family: -apple-system, 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB', STHeiti, 'Microsoft YaHei',
+        'Microsoft JhengHei', 'Source Han Sans SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Noto Sans SC',
+        'Source Han Sans TC', 'Noto Sans CJK TC', 'WenQuanYi Micro Hei', SimSun, sans-serif;
+    line-height: 1.7;
+    font-size: $fontSize;
+    line-height: 1.1;
+    display: block;
+    font-weight: 300;
+    margin: 10px 0 0;
+    color: $fontColor
+}
+
+@mixin createTime($fontSize, $fontColor : null) {
+    font-family: Lora, 'Times New Roman', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: $fontSize;
+    color: $fontColor
+}

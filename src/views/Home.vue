@@ -1,8 +1,19 @@
 <template>
-  <div class="page"></div>
+  <div class="page">
+    <el-row :gutter="12">
+      <el-col :xs="24" :sm="24" :md="{span:14, offset:4}" :lg="{span:14, offset:4}">
+        <page-list />
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="6" :lg="6">
+        <tag-list />
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
+import PageList from "@/components/body/page_list.vue";
+import TagList from "@/components/body/tag.vue";
 export default {
   name: 'Home',
   mounted() {
@@ -13,6 +24,9 @@ export default {
       tags: [],
     })
   },
-  components: {},
+  components: {
+    PageList,
+    TagList
+  },
 }
 </script>

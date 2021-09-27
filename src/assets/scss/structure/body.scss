@@ -1,0 +1,35 @@
+.page-list {
+    @include paddingSet(0 15px);
+    width: 100%;
+    text-align: left;
+    @include marginSet(0 auto 0 auto);
+
+    .page-info {
+        a {
+            color: #000000;
+
+            .title {
+                .top {
+                    color: red;
+                    font-weight: bolder;
+                }
+            }
+
+            .subTitle {
+                @include subTitle(15px, #a3a3a3);
+                font-style: italic;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .createTime {
+            @include createTime(18px, gray);
+            font-style: italic;
+        }
+    }
+}
+
+.tag-list {}

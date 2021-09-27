@@ -12,9 +12,9 @@
         <p class="code_font tab_1">return span style="color:red" ${search} /span</p>
         <p class="code_font">});</p>
       </div>
-      <div class="paragraph mt-10 mb-10">
-        <el-button style="position: relative; left: 72%" type="danger" @click="resetHighLight">重置</el-button>
-        <el-button style="position: relative; left: 75%" @click="handleStringHighLight">运行</el-button>
+      <div class="paragraph mt-10 mb-10" style="text-align:right">
+        <el-button type="danger" @click="resetHighLight">重置</el-button>
+        <el-button @click="handleStringHighLight">运行</el-button>
       </div>
       <div class="paragraph">
         运行测试:
@@ -29,9 +29,9 @@
         <p class="code_font">let tel = 021-88888888</p>
         <p class="code_font">let regular = /(010|021)\-\d{7,8}/.test(tel)</p>
       </div>
-      <div class="paragraph mt-10 mb-10">
-        <el-button style="position: relative; left: 72%" type="danger" @click="changeValue = ''">重置</el-button>
-        <el-button style="position: relative; left: 75%" @click="handleChange">运行</el-button>
+      <div class="paragraph mt-10 mb-10" style="text-align:right">
+        <el-button type="danger" @click="changeValue = ''">重置</el-button>
+        <el-button @click="handleChange">运行</el-button>
       </div>
       <div class="paragraph mb-10">
         运行测试:
@@ -56,9 +56,9 @@
         <p class="code_font">console.log(value.match(/[199603]/g));</p>
         <p class="code_font">console.log(value.match(/(1996|03)/g));</p>
       </div>
-      <div class="paragraph mt-10 mb-10">
-        <el-button style="position: relative; left: 72%" type="danger" @click="atomicValue = ''">重置</el-button>
-        <el-button style="position: relative; left: 75%" @click="handleAtom">运行</el-button>
+      <div class="paragraph mt-10 mb-10" style="text-align:right">
+        <el-button type="danger" @click="atomicValue = ''">重置</el-button>
+        <el-button @click="handleAtom">运行</el-button>
       </div>
       <div class="paragraph mb-10">
         运行测试:
@@ -84,9 +84,9 @@
         <p class="code_font">let regular = new RegExp(regularRule)</p>
         <p class="code_font">console.log(regular.test(value))</p>
       </div>
-      <div class="paragraph mt-10 mb-10">
-        <el-button style="position: relative; left: 72%" type="danger" @click="esacpe = ['', '']">重置</el-button>
-        <el-button style="position: relative; left: 75%" @click="handleEsacpe">运行</el-button>
+      <div class="paragraph mt-10 mb-10" style="text-align:right">
+        <el-button type="danger" @click="esacpe = ['', '']">重置</el-button>
+        <el-button @click="handleEsacpe">运行</el-button>
       </div>
       <div class="paragraph mb-10">
         <p class="font_emphasize" v-for="(value, index) in esacpe" :key="index">{{ value }}</p>
@@ -110,9 +110,9 @@
         <p class="code_font">value.match(/^\d$s/)</p>
         <p class="note">//这里如想要让其匹配可以如此设置 /^\d{4}$/g 这样就可以匹配了</p>
       </div>
-      <div class="paragraph mt-10 mb-10">
-        <el-button style="position: relative; left: 72%" type="danger" @click="borderValue = ''">重置</el-button>
-        <el-button style="position: relative; left: 75%" @click="handleBorder">运行</el-button>
+      <div class="paragraph mt-10 mb-10" style="text-align:right">
+        <el-button type="danger" @click="borderValue = ''">重置</el-button>
+        <el-button @click="handleBorder">运行</el-button>
       </div>
       <div class="paragraph mb-10">
         运行测试:
@@ -153,9 +153,9 @@
           ，也就是说原子组中的表示就变为 <font class="font-emphasize">!(xxx|xxx|xxx|xxx)</font> 如此形式了
         </span>
       </div>
-      <div class="paragraph mt-10 mb-10">
-        <el-button style="position: relative; left: 72%" type="danger" @click="numberSpaceValue = ''">重置</el-button>
-        <el-button style="position: relative; left: 75%" @click="handleNumberSpace">运行</el-button>
+      <div class="paragraph mt-10 mb-10" style="text-align:right">
+        <el-button type="danger" @click="numberSpaceValue = ''">重置</el-button>
+        <el-button @click="handleNumberSpace">运行</el-button>
       </div>
       <div class="paragraph mb-10">
         运行测试：
@@ -175,9 +175,9 @@
         <p class="note">//i标识不区分大小写</p>
         <p class="code_font">/^(a-z|A-Z)/w{4,9}$/.test(username)</p>
       </div>
-      <div class="paragraph mt-10 mb-10">
-        <el-button style="position: relative; left: 72%" type="danger" @click="judgeInputValue = ''">重置</el-button>
-        <el-button style="position: relative; left: 75%" @click="handleChar">运行</el-button>
+      <div class="paragraph mt-10 mb-10" style="text-align:right">
+        <el-button type="danger" @click="judgeInputValue = ''">重置</el-button>
+        <el-button @click="handleChar">运行</el-button>
       </div>
       <div class="paragraph mb-10">
         运行测试:
@@ -202,9 +202,9 @@
         <p class="code_font">value.match(/^\w+\.\w+\.\w+$/)</p>
         <p class="code_font">/^\w+\.\w+\.\w+$/.test(value)</p>
       </div>
-      <div class="paragraph mt-10 mb-10">
-        <el-button style="position: relative; left: 72%" type="danger" @click="pointValue = ''">重置</el-button>
-        <el-button style="position: relative; left: 75%" @click="handlePoint">运行</el-button>
+      <div class="paragraph mt-10 mb-10" style="text-align:right">
+        <el-button type="danger" @click="pointValue = ''">重置</el-button>
+        <el-button @click="handlePoint">运行</el-button>
       </div>
       <div class="paragraph mb-10">
         运行测试:
@@ -265,9 +265,9 @@
         <p class="code_font tab_1">return { name, value }</p>
         <p class="code_font">});</p>
       </div>
-      <div class="paragraph mt-10 mb-10">
-        <el-button style="position: relative; left: 72%" type="danger" @click="moreParagraphValue = ''">重置</el-button>
-        <el-button style="position: relative; left: 75%" @click="handleMoreParagraphValue">运行</el-button>
+      <div class="paragraph mt-10 mb-10" style="text-align:right">
+        <el-button type="danger" @click="moreParagraphValue = ''">重置</el-button>
+        <el-button @click="handleMoreParagraphValue">运行</el-button>
       </div>
       <div class="paragraph mb-10">
         运行测试:

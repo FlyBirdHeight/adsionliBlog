@@ -1,0 +1,58 @@
+.toolbar {
+  height: 60px;
+  background-color: getStructureValue('toolbar', 'backColor');
+  color: getStructureValue('toolbar', 'color');
+  font-family: getStructureValue('toolbar', 'fontFamily');
+  line-height: 60px;
+  z-index: 3;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  .blogName {
+    float: left;
+    font-weight: bolder;
+    margin-left: 10px;
+  }
+
+  .toolbar-list {
+    font-family: getStructureValue('toolbar', 'fontFamily');
+    font-weight: bolder;
+    @media screen and (max-width: 480px) {
+      display: none;
+    }
+    ul {
+      padding: 0;
+      margin: 0;
+      list-style-type: none;
+      list-style-position: initial;
+      float: right;
+      li {
+        float: left;
+        margin-right: 10px;
+        a {
+          padding: 20px;
+          color: getStructureValue('toolbar', 'color');
+          text-transform: uppercase;
+          font-size: 14px;
+          line-height: 20px;
+          font-weight: bolder;
+          letter-spacing: 1px;
+
+          &:hover {
+              cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+
+  .drop-list-menu {
+    @media screen and (min-width: 480px) {
+      display: none;
+    }
+    float: right;
+    margin-right: 15px;
+  }
+}

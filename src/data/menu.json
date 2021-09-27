@@ -1,0 +1,15 @@
+{
+    "menu": [{
+        "routeLink": "/",
+        "label": "首页"
+    },{
+        "routeLink": "",
+        "label": "目录"
+    },{
+        "routeLink": "",
+        "label": "归档"
+    },{
+        "routeLink": "",
+        "label": "关于我"
+    }]
+}

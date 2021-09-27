@@ -1,0 +1,80 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 2838392 */
+  src: url('iconfont.woff2?t=1632727489161') format('woff2'),
+       url('iconfont.woff?t=1632727489161') format('woff'),
+       url('iconfont.ttf?t=1632727489161') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 22px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #ffffff
+}
+
+.icon-fenxiang:before {
+  content: "\e8b0";
+}
+
+.icon-pengyouquan:before {
+  content: "\e8b4";
+}
+
+.icon-bottom:before {
+  content: "\e666";
+}
+
+.icon-close:before {
+  content: "\e668";
+}
+
+.icon-discount:before {
+  content: "\e66d";
+}
+
+.icon-email:before {
+  content: "\e66f";
+}
+
+.icon-favorite:before {
+  content: "\e670";
+}
+
+.icon-file:before {
+  content: "\e671";
+}
+
+.icon-folder-close:before {
+  content: "\e672";
+}
+
+.icon-good:before {
+  content: "\e673";
+}
+
+.icon-image-text:before {
+  content: "\e675";
+}
+
+.icon-layers:before {
+  content: "\e676";
+}
+
+.icon-menu:before {
+  content: "\e677";
+}
+
+.icon-smile:before {
+  content: "\e67e";
+}
+
+.icon-time:before {
+  content: "\e680";
+}
+
+.icon-user:before {
+  content: "\e682";
+}
+

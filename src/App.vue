@@ -1,9 +1,17 @@
 <template>
   <div id="app">
-    <router-view/>
+    <navigation />
+    <router-view />
   </div>
 </template>
-
+<script>
+import Navigation from '@/components/sidebar/navigation.vue'
+export default {
+  components: {
+    Navigation,
+  },
+}
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

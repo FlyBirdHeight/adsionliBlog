@@ -21,6 +21,13 @@ export default {
       tags: [],
     }
   },
+  mounted() {
+    let coverData = this.$store.getters.getSidebarCover
+    this.titleName = coverData.titleName
+    this.subTitleName = coverData.subTitleName
+    this.createTime = coverData.createTime
+    this.tags = coverData.tags
+  },
   watch: {
     '$store.getters.getSidebarCover': function(newV, oldV) {
       this.titleName = newV.titleName

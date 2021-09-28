@@ -4,7 +4,7 @@
       <div class="tag-cloud"></div>
       <el-divider></el-divider>
       <div class="fileing-list">
-        <div class="member" v-for="(value, index) in showList" :key="index">
+        <div class="member" v-for="(value, index) in showList" :key="index" :id="value[0]">
           <div class="tag-info">
             <span><i class="iconfont icon-discount icon" /> {{ value[0] }}</span>
           </div>
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     goToPageRouter(routerLink) {
-      this.$router.push({ path: routerLink })
+      this.$router.push({ path: routerLink, params: { handle: ['SET_COVER'] } })
     },
   },
 }

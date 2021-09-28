@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from "../store/index"
-
+import RouteHandle from "./handle"
+var handle = new RouteHandle();
 Vue.use(VueRouter)
 
 const routes = [
@@ -9,10 +9,18 @@ const routes = [
     path: '/',
     name: 'Home',
     component: () => import('@/views/main/Home.vue')
-  },{
+  }, {
     path: '/fileing',
     name: 'Fileing',
     component: () => import('@/views/main/Fileing.vue')
+  }, {
+    path: '/mine',
+    name: 'Mine',
+    component: () => import('@/views/main/Mine.vue')
+  }, {
+    path: '/catalogue',
+    name: 'Catalogue',
+    component: () => import('@/views/main/Catalogue.vue')
   }, {
     path: "/third",
     name: 'Third',
@@ -42,18 +50,6 @@ const routes = [
       }
     ]
   }, {
-    path: "/test",
-    name: 'Test',
-    redirect: '/test/change_data',
-    component: () => import('@/views/test/index.vue'),
-    children: [
-      {
-        path: 'change_data',
-        name: 'ChangeData',
-        component: () => import('../views/test/change_data.vue')
-      }
-    ]
-  }, {
     path: "/face",
     name: "Face",
     redirect: '/face/constructor',
@@ -62,7 +58,20 @@ const routes = [
       {
         path: 'constructor',
         name: 'Constructor',
-        component: () => import('../views/face/construct_prototype/index.vue')
+        component: () => import('@/views/face/construct_prototype/index.vue')
+      },
+      {
+        path: "test",
+        name: 'Test',
+        redirect: '/face/test/change_data',
+        component: () => import('@/views/face/test/index.vue'),
+        children: [
+          {
+            path: 'change_data',
+            name: 'ChangeData',
+            component: () => import('@/views/face/test/change_data.vue')
+          }
+        ]
       }
     ]
   }, {
@@ -74,7 +83,7 @@ const routes = [
       {
         path: 'regular',
         name: 'Regular',
-        component: () => import('../views/utils/regular/index.vue')
+        component: () => import('@/views/utils/regular/index.vue')
       }
     ]
   }
@@ -85,9 +94,9 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to);
-  console.log(from);
-  next();
+  handle.beforeRouteSkip(to, from)
+
+  next()
 })
 
 export default router

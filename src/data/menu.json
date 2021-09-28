@@ -3,13 +3,13 @@
         "routeLink": "/",
         "label": "首页"
     },{
-        "routeLink": "",
+        "routeLink": "/catalogue",
         "label": "目录"
     },{
-        "routeLink": "",
+        "routeLink": "/fileing",
         "label": "归档"
     },{
-        "routeLink": "",
+        "routeLink": "/mine",
         "label": "关于我"
     }]
 }

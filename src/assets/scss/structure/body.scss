@@ -1,35 +1,75 @@
-.page-list {
+.container {
+  @include marginSet(20px auto);
+  @media screen and (min-width: 760px) {
+    width: 750px;
+  }
+  @media screen and (min-width: 992px) {
+    width: 970px;
+  }
+  @media screen and (min-width: 1200px) {
+    width: 1170px;
+  }
+
+  .page-list {
     @include paddingSet(0 15px);
     width: 100%;
     text-align: left;
     @include marginSet(0 auto 0 auto);
 
     .page-info {
-        a {
-            color: #000000;
+      a {
+        color: getBodyValue('pageList','color');
 
-            .title {
-                .top {
-                    color: red;
-                    font-weight: bolder;
-                }
-            }
-
-            .subTitle {
-                @include subTitle(15px, #a3a3a3);
-                font-style: italic;
-            }
-
-            &:hover {
-                cursor: pointer;
-            }
+        .title {
+          font-size: 27px;
+          .top {
+            color: getBodyValue('pageList','emphasize');
+            font-weight: bolder;
+          }
         }
 
-        .createTime {
-            @include createTime(18px, gray);
-            font-style: italic;
+        .subTitle {
+          @include subTitle(14px, getBodyValue('pageList','subTitle'));
+          font-style: italic;
         }
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .createTime {
+        @include createTime(18px, getBodyValue('pageList','createTime'));
+        font-style: italic;
+      }
     }
-}
+  }
 
-.tag-list {}
+  .tag-list {
+    text-align: left;
+    @include marginSet(0 0 0 15px);
+    .body {
+      h4 {
+        @include subTitle(16px, getBodyValue('tagList','h4'));
+        font-weight: bolder;
+      }
+
+      .list {
+        @include marginSet(20px 0 0 0);
+        a {
+          display: inline-block;
+          @include tag(getBodyValue('tagList','color'), 14px, getBodyValue('tagList','borderColor'));
+          line-height: 24px;
+          margin-right: 5px;
+          &:hover {
+            cursor: pointer;
+            color: getBodyValue('tagList','hover');
+            border-color: getBodyValue('tagList','hover');
+          }
+        }
+      }
+    }
+  }
+
+  @import "./fileing.scss";
+}

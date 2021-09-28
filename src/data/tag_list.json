@@ -1,0 +1,19 @@
+{
+    "tag": [
+        {
+            "label": "regular"
+        },
+        {
+            "label": "es6"
+        },
+        {
+            "label": "function函数"
+        },
+        {
+            "label": "解构"
+        },
+        {
+            "label": "面试题"
+        }
+    ]
+}

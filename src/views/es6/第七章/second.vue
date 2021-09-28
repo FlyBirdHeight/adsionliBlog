@@ -219,7 +219,7 @@
 </template>
 
 <script>
-import Seventh from '@/funcs/seventh/seventh.js'
+import Seventh from '@/funcs/es6/seventh/seventh.js'
 export default {
   data() {
     return {

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import store from "../store/index"
 
 Vue.use(VueRouter)
 
@@ -8,7 +8,11 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import('@/views/main/Home.vue')
+  },{
+    path: '/fileing',
+    name: 'Fileing',
+    component: () => import('@/views/main/Fileing.vue')
   }, {
     path: "/third",
     name: 'Third',
@@ -78,6 +82,12 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  console.log(to);
+  console.log(from);
+  next();
 })
 
 export default router

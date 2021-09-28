@@ -1,22 +1,32 @@
-@mixin title() {}
-
-@mixin subTitle($fontSize, $fontColor : null) {
-    font-family: -apple-system, 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB', STHeiti, 'Microsoft YaHei',
-        'Microsoft JhengHei', 'Source Han Sans SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Noto Sans SC',
-        'Source Han Sans TC', 'Noto Sans CJK TC', 'WenQuanYi Micro Hei', SimSun, sans-serif;
-    line-height: 1.7;
-    font-size: $fontSize;
-    line-height: 1.1;
-    display: block;
-    font-weight: 300;
-    margin: 10px 0 0;
-    color: $fontColor
+@mixin title() {
 }
 
-@mixin createTime($fontSize, $fontColor : null) {
-    font-family: Lora, 'Times New Roman', serif;
-    font-style: italic;
-    font-weight: 300;
-    font-size: $fontSize;
-    color: $fontColor
+@mixin subTitle($fontSize, $fontColor: null) {
+  font-family: -apple-system, 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB', STHeiti, 'Microsoft YaHei',
+    'Microsoft JhengHei', 'Source Han Sans SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Noto Sans SC',
+    'Source Han Sans TC', 'Noto Sans CJK TC', 'WenQuanYi Micro Hei', SimSun, sans-serif;
+  line-height: 1.7;
+  font-size: $fontSize;
+  line-height: 1.1;
+  display: block;
+  font-weight: 300;
+  margin: 10px 0 0;
+  color: $fontColor;
+}
+
+@mixin createTime($fontSize, $fontColor: null) {
+  font-family: Lora, 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: $fontSize;
+  color: $fontColor;
+}
+
+@mixin tag($color, $fontSize, $borderColor: rgba(255, 255, 255, 0.8)) {
+  color: $color;
+  font-size: $fontSize;
+  border: 1px solid $borderColor;
+  border-radius: 999em;
+  @include paddingSet(0 10px);
+  @include marginSet(0 1px 6px 1px);
 }

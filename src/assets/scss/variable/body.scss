@@ -1,0 +1,30 @@
+$body: (
+  fileing: (
+    tagColor: #67c23a,
+    pageListHover: #0085a1,
+  ),
+  pageList: (
+    color: #000000,
+    emphasize: red,
+    subTitle: #a3a3a3,
+    createTime: gray,
+  ),
+  tagList: (
+    h4: #a3a3a3,
+    borderColor: #bfbfbf,
+    color: #bfbfbf,
+    hover: #79bbff,
+  ),
+);
+
+@function getBodyValue($modules, $key) {
+  @if not map-has-key($map: $body, $key: $modules) {
+    @return null;
+  }
+  $module: map-get($body, $modules);
+  @if not map-has-key($map: $module, $key: $key) {
+    @return null;
+  }
+
+  @return map-get($module, $key);
+}

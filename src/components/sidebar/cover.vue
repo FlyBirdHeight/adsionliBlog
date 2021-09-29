@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="tags" v-if="tags.length != 0">
-      <a v-for="item in tags" :key="item.label" class="tags_label">
+      <a v-for="item in tags" :key="item.label" class="tags_label" @click="goToFileing(item.label)">
         <span>{{ item.label }}</span>
       </a>
     </div>
@@ -34,6 +34,12 @@ export default {
       this.subTitleName = newV.subTitleName
       this.createTime = newV.createTime
       this.tags = newV.tags
+    },
+  },
+  methods: {
+    goToFileing(label) {
+      this.$store.commit('SET_SIDEBAR_TAG_LABEL', label)
+      this.$router.push({ path: '/fileing' })
     },
   },
 }

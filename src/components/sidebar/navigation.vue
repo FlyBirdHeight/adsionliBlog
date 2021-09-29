@@ -38,7 +38,7 @@ export default {
      */
     goOtherRoute(routeLink) {
       if (this.$route.path != routeLink) {
-        this.$router.push({ path: routeLink, params: { handle: ['SET_COVER'] } })
+        this.$router.push({ path: routeLink })
       }
     },
   },

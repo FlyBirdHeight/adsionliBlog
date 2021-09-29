@@ -35,7 +35,7 @@ export default {
      * @param {String} routerLinker
      */
     goToPageRoute(routerLinker) {
-      this.$router.push({ path: routerLinker, params: { handle: ['SET_COVER'] } })
+      this.$router.push({ path: routerLinker })
     },
   },
 }

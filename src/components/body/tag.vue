@@ -27,7 +27,8 @@ export default {
      * @param {String} label 前往归档页携带的参数
      */
     goFileing(label) {
-      this.$router.push({ path: '/fileing', query: { handle: ['SET_COVER', 'JUMP_TO_APPOINT_HEIGHT'], label: label } })
+      this.$store.commit('SET_SIDEBAR_TAG_LABEL', label);
+      this.$router.push({ path: '/fileing' })
     },
   },
 }

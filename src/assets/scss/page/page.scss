@@ -1,5 +1,6 @@
 .page {
-  @include marginSet(60px 10px 0 10px);
+  overflow-x: hidden;
+  @include marginSet(0 10px 0 10px);
   .title {
     h1 {
       color: getPageValue('utils', 'titleColor');

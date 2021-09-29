@@ -1,5 +1,7 @@
 .container {
-  @include marginSet(20px auto);
+  @include marginSet(0 auto);
+  @include paddingSet(15px);
+  overflow-x: hidden;
   @media screen and (min-width: 760px) {
     width: 750px;
   }
@@ -11,7 +13,6 @@
   }
 
   .page-list {
-    @include paddingSet(0 15px);
     width: 100%;
     text-align: left;
     @include marginSet(0 auto 0 auto);
@@ -48,6 +49,9 @@
   .tag-list {
     text-align: left;
     @include marginSet(0 0 0 15px);
+    @media screen and (max-width: 780px) {
+      @include marginSet(0);
+    }
     .body {
       h4 {
         @include subTitle(16px, getBodyValue('tagList','h4'));

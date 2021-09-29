@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-row :gutter="12">
+    <el-row>
       <el-col :xs="24" :sm="24" :md="{span:16, offset:2}" :lg="{span:16, offset:2}">
         <page-list />
       </el-col>

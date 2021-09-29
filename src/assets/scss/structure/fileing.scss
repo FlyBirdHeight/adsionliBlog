@@ -1,5 +1,18 @@
 .fileing {
   .tag-cloud {
+    a {
+      display: inline-block;
+      @include tag(#ffffff, 15px, #409EFF);
+      @include marginSet(5px 5px);
+      @include paddingSet(5px 10px);
+      background-color: #409EFF;
+      font-weight: bolder;
+      &:hover {
+        cursor: pointer;
+        background-color: #67C23A;
+        border-color: #67C23A;
+      }
+    }
   }
   .fileing-list {
     text-align: left;

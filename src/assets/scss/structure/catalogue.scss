@@ -1,0 +1,25 @@
+.catalogue-list {
+  text-align: left;
+  @include paddingSet(5px, 5px);
+  .catalogue-title {
+    font-weight: bolder;
+    color: #909399;
+  }
+
+  .page-info {
+    a {
+      &:hover {
+        cursor: pointer;
+        color: getBodyValue('fileing', 'pageListHover');
+      }
+      h3 {
+        .created-at {
+          @include createdAt();
+        }
+        .top {
+          @include top();
+        }
+      }
+    }
+  }
+}

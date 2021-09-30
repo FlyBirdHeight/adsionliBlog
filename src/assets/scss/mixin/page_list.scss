@@ -30,3 +30,13 @@
   @include paddingSet(0 10px);
   @include marginSet(0 1px 6px 1px);
 }
+
+@mixin top($color: getBodyValue('pageList', 'emphasize')) {
+  color: $color;
+  font-weight: bolder;
+}
+
+@mixin createdAt($color: rgb(83, 168, 255), $fontWeight: 'bolder'){
+  color:$color;
+  font-weight: $fontWeight;
+}

@@ -2,15 +2,15 @@
   .tag-cloud {
     a {
       display: inline-block;
-      @include tag(#ffffff, 15px, #409EFF);
+      @include tag(#ffffff, 15px, #409eff);
       @include marginSet(5px 5px);
       @include paddingSet(5px 10px);
-      background-color: #409EFF;
+      background-color: getBodyValue('fileing', 'tagCloudBackColor');
       font-weight: bolder;
       &:hover {
         cursor: pointer;
-        background-color: #67C23A;
-        border-color: #67C23A;
+        background-color: getBodyValue('fileing', 'tagCloudHoverColor');
+        border-color: getBodyValue('fileing', 'tagCloudHoverColor');
       }
     }
   }
@@ -22,12 +22,12 @@
         height: 30px;
         line-height: 30px;
         span {
-          color: getBodyValue('fileing','tagColor');
+          color: getBodyValue('fileing', 'tagColor');
           font-weight: 800;
           font-size: 20px;
           .icon {
             margin-right: 10px;
-            color: getBodyValue('fileing','tagColor');
+            color: getBodyValue('fileing', 'tagColor');
           }
         }
       }
@@ -35,7 +35,7 @@
         a {
           &:hover {
             cursor: pointer;
-            color: getBodyValue('fileing','pageListHover');
+            color: getBodyValue('fileing', 'pageListHover');
           }
         }
       }

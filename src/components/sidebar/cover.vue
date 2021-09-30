@@ -12,6 +12,9 @@
 </template>
 
 <script>
+/**
+ * @description 所有页面中置于顶层的介绍页
+ */
 export default {
   data() {
     return {

@@ -13,6 +13,9 @@
 </template>
 
 <script>
+/**
+ * @description Home与Catalogue下的标签栏组件
+ */
 import TagList from '@/data/tag_list.json'
 export default {
   data() {

@@ -5,6 +5,9 @@
 </template>
 
 <script>
+/**
+ * @description 基于elementui的目录树组件
+ */
 export default {
   props: {
     treeData: {

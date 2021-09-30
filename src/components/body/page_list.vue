@@ -16,6 +16,9 @@
 </template>
 
 <script>
+/**
+ * @description Home页面下文章列表组件
+ */
 import pageList from '@/data/page_list.json'
 export default {
   name: 'page_list',

@@ -19,18 +19,17 @@
 
     .page-info {
       a {
-        color: getBodyValue('pageList','color');
+        color: getBodyValue('pageList', 'color');
 
         .title {
           font-size: 27px;
           .top {
-            color: getBodyValue('pageList','emphasize');
-            font-weight: bolder;
+            @include top();
           }
         }
 
         .subTitle {
-          @include subTitle(14px, getBodyValue('pageList','subTitle'));
+          @include subTitle(14px, getBodyValue('pageList', 'subTitle'));
           font-style: italic;
         }
 
@@ -40,7 +39,7 @@
       }
 
       .createTime {
-        @include createTime(18px, getBodyValue('pageList','createTime'));
+        @include createTime(18px, getBodyValue('pageList', 'createTime'));
         font-style: italic;
       }
     }
@@ -54,7 +53,7 @@
     }
     .body {
       h4 {
-        @include subTitle(16px, getBodyValue('tagList','h4'));
+        @include subTitle(16px, getBodyValue('tagList', 'h4'));
         font-weight: bolder;
       }
 
@@ -62,18 +61,19 @@
         @include marginSet(20px 0 0 0);
         a {
           display: inline-block;
-          @include tag(getBodyValue('tagList','color'), 14px, getBodyValue('tagList','borderColor'));
+          @include tag(getBodyValue('tagList', 'color'), 14px, getBodyValue('tagList', 'borderColor'));
           line-height: 24px;
           margin-right: 5px;
           &:hover {
             cursor: pointer;
-            color: getBodyValue('tagList','hover');
-            border-color: getBodyValue('tagList','hover');
+            color: getBodyValue('tagList', 'hover');
+            border-color: getBodyValue('tagList', 'hover');
           }
         }
       }
     }
   }
 
-  @import "./fileing.scss";
+  @import './fileing.scss';
+  @import './catalogue.scss';
 }

@@ -7,6 +7,9 @@
 </template>
 
 <script>
+/**
+ * @description fileing页面下的标签云组件
+ */
 import TagList from '@/data/tag_list.json'
 export default {
   name: 'TagCloud',

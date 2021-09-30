@@ -24,6 +24,9 @@
 </template>
 
 <script>
+/**
+ * @description 所有页面中的导航栏
+ */
 import MenuList from '@/data/menu.json'
 export default {
   name: 'navigation',

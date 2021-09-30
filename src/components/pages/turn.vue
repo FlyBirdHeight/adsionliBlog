@@ -6,6 +6,9 @@
 </template>
 
 <script>
+/**
+ * @description 分页按钮
+ */
 export default {
   props: {
     pre: {
@@ -16,6 +19,10 @@ export default {
       type: String,
       default: '',
     },
+    count: {
+      type: Number,
+      default: 0
+    }
   },
   methods: {
     goPre() {
@@ -35,6 +42,11 @@ export default {
       }
     },
   },
+  watch: {
+    count: (newV, oldV) => {
+
+    }
+  }
 }
 </script>
 

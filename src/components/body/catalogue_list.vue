@@ -1,9 +1,8 @@
-
 <template>
   <div class="catalogue-list">
     <h2 class="catalogue-title">Blog</h2>
     <el-divider></el-divider>
-    <div class="page-info" v-for="(value, index) in pageList" :key="index">
+    <div class="page-info" v-for="(value, index) in showPageingList" :key="index">
       <a target="_blank" @click="goToPageRoute(value.routeLink)">
         <h3>
           <font class="created-at">[{{ value.created_at }}]</font>
@@ -13,6 +12,12 @@
       </a>
       <el-divider></el-divider>
     </div>
+    <pageing
+      layout="total,jumper,size"
+      @changeShowCount="changeCount"
+      @currentPageChange="changePage"
+      :totalCount="totalCount"
+    />
   </div>
 </template>
 
@@ -21,14 +26,23 @@
  * @description 目录页文章列表组件
  */
 import PageList from '@/data/page_list.json'
+import Pageing from '@/components/utils/pageing.vue'
 export default {
   data() {
     return {
       pageList: PageList.page,
+      totalCount: 0,
+      pagePageingList: [],
+      showPageingList: []
     }
+  },
+  beforeMount() {
+    this.totalCount = this.pageList.length
   },
   mounted() {
     this.handlePage()
+    this.resolvePage()
+    this.changePage()
   },
   methods: {
     /**
@@ -51,6 +65,31 @@ export default {
     goToPageRoute(routerLinker) {
       this.$router.push({ path: routerLinker })
     },
+    /**
+     * @method resolvePage 按分页数量分解数组
+     * @param {Number} count 分页数量
+     */
+    resolvePage(count = 10) {
+      this.pagePageingList = [];
+      this.pageList.forEach((value, index) => {
+        const page = Math.floor(index / count)
+        if (!this.pagePageingList[page]) {
+          this.pagePageingList[page] = []
+        }
+        this.pagePageingList[page].push(value)
+      })
+    },
+    changeCount(val) {
+      let [count, page] = val;
+      this.resolvePage(count);
+      this.changePage(page)
+    },
+    changePage(val = 1) {
+      this.showPageingList = this.pagePageingList[(val - 1)];
+    },
+  },
+  components: {
+    Pageing,
   },
 }
 </script>

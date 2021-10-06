@@ -1,7 +1,7 @@
 <template>
   <el-button-group>
-    <el-button type="primary" @click="goPre()" icon="el-icon-arrow-left">上一页</el-button>
-    <el-button type="primary" @click="goBack()">下一讲<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+    <el-button type="primary" @click="goPre()" icon="el-icon-arrow-left">上一篇</el-button>
+    <el-button type="primary" @click="goBack()">下一篇<i class="el-icon-arrow-right el-icon--right"></i></el-button>
   </el-button-group>
 </template>
 
@@ -18,11 +18,15 @@ export default {
     back: {
       type: String,
       default: '',
-    },
-    count: {
-      type: Number,
-      default: 0
     }
+  },
+  data() {
+    return {
+      
+    }
+  },
+  mounted() {
+    
   },
   methods: {
     goPre() {
@@ -43,9 +47,7 @@ export default {
     },
   },
   watch: {
-    count: (newV, oldV) => {
-
-    }
+    
   }
 }
 </script>

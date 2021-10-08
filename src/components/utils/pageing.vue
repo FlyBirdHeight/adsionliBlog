@@ -10,7 +10,7 @@
     </div>
     <div class="pagination-bar">
       <div class="pre">
-        <el-button icon="el-icon-arrow-left" :disabled="isStart"></el-button>
+        <el-button style="border:none" icon="el-icon-arrow-left" :disabled="isStart"></el-button>
       </div>
       <div class="pager">
         <ul v-if="pageTotal.length < 8">
@@ -21,7 +21,7 @@
         </ul>
       </div>
       <div class="next">
-        <el-button icon="el-icon-arrow-right" :disabled="isEnd"></el-button>
+        <el-button style="border:none" icon="el-icon-arrow-right" :disabled="isEnd"></el-button>
       </div>
     </div>
     <div class="jumper" v-if="showMapping.jumper">

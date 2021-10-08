@@ -4,6 +4,7 @@
   background-color: getStructureValue('header', 'backColor');
 
   .subTitle {
+    @include paddingSet(0 10px);
     @include subTitle(18px);
   }
 

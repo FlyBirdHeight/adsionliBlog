@@ -12,11 +12,12 @@
       </a>
       <el-divider></el-divider>
     </div>
-    <pageing
+    <paging
       layout="total,jumper,size"
       @changeShowCount="changeCount"
       @currentPageChange="changePage"
       :totalCount="totalCount"
+      :pageSizes="pageSizes"
     />
   </div>
 </template>
@@ -26,12 +27,13 @@
  * @description 目录页文章列表组件
  */
 import PageList from '@/data/page_list.json'
-import Pageing from '@/components/utils/pageing.vue'
+import Paging from '@/components/utils/paging.vue'
 export default {
   data() {
     return {
       pageList: PageList.page,
       totalCount: 0,
+      pageSizes: [1, 2, 3, 4],
       pagePageingList: [],
       showPageingList: []
     }
@@ -41,7 +43,7 @@ export default {
   },
   mounted() {
     this.handlePage()
-    this.resolvePage()
+    this.resolvePage(this.pageSizes[0])
     this.changePage()
   },
   methods: {
@@ -89,7 +91,7 @@ export default {
     },
   },
   components: {
-    Pageing,
+    Paging,
   },
 }
 </script>

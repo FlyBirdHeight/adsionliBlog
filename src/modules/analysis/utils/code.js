@@ -25,7 +25,7 @@ class Code {
          * @property {String} space 获取空格数量
          * @property {Array} nodeSign 注释标记
          */
-        this.removeEndSpace = '/\s*$/g';
+        this.removeEndSpace = '/\\s*$/g';
         this.space = '/\\s/';
         this.nodeSign = [];
     }

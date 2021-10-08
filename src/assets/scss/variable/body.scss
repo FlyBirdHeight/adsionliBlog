@@ -18,6 +18,10 @@ $body: (
     color: #bfbfbf,
     hover: #79bbff,
   ),
+  paging: (
+    totalColor: #a3a3a3,
+    hoverColor: #79bbff,
+  )
 );
 
 @function getBodyValue($modules, $key) {

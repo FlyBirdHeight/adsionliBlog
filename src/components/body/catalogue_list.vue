@@ -33,7 +33,7 @@ export default {
     return {
       pageList: PageList.page,
       totalCount: 0,
-      pageSizes: [1, 2, 3, 4],
+      pageSizes: [10, 20, 30, 40, 50],
       pagePageingList: [],
       showPageingList: []
     }

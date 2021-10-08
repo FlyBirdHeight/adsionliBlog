@@ -1,7 +1,7 @@
 <template>
   <div class="paging">
     <div class="total" v-if="showMapping.total">
-      <span>{{ `共${totalCount}页` }}</span>
+      <span>{{ `共${totalCount}篇` }}</span>
     </div>
     <div class="setting-count" v-if="showMapping.size">
       <el-select v-model="count" placeholder="请选择" @change="changeShowCount">

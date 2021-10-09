@@ -26,7 +26,7 @@ class Code {
          * @property {Array} nodeSign 注释标记
          */
         this.removeEndSpace = '/\\s*$/g';
-        this.space = '/\\s/';
+        this.space = '/\\s/g';
         this.nodeSign = [];
     }
 
@@ -36,6 +36,8 @@ class Code {
      */
     setHandleValue(value) {
         this.handleValue = value
+
+        return this;
     }
 
     /**
@@ -53,7 +55,7 @@ class Code {
              * @note 去除字符串尾部的空格，避免污染计算空格数量
              */
             currentValue = currentValue.replace(this.removeEndSpace)
-            let spaceCount = currentValue.match(`${this.space}`).length;
+            let spaceCount = currentValue.match(this.space).length;
             let tabLayour = this.getTabNum(spaceCount);
             innerHtml = innerHtml.slice(-3)+ " " + tabLayour + innerHtml.slice(-3, 0);
             /**

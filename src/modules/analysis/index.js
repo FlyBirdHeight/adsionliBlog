@@ -1,9 +1,9 @@
-
+import MatchingPattern from "./utils/matching_pattern"
 class Analysis {
     constructor() {
         this.handleContent = undefined;
         this.axios = require("axios");
-        
+        this.matchingPattern = new MatchingPattern();
     }
     /**
      * @method setHandleContent 设置待处理内容
@@ -24,6 +24,7 @@ class Analysis {
             let returnData = await this.axios.get(filePath);
             this.handleContent = returnData.data.split("\n");
             await this.handleContentValue();
+            return filePath;
         }catch(error){
             console.log(error)
             return false;
@@ -35,8 +36,16 @@ class Analysis {
      */
     async handleContentValue(){
         this.handleContent.map((currentValue, index) => {
-            console.log(currentValue);
+            this.matchingPattern(currentValue);
         });
+    }
+
+    /**
+     * @method matchingPattern 正则模式匹配
+     * @param {*} value 
+     */
+    matchingPattern(value){
+
     }
 }
 

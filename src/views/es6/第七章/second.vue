@@ -184,9 +184,9 @@
           <p class="code_font">const addThenMult = pipeline(plus1, mult1);</p>
           <p class="code_font">addThenMult(5);</p>
         </div>
-        <div class="paragraph mt-10 mb-10">
-          <el-button style="position: relative; left: 72%" type="danger" @click="pipelineRes = ''">重置</el-button>
-          <el-button style="position: relative; left: 75%" @click="showPipelineFunction">运行嵌套函数</el-button>
+        <div class="paragraph mt-10 mb-10" style="text-align:right">
+          <el-button type="danger" @click="pipelineRes = ''">重置</el-button>
+          <el-button @click="showPipelineFunction">运行嵌套函数</el-button>
         </div>
         <div
           style="height:30px;font-size:25px; font-weight: bolder; color:rgb(255, 0, 0); margin-top: 15px; margin-bottom: 40px"

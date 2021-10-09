@@ -10,12 +10,11 @@
 /**
  * @description fileing页面下的标签云组件
  */
-import TagList from '@/data/tag_list.json'
 export default {
   name: 'TagCloud',
   data() {
     return {
-      tagList: TagList.tag,
+      tagList: this.$store.getters.getTagList,
     }
   },
   methods: {

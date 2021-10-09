@@ -8,7 +8,7 @@ class RouteHandle {
         this.store = store;
         this.concatData = new Map();
         this.concatCoverData();
-
+        this.switchNone = ['/', '/mine', 'catalogue', 'fileing']
     }
 
     /**
@@ -18,21 +18,24 @@ class RouteHandle {
      */
     beforeRouteSkip(to, from) {
         this.handleQuery('SET_COVER', to);
-
-        return true;
+        if (this.switchNone.indexOf(to.path) == -1) {
+            this.handleQuery('SWITCH_PAGE', {
+                toPath: to.path
+            })
+        }
     }
 
     /**
      * @method handleQuery 处理待处理事件
      * @param {*} handleQ 待处理事件
      */
-    handleQuery(handleQ, to) {
+    handleQuery(handleQ, data) {
         switch (handleQ) {
             case 'SET_COVER':
-                this.handleCover(to.path);
+                this.handleCover(data.path);
                 break;
-            case 'JUMP_TO_APPOINT_HEIGHT':
-                this.setTagLabel(to.query.label);
+            case 'SWITCH_PAGE':
+                this.switchPageHandle(data.toPath);
                 break;
             default:
                 break;
@@ -68,12 +71,33 @@ class RouteHandle {
     }
 
     /**
-     * @method setTagLabel 设置跳转标签时，所需的标签vuex
-     * @param {*} label 标签Id
+     * @method switchPageHandle 切换文章时底部切换按钮处理
+     * @param {String} toPath 跳转分页路由
      */
-    setTagLabel(label) {
-        this.store.commit('SET_SIDEBAR_TAG_LABEL', label);
+    switchPageHandle(toPath) {
+        let pageList = this.store.getters.getPageList;
+        let that = this;
+        let settingStore = (current, pre, next) => {
+            that.store.commit('SET_CURRENT_PAGE', current);
+            that.store.commit('SET_PRE_PAGE', pre);
+            that.store.commit('SET_NEXT_PAGE', next);
+        }
+        //entries方法能够创建一个可迭代的对象，【a, b, c】 => [1, a], [2, b], [3, c]
+        for (let [index, value] of pageList.entries()) {
+            if (toPath == value.routeLink) {
+                if (index == 0) {
+                    settingStore(index, undefined, pageList.length > 1 ? index + 1 : undefined)
+                } else if (index == pageList.length - 1) {
+                    settingStore(index, index - 1, undefined);
+                } else {
+                    settingStore(index, index - 1, index + 1);
+                }
+                break;
+            }
+        }
     }
+
+
 }
 
 export default RouteHandle;

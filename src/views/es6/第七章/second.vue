@@ -214,7 +214,7 @@
         </div>
       </div>
     </div>
-
+    
   </div>
 </template>
 
@@ -297,7 +297,7 @@ export default {
 
       this.pipelineRes = addThenMult(5)
     },
-  },
+  }
 }
 </script>
 

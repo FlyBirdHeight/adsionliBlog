@@ -26,12 +26,11 @@
 /**
  * @description 目录页文章列表组件
  */
-import PageList from '@/data/page_list.json'
 import Paging from '@/components/utils/paging.vue'
 export default {
   data() {
     return {
-      pageList: PageList.page,
+      pageList: this.$store.getters.getPageList,
       totalCount: 0,
       pageSizes: [10, 20, 30, 40, 50],
       pagePageingList: [],

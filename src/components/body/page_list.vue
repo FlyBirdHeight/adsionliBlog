@@ -28,13 +28,12 @@
 /**
  * @description Home页面下文章列表组件
  */
-import pageList from "@/data/page_list.json";
 import Paging from "@/components/utils/paging.vue";
 export default {
   name: "page_list",
   data() {
     return {
-      pageListValue: pageList.page,
+      pageListValue: this.$store.getters.getPageList,
       totalCount: 0,
       pageSizes: [10, 20, 30, 40, 50],
       pagePageingList: [],

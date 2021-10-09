@@ -2,6 +2,21 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+/**
+ * @description 预读取文章列表json文件，以及标签列表json文件
+ */
+import PageList from './data/page_list.json'
+import TagList from "./data/tag_list.json"
+store.commit('SET_PAGE_LIST', PageList.page.sort((a, b) => {
+  if (a.toTop == b.toTop) {
+    let aDate = new Date(a.created_at)
+    let bDate = new Date(b.created_at)
+    return bDate.getTime() - aDate.getTime()
+  }
+  return b.toTop - a.toTop
+}))
+store.commit('SET_TAG_LIST', TagList.tag)
+
 
 Vue.config.productionTip = false
 

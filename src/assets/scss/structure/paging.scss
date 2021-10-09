@@ -81,7 +81,13 @@
         li {
           display: inline-block;
           margin: 0 7px;
-          cursor: pointer;
+          a {
+            cursor: pointer;
+          }
+          .active {
+            color: getBodyValue('paging', 'hoverColor');
+            font-weight: bolder;
+          }
         }
       }
       .next {

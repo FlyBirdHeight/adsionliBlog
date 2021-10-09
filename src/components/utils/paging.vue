@@ -5,13 +5,7 @@
     </div>
     <div class="setting-count" v-if="showMapping.size">
       <el-select v-model="count" placeholder="请选择" @change="changeShowCount">
-        <el-option
-          v-for="(item, index) in pageSizes"
-          :key="index"
-          :label="`${item}条/页`"
-          :value="item"
-        >
-        </el-option>
+        <el-option v-for="(item, index) in pageSizes" :key="index" :label="`${item}条/页`" :value="item"> </el-option>
       </el-select>
     </div>
     <div class="pagination-bar">
@@ -36,12 +30,7 @@
             @mouseout="isOut(index)"
             v-if="item == '...'"
           ></a>
-          <a
-            :id="`pagerValue${index}`"
-            v-else
-            :class="[isActive(index, item) ? 'active' : '']"
-            >{{ item }}</a
-          >
+          <a :id="`pagerValue${index}`" v-else :class="[isActive(index, item) ? 'active' : '']">{{ item }}</a>
         </li>
       </ul>
       <el-button
@@ -72,7 +61,7 @@
  * @description 分页组件
  */
 export default {
-  name: "paging",
+  name: 'paging',
   props: {
     /**
      * @property {Array} pageSizes 显示页数数量设置
@@ -110,20 +99,20 @@ export default {
       isStart: true,
       isEnd: true,
       pagingList: [],
-    };
+    }
   },
   mounted() {
-    if (this.$attrs.hasOwnProperty("layout")) {
-      this.handleShowList(this.$attrs.layout);
+    if (this.$attrs.hasOwnProperty('layout')) {
+      this.handleShowList(this.$attrs.layout)
     }
     if (this.totalCount != 0) {
-      this.pageTotal = this.calculatePageTotal(this.count, this.totalCount);
-      this.lastShowCount = 1;
+      this.pageTotal = this.calculatePageTotal(this.count, this.totalCount)
+      this.lastShowCount = 1
       if (this.pageTotal > 1) {
-        this.isEnd = false;
+        this.isEnd = false
       }
     }
-    this.generatePagingList();
+    this.generatePagingList()
   },
   methods: {
     /**
@@ -131,18 +120,18 @@ export default {
      * @param {Number} item 数组下标
      */
     isHover(item) {
-      let aValue = document.querySelector(`#pagerValue${item}`);
-      if (this.pagingList[item] == "...") {
-        let first = this.pagingList.indexOf("...");
-        let second = this.pagingList.lastIndexOf("...");
+      let aValue = document.querySelector(`#pagerValue${item}`)
+      if (this.pagingList[item] == '...') {
+        let first = this.pagingList.indexOf('...')
+        let second = this.pagingList.lastIndexOf('...')
         if (first == second && first == this.pagingList.length - 2) {
-          aValue.setAttribute("class", "el-icon-d-arrow-right");
+          aValue.setAttribute('class', 'el-icon-d-arrow-right')
         } else if (first != second && item == first) {
-          aValue.setAttribute("class", "el-icon-d-arrow-left");
+          aValue.setAttribute('class', 'el-icon-d-arrow-left')
         } else if (first == second && item == 1) {
-          aValue.setAttribute("class", "el-icon-d-arrow-left");
+          aValue.setAttribute('class', 'el-icon-d-arrow-left')
         } else {
-          aValue.setAttribute("class", "el-icon-d-arrow-right");
+          aValue.setAttribute('class', 'el-icon-d-arrow-right')
         }
       }
     },
@@ -151,9 +140,9 @@ export default {
      * @param {Number} item 数组下标
      */
     isOut(item) {
-      let aValue = document.querySelector(`#pagerValue${item}`);
-      if (this.pagingList[item] == "...") {
-        aValue.setAttribute("class", "el-icon-more");
+      let aValue = document.querySelector(`#pagerValue${item}`)
+      if (this.pagingList[item] == '...') {
+        aValue.setAttribute('class', 'el-icon-more')
       }
     },
     /**
@@ -162,10 +151,10 @@ export default {
      * @param {String} value 数组元素
      */
     isActive(index, value) {
-      if (value == "...") {
-        return false;
+      if (value == '...') {
+        return false
       }
-      return this.pagingList[index] == this.page ? true : false;
+      return this.pagingList[index] == this.page ? true : false
     },
     /**
      * @method generatePagingList 生成页码列表
@@ -173,13 +162,13 @@ export default {
     generatePagingList() {
       if (this.pageTotal > 7) {
         for (let i = 1; i < 7; i++) {
-          this.pagingList.push(i);
+          this.pagingList.push(i)
         }
-        this.pagingList.push("...");
-        this.pagingList.push(this.pageTotal);
+        this.pagingList.push('...')
+        this.pagingList.push(this.pageTotal)
       } else {
         for (let i = 1; i < this.pageTotal + 1; i++) {
-          this.pagingList.push(i);
+          this.pagingList.push(i)
         }
       }
     },
@@ -187,50 +176,53 @@ export default {
      * @method handlePagingList 处理分页列表
      */
     handlePagingList() {
-      this.pagingList.splice(0, this.pagingList.length);
-      let newP = [];
-      let startD = this.page - 1;
-      let endD = this.pageTotal - this.page;
-      if (startD >= 4 && endD >= 4) {
-        newP.push(1);
-        newP.push("...");
-        for (let i = Number(this.page) - 2; i < Number(this.page) + 3; ++i) {
-          newP.push(i);
+      let newP = []
+      this.pagingList.splice(0, this.pagingList.length)
+      if (this.pageTotal > 7) {
+        let startD = this.page - 1
+        let endD = this.pageTotal - this.page
+        if (startD >= 4 && endD >= 4) {
+          newP.push(1)
+          newP.push('...')
+          for (let i = Number(this.page) - 2; i < Number(this.page) + 3; ++i) {
+            newP.push(i)
+          }
+          newP.push('...')
+          newP.push(this.pageTotal)
+        } else if (startD >= 4 && endD < 4) {
+          newP.push(1)
+          newP.push('...')
+          for (let i = Number(this.page) - (5 - endD); i < this.pageTotal + 1; ++i) {
+            newP.push(i)
+          }
+        } else if (startD < 4 && endD >= 4) {
+          for (let i = 1; i < this.page + (5 - startD) + 1; ++i) {
+            newP.push(i)
+          }
+          newP.push('...')
+          newP.push(this.pageTotal)
+        } else if (startD < 4 && endD < 4) {
+          for (let i = 1; i < this.pageTotal + 1; ++i) {
+            newP.push(i)
+          }
         }
-        newP.push("...");
-        newP.push(this.pageTotal);
-      } else if (startD >= 4 && endD < 4) {
-        newP.push(1);
-        newP.push("...");
-        for (
-          let i = Number(this.page) - (5 - endD);
-          i < this.pageTotal + 1;
-          ++i
-        ) {
-          newP.push(i);
-        }
-      } else if (startD < 4 && endD >= 4) {
-        for (let i = 1; i < this.page + (5 - startD) + 1; ++i) {
-          newP.push(i);
-        }
-        newP.push("...");
-        newP.push(this.pageTotal);
-      } else if (startD < 4 && endD < 4) {
+        this.pagingList = newP
+      } else {
         for (let i = 1; i < this.pageTotal + 1; ++i) {
-          newP.push(i);
+          newP.push(i)
         }
+        this.pagingList = newP
       }
-      this.pagingList = newP;
     },
     /**
      * @method handleShowList 处理显示项
      */
     handleShowList(showList) {
-      let show = showList.split(",");
+      let show = showList.split(',')
       if (show.length > 0) {
         for (let value of show) {
           if (this.showMapping.hasOwnProperty(value)) {
-            this.showMapping[value] = true;
+            this.showMapping[value] = true
           }
         }
       }
@@ -239,11 +231,11 @@ export default {
      * @method changeShowCount 改变显示数量
      */
     changeShowCount(value) {
-      this.count = value;
-      this.pageTotal = this.calculatePageTotal(this.count, this.totalCount);
-      this.refreshPage();
-      this.handlePagingList();
-      this.$emit("changeShowCount", [this.count, this.page]);
+      this.count = value
+      this.pageTotal = this.calculatePageTotal(this.count, this.totalCount)
+      this.refreshPage()
+      this.handlePagingList()
+      this.$emit('changeShowCount', [this.count, this.page])
     },
     /**
      * @method currentPageChange 当前显示页数改变
@@ -251,52 +243,52 @@ export default {
      * @param {String} index 数组下标
      */
     currentPageChange(value, index) {
-      if (value == "...") {
-        let first = this.pagingList.indexOf(value);
-        let second = this.pagingList.lastIndexOf(value);
+      if (value == '...') {
+        let first = this.pagingList.indexOf(value)
+        let second = this.pagingList.lastIndexOf(value)
         if (first == second && index == this.pagingList.length - 2) {
-          this.page = this.page + 5;
+          this.page = this.page + 5
         } else if (first != second && index == first) {
-          this.page = this.page - 5 < 0 ? 1 : this.page - 5;
+          this.page = this.page - 5 < 0 ? 1 : this.page - 5
         } else if (first == second && index == 1) {
-          this.page = this.page - 5 < 0 ? 1 : this.page - 5;
+          this.page = this.page - 5 < 0 ? 1 : this.page - 5
         } else {
-          this.page = this.page + 5;
+          this.page = this.page + 5
         }
       } else {
-        this.page = this.pagingList[index];
+        this.page = this.pagingList[index]
       }
-      this.handlePagingList();
-      this.isStart = false;
-      this.isEnd = false;
-      this.lastShowCount = this.count * (this.page - 1) + 1;
+      this.handlePagingList()
+      this.isStart = false
+      this.isEnd = false
+      this.lastShowCount = this.count * (this.page - 1) + 1
       if (this.page == 1) {
-        this.isStart = true;
+        this.isStart = true
       }
       if (this.page == this.pageTotal) {
-        this.isEnd = true;
+        this.isEnd = true
       }
 
-      this.$emit("currentPageChange", this.page);
+      this.$emit('currentPageChange', this.page)
     },
     /**
      * @method jumperPage 分页跳转
      * @param {*} value 跳转分页
      */
     jumperPage(value) {
-      this.page = value;
-      this.handlePagingList();
-      this.isStart = false;
-      this.isEnd = false;
-      this.lastShowCount = this.count * (this.page - 1) + 1;
+      this.page = value
+      this.handlePagingList()
+      this.isStart = false
+      this.isEnd = false
+      this.lastShowCount = this.count * (this.page - 1) + 1
       if (this.page == 1) {
-        this.isStart = true;
+        this.isStart = true
       }
       if (this.page == this.pageTotal) {
-        this.isEnd = true;
+        this.isEnd = true
       }
 
-      this.$emit("currentPageChange", this.page);
+      this.$emit('currentPageChange', this.page)
     },
     /**
      * @method calculatePageTotal 计算分页总数
@@ -304,27 +296,27 @@ export default {
      * @param {Number} totalCount 总数
      */
     calculatePageTotal(count, totalCount) {
-      let remainder = totalCount % count == 0 ? 0 : 1;
-      let pageCount = Math.trunc(totalCount / count) + remainder;
+      let remainder = totalCount % count == 0 ? 0 : 1
+      let pageCount = Math.trunc(totalCount / count) + remainder
 
-      return pageCount;
+      return pageCount
     },
     /**
      * @method refreshPage 当改变count显示数量时，刷新所在页数
      */
     refreshPage() {
-      this.page = Math.ceil(this.lastShowCount / this.totalCount);
+      this.page = Math.ceil(this.lastShowCount / this.totalCount)
     },
   },
   watch: {
     totalCount: (newV, oldV) => {
-      this.pageTotal = this.calculatePageTotal(this.count, newV);
+      this.pageTotal = this.calculatePageTotal(this.count, newV)
       if (this.pageTotal > 1) {
-        this.isEnd = false;
+        this.isEnd = false
       }
     },
   },
-};
+}
 </script>
 
 <style></style>

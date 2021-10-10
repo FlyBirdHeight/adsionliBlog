@@ -2,6 +2,13 @@
  * @class MatchPattern 模式匹配类
  */
 class MatchPattern {
+    constructor(){
+        this.specialChar = {
+            tilt: '/\*.+\*/gi',
+            bold: '/\*{2}.+\*{2}/gi',
+            underline: '//gi'
+        }
+    }
     /**
      * @method matchLineFeed 匹配空白行
      * @param {*} value 
@@ -44,7 +51,7 @@ class MatchPattern {
      * @param {String} value 
      */
     matchSpecialChar(value){
-
+       
     }
 
     /**
@@ -71,3 +78,5 @@ class MatchPattern {
         return returnValue;
     }
 }
+
+export default MatchPattern

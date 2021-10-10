@@ -1,9 +1,9 @@
-import MatchingPattern from "./utils/matching_pattern"
+import MatchPattern from "./utils/matching_pattern"
 class Analysis {
     constructor() {
         this.handleContent = undefined;
         this.axios = require("axios");
-        this.matchingPattern = new MatchingPattern();
+        this.matchPattern = new MatchPattern();
     }
     /**
      * @method setHandleContent 设置待处理内容

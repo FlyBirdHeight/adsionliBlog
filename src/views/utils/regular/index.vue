@@ -302,7 +302,7 @@
       <div class="code">
         <p class="code_font">let value01 = "你好，中国！ hello China!"</p>
         <p class="note">//匹配中文字符</p>
-        <p class="code_font">value01.match(/\p{Han}/gu)</p>
+        <p class="code_font">value01.match(/\p{sc=Han}/gu)</p>
         <p class="note">//匹配字母</p>
         <p class="code_font">value01.match(/\p{L}/gu)</p>
         <p class="note">//匹配小写字母与大写字母</p>
@@ -313,6 +313,94 @@
         <p class="code_font">......</p>
       </div>
     </div>
+    <el-divider></el-divider>
+    <div class="mt-10">
+      <h3>RegExp类中的lastIndex静态属性与exec方法以及sticky属性的说明</h3>
+      <div class="paragraph">
+        <p>
+          1. 在RegExp类中，lastIndex这个静态属性是用来记录当使用RegExp进行正则匹配时，设置从第几位开始进行匹配，
+          当匹配成功时，<font class="font_emphasize"
+            >lastIndex属性会自动变更为匹配成功的那个字符串的结束位置并进行变更。</font
+          >
+          <font class="font_emphasize">如果匹配失败，lastIndex属性 会变为0。</font>
+        </p>
+        <p>
+          2. exec方法实际就和String类下的match方法是类似的，返回的参数的形式也是
+        </p>
+        <div class="code">
+          <p class="code_font">[1.匹配的字符 2.所在下标 3.原字符串] => ["u", index: , input: , groups: ]</p>
+          <p class="code_font">
+            但是，当使用g修正符是，其返回的是类似： ["a", "d", "s", "i",
+            "o"]的形式，就和单一匹配时完全不同，无法携带全部信息，这是就需要下面的处理了
+          </p>
+        </div>
+        <p>
+          但是exec方法与match方法之间不同在于一个是RegExp类下的，一个是String类下的。
+          在RegExp类下，则可以通过配合lastIndex这个属性，来循环出每一个符合匹配要求的。代码如下：
+        </p>
+        <div class="code">
+          <p class="code_font">let str = "adsionli";</p>
+          <p class="code_font">let reg = new RegExp('/\\w/');</p>
+          <p class="note">//当无匹配项时，其返回的是Null，所以可以自动停下来</p>
+          <p class="code_font">while(res = reg.exec(str)){</p>
+          <p class="code_font tab_1">console.log(res)</p>
+          <p class="code_font">}</p>
+        </div>
+        <p>
+          3. sticky属性说明，其代表的是修正符y，反映了搜索是否具有粘性（ 仅从正则表达式的 lastIndex 属性表示的索引处搜索
+          ）, 这个属性就是非常依赖于lastIndex的一个属性。
+          sticky属性在匹配大文本的时候可以提高效率，我们可以通过通过y修正符的设置， 来提升效率，<font
+            class="font_emphasize"
+            >因为他不会像g修正符那样去全部匹配，他只会在匹配成功一次之后就会停下来，节省了匹配时间。</font
+          >
+        </p>
+        <div class="code">
+          <p class="code_font">const str1 = 'table football';</p>
+          <p class="code_font">const regex1 = new RegExp('foo', 'y');</p>
+          <p class="code_font">regex1.lastIndex = 6;</p>
+          <p class="note">//这里返回的是true, 但是lastIndex会变为9</p>
+          <p class="code_font">console.log(regex1.test(str1));</p>
+          <p class="note">//这里返回的就是false了，因为他匹配的开始时第9位，就无法找到匹配项了</p>
+          <p class="code_font">console.log(regex1.test(str1));</p>
+        </div>
+      </div>
+    </div>
+    <el-divider></el-divider>
+    <div class="mt_10">
+      <h3>原子表知识的拓展：区间匹配，排除匹配</h3>
+      <div class="summary">
+        <span>
+          在原子表中，如果是在原子表内部的内容，其与不在原子表中的表达是不一样的，比如说[()]、[^]等，
+          ()在原子表中只是普通的括号，但是在外面则是原子组的意思；同理^在原子表中是除了的意思，在外面是起始边界符
+        </span>
+        <br>
+        <span class="font_emphasize">
+          原子表是不会去解析字符的，所以在使用的时候需要注意！
+        </span>
+      </div>
+      <div class="paragraph">
+        <p>1. 区间匹配(代码示例)：</p>
+        <div class="code">
+          <p class="code_font">let str = 'adsionli';</p>
+          <p class="code_font">str.match(/[a-z]+/gi)</p>
+          <p class="code_font">str.match(/[0-9]+/gi)</p>
+          <p class="code_font">str.match(/^[a-z]\w+/gi)</p>
+          <p class="code_font">等等...</p>
+        </div>
+        <p>
+          2. 排除匹配, 字面意思，就是使用原子表时，原子表内容是我们所不需要的，这个时候原子表中的<font class="emphasize">^</font>
+          这个符号就不表示起始边界符，而是表示排除的意思，代码示例如下：
+        </p>
+        <div class="code">
+          <p class="code_font">let str = "adsionli: 1996-02-22";</p>
+          <p class="note">//这里输出的就是adsionli</p>
+          <p class="code_font">str.match(/[^\d\p{P}]/gui);</p>
+          <p class="note">//不使用原子表的排除实现方式</p>
+          <p class="code_font">str.match(/\p{L}/gui);</p>
+        </div>
+      </div>
+    </div>
+    <el-divider></el-divider>
   </div>
 </template>
 

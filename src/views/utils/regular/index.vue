@@ -401,6 +401,72 @@
       </div>
     </div>
     <el-divider></el-divider>
+    <div class="mt_10">
+      <h3>原子组的知识拓展</h3>
+    </div>
+    <el-divider></el-divider>
+    <div class="mt_10">
+      <h3>断言匹配符：?=、?<=、?!、?<!</h3>
+      <div class="summary">
+        <span>断言匹配符相当于代码中的if语句，可以用来预匹配字符串，但是这四个断言匹配符的功能各不相同</span>
+      </div>
+      <div class="paragraph">
+        <ul class="list_label">
+          <li>
+            <p class="label_title">?=负向等匹配符</p>
+            <div class="label_body">
+              <p>exp1(?=exp2)：查找 exp2 后面的 exp1。</p>
+              <p>相当于：if(exp1 && exp2)</p>
+            </div>
+          </li>
+          <li>
+            <p class="label_title">?<=正向等匹配符</p>
+            <div class="label_body">
+              <p>exp1(?=exp2)：查找 exp2 后面的 exp1。</p>
+              <p>相当于：if(exp2 && exp1)</p>
+            </div>
+          </li>
+          <li>
+            <p class="label_title">?!负向非匹配符</p>
+            <div class="label_body">
+              <p>exp1(?!exp2)：查找后面不是 exp2 的 exp1。</p>
+              <p>相当于：if(exp1 && !exp2)</p>
+            </div>
+          </li>
+          <li>
+            <p class="label_title">?<!正向非匹配符</p>
+            <div class="label_body">
+              <p>(?<!exp2)exp1：查找前面不是 exp2 的 exp1。</p>
+              <p>相当于：if(!exp2 && exp1)</p>
+            </div>
+          </li>
+        </ul>
+        <p>代码示例：</p>
+      </div>
+        <div class="code">
+          <p class="code_font">let str = "http://adsionli.com"</p>
+          <p class="code_font">let reg1 = new RegExp('/^(?<=http(:|s:))\/{2}.*/gi')</p>
+          <p class="code_font">reg1.exec(str)</p>
+          <p class="code_font">let str1 = "adsionli: name, 03-11: birthday"</p>
+          <p class="code_font">let reg2 = new RegExp('/.*(?=:\\s*(name|birthday))/gi')</p>
+          <p class="code_font">reg2.test(str1)</p>
+          <p class="note">//断言处理手机号码的模糊,模糊中间四位</p>
+          <p class="code_font">let phone = "18521111021"</p>
+          <p class="code_font">phone.replace(/(?<=\d{4}\d{4}(?=\d{3}))/gi , v => {</p>
+          <p class="code_font tab_1">return "*".repeat(4)0;</p>
+          <p class="code_font">})</p>
+          <p class="note">//字符串中在开头位置后不可以出现adsionli</p>
+          <p class="code_font">let str2 = "i am adsionl !"</p>
+          <p class="code_font">let reg3 = new RegExp('/^(?!.*adsionli.*).*/i')</p>
+          <p class="code_font">reg3.test(str2)</p>
+          <p class="note">//处理网址</p>
+          <p class="code_font">let str3 = [https://blog.adsionli.com, https://image.adsionli.com, https://adsionli.com]</p>
+          <p class="code_font">str3.replace(/https:\/\/([a-z]+)?(?<!blog)\..+?(?=\/)/gi, v => {</p>
+          <p class="code_font tab_1">return "https://blog.adsionli.com"</p>
+          <p class="code_font">})</p>
+        </div>
+    </div>
+    <el-divider></el-divider>
   </div>
 </template>
 
@@ -550,4 +616,6 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss">
+
+</style>

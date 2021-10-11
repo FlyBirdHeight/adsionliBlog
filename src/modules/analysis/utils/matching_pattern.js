@@ -4,9 +4,13 @@
 class MatchPattern {
     constructor(){
         this.specialChar = {
-            tilt: '/\*.+\*/gi',
-            bold: '/\*{2}.+\*{2}/gi',
-            underline: '//gi'
+            tilt: '/\*.+\*/yi',
+            bold: '/\*{2}.+\*{2}/yi',
+            underline: '/<u>.+<\/u>/yi',
+            inlineCode: '/`.+`/yi',
+            deleteLine:  '/~{2}.+~{2}/yi',
+            highlight: '/={2}.+={2}/yi',
+            hyperlinks: '/\[.+\]\((?<=http\\S{0, 255})[#>*+-]\)/yi'
         }
     }
     /**

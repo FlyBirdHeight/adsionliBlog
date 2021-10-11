@@ -403,6 +403,45 @@
     <el-divider></el-divider>
     <div class="mt_10">
       <h3>原子组的知识拓展</h3>
+      <div class="summary">
+        <span>
+          原子组的表示是(), 在一个正则匹配式子中，一个被原子组包裹的内容，可以在后面使用\1,\2,\3,\4...进行获取到，
+         <font class="font_emphasize"> 
+            但是这里要注意一下，一个原子组对应一个\1,只有当你有足够的原子组进行包裹的时候，才会生成对应的快速使用的编号，
+            且这个编号从1开始进行编号
+          </font>
+        </span>
+      </div>
+      <div class="paragraph">
+        <ul class="list_label">
+          <li>
+            <p class="label_title">原子组返回使用, 代码示例如下：</p>
+            <div class="code">
+              <p class="note">//邮箱匹配示例(一般模式邮箱)</p>
+              <p class="code_font">let str = "adsionli@foxmail.com"</p>
+              <p class="code_font">let reg = '/[\w-]+@([\w]+\.)+(com|org|cn|cc|net|top)/gi'</p>
+              <p class="code_font">str.match(reg)</p>
+              <p class="note">//标签匹配</p>
+              <p class="code_font">let t = "{{atomHt1}}"</p>
+              <p class="code_font">let reg1 = {{regGroup1}}</p>
+              <p class="code_font">t.match(reg1)</p>
+            </div>
+          </li>
+          <li>
+            <p class="label_title">原子组的替换操作</p>
+            <div class="label_body">
+              <p>在字符串进行replace的操作时，可以直接使用$1,$2,$3...的形式来进行快速的替换，其就对应原子组的框定的编号=> \1,\2,\3...的匹配项！</p>
+              <p>代码示例:</p>
+              <div class="code">
+                <p class="code_font">let str = "{{atomHt2}}"</p>
+                <p class="code_font">let reg = '{{regGroup2}}'</p>
+                <p class="code_font">str.replace(reg, '{{atomHt3}}')</p>
+                <p class="note">此时这里输出的就是h1,h3都会被替换成p标签</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
     <el-divider></el-divider>
     <div class="mt_10">
@@ -471,126 +510,198 @@
 </template>
 
 <script>
-import TreeList from '@/components/utils/tree_list.vue'
-import RegularChar from '@/data/regular_char.json'
+import TreeList from "@/components/utils/tree_list.vue";
+import RegularChar from "@/data/regular_char.json";
 export default {
   data() {
     return {
-      changeValue: '',
-      atomicValue: '',
-      esacpe: ['', ''],
-      borderValue: '',
+      changeValue: "",
+      atomicValue: "",
+      esacpe: ["", ""],
+      borderValue: "",
       numberSpaceValue: [],
-      judgeInputValue: '',
+      judgeInputValue: "",
       pointValue: [],
-      moreParagraphValue: '',
+      moreParagraphValue: "",
       structure: RegularChar.structure,
       treeData: RegularChar.data,
-    }
+      atomHt1: "<h1>123<h1>",
+      regGroup1: '/<(h[1-6])>[\S\s]+<\/'+ '\\' + '\\1>/gi',
+      atomHt2: `
+        <h1>adsionli</h1>
+        <span>code is so fun</span>
+        <h3>love coding</h3>
+      `,
+      atomHt3: `<p>$2</p`,
+      regGroup2: '/<(h[1-6])([\s\S]*)<\/' + '\\' + '\\1>' + '/gi'
+    };
   },
   methods: {
     handleStringHighLight() {
-      this.resetHighLight()
-      let con = prompt('请输入需要替换的内容，可用正则')
-      let reg = new RegExp(con, 'g')
-      let data = document.getElementById('string_high_light')
+      this.resetHighLight();
+      let con = prompt("请输入需要替换的内容，可用正则");
+      let reg = new RegExp(con, "g");
+      let data = document.getElementById("string_high_light");
       data.innerHTML = data.innerHTML.replace(reg, (search) => {
-        return `<span style="color:red">${search}</span>`
-      })
+        return `<span style="color:red">${search}</span>`;
+      });
     },
     resetHighLight() {
-      let data = document.getElementById('string_high_light')
-      data.innerHTML = 'adsionli1996'
+      let data = document.getElementById("string_high_light");
+      data.innerHTML = "adsionli1996";
     },
     /**
      * @method handleChange 处理选择符
      */
     handleChange() {
-      let tel = '021-88888888'
-      let regular = /(010|021)\-\d{7,8}/.test(tel)
-      this.changeValue = regular ? '匹配' : '不匹配'
+      let tel = "021-88888888";
+      let regular = /(010|021)\-\d{7,8}/.test(tel);
+      this.changeValue = regular ? "匹配" : "不匹配";
     },
     /**
      * @method handleAtom 处理原子组与原子表
      */
     handleAtom() {
-      this.atomicValue = ''
-      let handle = '1996031119960422'
-      let result01 = handle.match(/[199603]/g)
-      let result02 = handle.match(/(1996|03)/g)
-      this.atomicValue += `atom group:${result01.join(',')}     atom list: ${result02.join(',')}`
+      this.atomicValue = "";
+      let handle = "1996031119960422";
+      let result01 = handle.match(/[199603]/g);
+      let result02 = handle.match(/(1996|03)/g);
+      this.atomicValue += `atom group:${result01.join(
+        ","
+      )}     atom list: ${result02.join(",")}`;
     },
     /**
      * @method handleEsacpe 处理转义字符
      */
     handleEsacpe() {
-      let value = 233.345
-      console.log(/\d+\.\d+/.test(value))
-      let esacpeRule = '\\d+\\.\\d+'
-      this.esacpe.splice(0, 1, '\d+\.\d+ 正确转义: \\d+\\.\\d+')
-      let reg = new RegExp(esacpeRule)
-      console.log(reg.test(value))
-      let urlValue = 'http:blog.adsionli.com'
-      let esacpeRuleUrl = 'https?\\:\\w+\\.\\w+\\.\\w+'
-      this.esacpe.splice(1, 1, 'https?\:\w+\.\w+\.\w+ 正确转义: https?\\:\\w+\\.\\w+\\.\\w+')
-      let regUrl = new RegExp(esacpeRuleUrl)
-      console.log(regUrl.test(urlValue))
+      let value = 233.345;
+      console.log(/\d+\.\d+/.test(value));
+      let esacpeRule = "\\d+\\.\\d+";
+      this.esacpe.splice(0, 1, "d+.d+ 正确转义: \\d+\\.\\d+");
+      let reg = new RegExp(esacpeRule);
+      console.log(reg.test(value));
+      let urlValue = "http:blog.adsionli.com";
+      let esacpeRuleUrl = "https?\\:\\w+\\.\\w+\\.\\w+";
+      this.esacpe.splice(
+        1,
+        1,
+        "https?:w+.w+.w+ 正确转义: https?\\:\\w+\\.\\w+\\.\\w+"
+      );
+      let regUrl = new RegExp(esacpeRuleUrl);
+      console.log(regUrl.test(urlValue));
     },
     /**
      * @method handleBorder 处理边界字符
      */
     handleBorder() {
-      this.borderValue = ''
-      let value = '1996adsionli'
-      let rule = '^\\d$'
-      let regular = new RegExp(rule, 'g')
-      this.borderValue += 'test结果:' + (regular.test(value) ? '匹配' : '不匹配')
-      this.borderValue += '   match结果:' + value.match(/^\d$/)
+      this.borderValue = "";
+      let value = "1996adsionli";
+      let rule = "^\\d$";
+      let regular = new RegExp(rule, "g");
+      this.borderValue +=
+        "test结果:" + (regular.test(value) ? "匹配" : "不匹配");
+      this.borderValue += "   match结果:" + value.match(/^\d$/);
     },
     /**
      * @method handleNumberSpace 处理数字和空白元字符
      */
     handleNumberSpace() {
-      let value01 = '     adsionli:19960311 猪哥:19960422       '
-      value01 = value01.replace(/(^\s*|\s*$)/g, '')
-      this.numberSpaceValue.splice(0, 1, `去除字符串前后的空格: ${value01}`)
-      this.numberSpaceValue.splice(1, 1, `去除字符串前后的空格后字符串内的空格数量: ${value01.match(/\s/g).length}`)
-      let rule01 = '\\d\\d\\d\\d\\d\\d\\d\\d'
-      let regular01 = new RegExp(rule01)
-      this.numberSpaceValue.splice(2, 1, `规则1：${regular01.test(value01) ? '匹配' : '不匹配'}`)
+      let value01 = "     adsionli:19960311 猪哥:19960422       ";
+      value01 = value01.replace(/(^\s*|\s*$)/g, "");
+      this.numberSpaceValue.splice(0, 1, `去除字符串前后的空格: ${value01}`);
+      this.numberSpaceValue.splice(
+        1,
+        1,
+        `去除字符串前后的空格后字符串内的空格数量: ${
+          value01.match(/\s/g).length
+        }`
+      );
+      let rule01 = "\\d\\d\\d\\d\\d\\d\\d\\d";
+      let regular01 = new RegExp(rule01);
+      this.numberSpaceValue.splice(
+        2,
+        1,
+        `规则1：${regular01.test(value01) ? "匹配" : "不匹配"}`
+      );
       this.numberSpaceValue.splice(
         3,
         1,
-        `字符串match /${rule01}/g的结果：${value01.match(/\d\d\d\d\d\d\d\d/g).join(',')}`
-      )
-      this.numberSpaceValue.splice(4, 1, `字符串match /\\D/g的结果：${value01.match(/\D/g).join(',')}`)
-      let rule02 = '\\s'
-      let rule03 = '\\S'
-      let regular02 = new RegExp(rule02, 'g')
-      let regular03 = new RegExp(rule03, 'g')
-      this.numberSpaceValue.splice(5, 1, `规则2：${regular02.test(value01) ? '匹配' : '不匹配'}`)
-      this.numberSpaceValue.splice(6, 1, `规则3：${regular03.test(value01) ? '匹配' : '不匹配'}`)
-      this.numberSpaceValue.splice(7, 1, `字符串match /\\s/g的结果：${value01.match(/\s/g).join(',')}`)
-      this.numberSpaceValue.splice(8, 1, `字符串match /\\S/g的结果：${value01.match(/\S/g).join(',')}`)
-      this.numberSpaceValue.splice(9, 1, `字符串match /[^:\\s\\d]+/g的结果：${value01.match(/[^:\s\d]+/g).join(',')}`)
-      this.numberSpaceValue.splice(10, 1, `字符串中空格的个数: ${value01.match(/\s/g).length}`)
+        `字符串match /${rule01}/g的结果：${value01
+          .match(/\d\d\d\d\d\d\d\d/g)
+          .join(",")}`
+      );
+      this.numberSpaceValue.splice(
+        4,
+        1,
+        `字符串match /\\D/g的结果：${value01.match(/\D/g).join(",")}`
+      );
+      let rule02 = "\\s";
+      let rule03 = "\\S";
+      let regular02 = new RegExp(rule02, "g");
+      let regular03 = new RegExp(rule03, "g");
+      this.numberSpaceValue.splice(
+        5,
+        1,
+        `规则2：${regular02.test(value01) ? "匹配" : "不匹配"}`
+      );
+      this.numberSpaceValue.splice(
+        6,
+        1,
+        `规则3：${regular03.test(value01) ? "匹配" : "不匹配"}`
+      );
+      this.numberSpaceValue.splice(
+        7,
+        1,
+        `字符串match /\\s/g的结果：${value01.match(/\s/g).join(",")}`
+      );
+      this.numberSpaceValue.splice(
+        8,
+        1,
+        `字符串match /\\S/g的结果：${value01.match(/\S/g).join(",")}`
+      );
+      this.numberSpaceValue.splice(
+        9,
+        1,
+        `字符串match /[^:\\s\\d]+/g的结果：${value01
+          .match(/[^:\s\d]+/g)
+          .join(",")}`
+      );
+      this.numberSpaceValue.splice(
+        10,
+        1,
+        `字符串中空格的个数: ${value01.match(/\s/g).length}`
+      );
     },
     /**
      * @method handleChar 处理w元字符
      */
     handleChar() {
-      let username = prompt('请输入用户名(必须字母开头且最多10位字符)')
+      let username = prompt("请输入用户名(必须字母开头且最多10位字符)");
       //i标识不区分大小写
-      this.judgeInputValue = /^[a-z]\w{4,9}$/i.test(username) ? '符合' : '不符合'
+      this.judgeInputValue = /^[a-z]\w{4,9}$/i.test(username)
+        ? "符合"
+        : "不符合";
     },
     /**
      * @method handlePoint 处理点元字符
      */
     handlePoint() {
-      let value = 'blog.adsionli.com'
-      this.pointValue.splice(0, 1, `匹配全部字符: ${value.match(/.*/g).join(',')}`)
-      this.pointValue.splice(1, 1, `字符串中.的数量: ${value.match(/\./g).length}`)
-      this.pointValue.splice(2, 1, `简单的网址匹配: ${/^\w+\.\w+\.\w+$/.test(value) ? '匹配' : '不匹配'}`)
+      let value = "blog.adsionli.com";
+      this.pointValue.splice(
+        0,
+        1,
+        `匹配全部字符: ${value.match(/.*/g).join(",")}`
+      );
+      this.pointValue.splice(
+        1,
+        1,
+        `字符串中.的数量: ${value.match(/\./g).length}`
+      );
+      this.pointValue.splice(
+        2,
+        1,
+        `简单的网址匹配: ${/^\w+\.\w+\.\w+$/.test(value) ? "匹配" : "不匹配"}`
+      );
     },
     /**
      * @method handleMoreParagraphValue 处理多行匹配修正符
@@ -601,21 +712,20 @@ export default {
             #2 php,300元 #
             #3 adsionli # shirley
             #4 node.js,200元 #
-        `
+        `;
       let handleData = value.match(/^\s*#\d+\s.+\s+#\s*$/gm).map((val) => {
-        let handleVal = val.replace(/\s*#\d+\s/, '').replace(/\s+#\s*$/, '')
-        ;[name, value] = handleVal.split(',')
-        return { name, value }
-      })
-      this.moreParagraphValue = JSON.stringify(handleData, null, 2)
+        let handleVal = val.replace(/\s*#\d+\s/, "").replace(/\s+#\s*$/, "");
+        [name, value] = handleVal.split(",");
+        return { name, value };
+      });
+      this.moreParagraphValue = JSON.stringify(handleData, null, 2);
     },
   },
   components: {
     TreeList,
   },
-}
+};
 </script>
 
 <style lang="scss">
-
 </style>

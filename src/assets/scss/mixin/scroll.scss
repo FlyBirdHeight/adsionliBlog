@@ -6,6 +6,7 @@
       width: 5px;
       /*高宽分别对应横竖滚动条的尺寸*/
       height: 5px;
+      display: none;
     }
   } @else if $overflowType == y {
     overflow-y: scroll;

@@ -440,6 +440,26 @@
               </div>
             </div>
           </li>
+          <li>
+            <p class="label_title">原子表的嵌套分组使用分析及原子表嵌套不记录分组</p>
+            <div class="label_body">
+              <p>原子表是可以嵌套使用的，比如说(\w(\d(\s)))，这就是一个原子表的嵌套，那么最外层的原子表是: \w(\d(\s))，次外层的原子表: \d(\s)，最内层的是: \s。</p>
+              <p>这就是原子表的嵌套表示方法。</p>
+              <p>原子表嵌套不记录分组则需要用到的是<font class="font_emphasize">?:</font>这个标识符</p>
+              <p>示例分析如下:</p>
+            </div>
+            <div class="code">
+              <p class="note">//提取域名数据</p>
+              <p class="code_font">let str = "{{atomHt4}}"</p>
+              <p class="code_font">let reg =new RegExp('{{regGroup3}}')</p>
+              <p class="code_font">while(res = reg.exec(str)){</p>
+              <p class="code_font tab_1">console.log(res)</p>
+              <p class="code_font">}</p>
+            </div>
+            <div class="label_body">
+              <p>通过输出我们可以看到\2,\3都没有了，只有\1还是存在的，且输出的是后面的网址就是我们所需要的部分，这就是<font class="font_emphasize">?:</font>的作用，能够不记录分组</p>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -533,7 +553,13 @@ export default {
         <h3>love coding</h3>
       `,
       atomHt3: `<p>$2</p`,
-      regGroup2: '/<(h[1-6])([\s\S]*)<\/' + '\\' + '\\1>' + '/gi'
+      regGroup2: '/<(h[1-6])([\s\S]*)<\/' + '\\' + '\\1>' + '/gi',
+      atomHt4: `
+        https://blog.adsionli.com
+        http://image.adsionli.com
+        http://adsionli.com
+      `,
+      regGroup3: '/https?:\/\/((?:\\w+\.)?\w+\.(?:com|org|cn|top))/gi'
     };
   },
   methods: {

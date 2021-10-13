@@ -411,6 +411,9 @@
             且这个编号从1开始进行编号
           </font>
         </span>
+        <span>
+          在原子组中不会像原子表中将所有特殊字符变为普通字符，其依然是特殊字符，需要使用转义才可以表达普通字符！
+        </span>
       </div>
       <div class="paragraph">
         <ul class="list_label">
@@ -436,7 +439,11 @@
                 <p class="code_font">let str = "{{atomHt2}}"</p>
                 <p class="code_font">let reg = '{{regGroup2}}'</p>
                 <p class="code_font">str.replace(reg, '{{atomHt3}}')</p>
-                <p class="note">此时这里输出的就是h1,h3都会被替换成p标签</p>
+                <p class="note">//此时这里输出的就是h1,h3都会被替换成p标签</p>
+                <p class="note">//这里最终会输出的就是{{atomHt5}}</p>
+                <p class="code_font">let ht = "**加粗内容**"</p>
+                <p class="code_font">let reg = "/(\*{2}).*\1/gi"</p>
+                <p class="code_font">ht.replace(reg, "{{atomHt5}}")</p>
               </div>
             </div>
           </li>
@@ -469,63 +476,128 @@
       <div class="summary">
         <span>断言匹配符相当于代码中的if语句，可以用来预匹配字符串，但是这四个断言匹配符的功能各不相同</span>
       </div>
-      <div class="paragraph">
-        <ul class="list_label">
-          <li>
-            <p class="label_title">?=负向等匹配符</p>
-            <div class="label_body">
-              <p>exp1(?=exp2)：查找 exp2 后面的 exp1。</p>
-              <p>相当于：if(exp1 && exp2)</p>
-            </div>
-          </li>
-          <li>
-            <p class="label_title">?<=正向等匹配符</p>
-            <div class="label_body">
-              <p>exp1(?=exp2)：查找 exp2 后面的 exp1。</p>
-              <p>相当于：if(exp2 && exp1)</p>
-            </div>
-          </li>
-          <li>
-            <p class="label_title">?!负向非匹配符</p>
-            <div class="label_body">
-              <p>exp1(?!exp2)：查找后面不是 exp2 的 exp1。</p>
-              <p>相当于：if(exp1 && !exp2)</p>
-            </div>
-          </li>
-          <li>
-            <p class="label_title">?<!正向非匹配符</p>
-            <div class="label_body">
-              <p>(?<!exp2)exp1：查找前面不是 exp2 的 exp1。</p>
-              <p>相当于：if(!exp2 && exp1)</p>
-            </div>
-          </li>
-        </ul>
-        <p>代码示例：</p>
+      <ul class="list_label">
+        <li>
+          <p class="label_title">?=负向等匹配符</p>
+          <div class="label_body">
+            <p>exp1(?=exp2)：查找 exp2 后面的 exp1。</p>
+            <p>相当于：if(exp1 && exp2)</p>
+          </div>
+        </li>
+        <li>
+          <p class="label_title">?<=正向等匹配符</p>
+          <div class="label_body">
+            <p>exp1(?=exp2)：查找 exp2 后面的 exp1。</p>
+            <p>相当于：if(exp2 && exp1)</p>
+          </div>
+        </li>
+        <li>
+          <p class="label_title">?!负向非匹配符</p>
+          <div class="label_body">
+            <p>exp1(?!exp2)：查找后面不是 exp2 的 exp1。</p>
+            <p>相当于：if(exp1 && !exp2)</p>
+          </div>
+        </li>
+        <li>
+          <p class="label_title">?<!正向非匹配符</p>
+          <div class="label_body">
+            <p>(?<!exp2)exp1：查找前面不是 exp2 的 exp1。</p>
+            <p>相当于：if(!exp2 && exp1)</p>
+          </div>
+        </li>
+      </ul>
+      <p>代码示例：</p>
+      <div class="code">
+        <p class="code_font">let str = "http://adsionli.com"</p>
+        <p class="code_font">let reg1 = new RegExp('/^(?<=http(:|s:))\/{2}.*/gi')</p>
+        <p class="code_font">reg1.exec(str)</p>
+        <p class="code_font">let str1 = "adsionli: name, 03-11: birthday"</p>
+        <p class="code_font">let reg2 = new RegExp('/.*(?=:\\s*(name|birthday))/gi')</p>
+        <p class="code_font">reg2.test(str1)</p>
+        <p class="note">//断言处理手机号码的模糊,模糊中间四位</p>
+        <p class="code_font">let phone = "18521111021"</p>
+        <p class="code_font">phone.replace(/(?<=\d{4}\d{4}(?=\d{3}))/gi , v => {</p>
+        <p class="code_font tab_1">return "*".repeat(4)0;</p>
+        <p class="code_font">})</p>
+        <p class="note">//字符串中在开头位置后不可以出现adsionli</p>
+        <p class="code_font">let str2 = "i am adsionl !"</p>
+        <p class="code_font">let reg3 = new RegExp('/^(?!.*adsionli.*).*/i')</p>
+        <p class="code_font">reg3.test(str2)</p>
+        <p class="note">//处理网址</p>
+        <p class="code_font">let str3 = [https://blog.adsionli.com, https://image.adsionli.com, https://adsionli.com]</p>
+        <p class="code_font">str3.replace(/https:\/\/([a-z]+)?(?<!blog)\..+?(?=\/)/gi, v => {</p>
+        <p class="code_font tab_1">return "https://blog.adsionli.com"</p>
+        <p class="code_font">})</p>
       </div>
-        <div class="code">
-          <p class="code_font">let str = "http://adsionli.com"</p>
-          <p class="code_font">let reg1 = new RegExp('/^(?<=http(:|s:))\/{2}.*/gi')</p>
-          <p class="code_font">reg1.exec(str)</p>
-          <p class="code_font">let str1 = "adsionli: name, 03-11: birthday"</p>
-          <p class="code_font">let reg2 = new RegExp('/.*(?=:\\s*(name|birthday))/gi')</p>
-          <p class="code_font">reg2.test(str1)</p>
-          <p class="note">//断言处理手机号码的模糊,模糊中间四位</p>
-          <p class="code_font">let phone = "18521111021"</p>
-          <p class="code_font">phone.replace(/(?<=\d{4}\d{4}(?=\d{3}))/gi , v => {</p>
-          <p class="code_font tab_1">return "*".repeat(4)0;</p>
-          <p class="code_font">})</p>
-          <p class="note">//字符串中在开头位置后不可以出现adsionli</p>
-          <p class="code_font">let str2 = "i am adsionl !"</p>
-          <p class="code_font">let reg3 = new RegExp('/^(?!.*adsionli.*).*/i')</p>
-          <p class="code_font">reg3.test(str2)</p>
-          <p class="note">//处理网址</p>
-          <p class="code_font">let str3 = [https://blog.adsionli.com, https://image.adsionli.com, https://adsionli.com]</p>
-          <p class="code_font">str3.replace(/https:\/\/([a-z]+)?(?<!blog)\..+?(?=\/)/gi, v => {</p>
-          <p class="code_font tab_1">return "https://blog.adsionli.com"</p>
-          <p class="code_font">})</p>
-        </div>
     </div>
     <el-divider></el-divider>
+    <div class="mt-10 mb-80">
+      <h3>正则使用的补充</h3>
+      <ul class="list_label">
+        <li>
+          <p class="label_title">多正则匹配规则的使用(不使用RegExp对象，使用Array的every)</p>
+          <div class="label_body">代码示例如下：</div>
+          <div class="code">
+            <p class="code_font">let password = "adsionli1996"</p>
+            <p class="code_font">let regList = [/[a-z0-9]{5,15}/, /[A-Z]+/, /[./-+=~]+/, /[0-9]+/]</p>
+            <p class="code_font">let status = regList.every(e => e.test(password))</p>
+            <p class="code_font">console.log(status)</p>
+          </div>
+        </li>
+        <li>
+          <p class="label_title">禁止贪婪 ?</p>
+          <div class="summary">
+            <span>?符号不仅仅具有只出现一次或0次的作用，当其配合着*,+,{}使用时还具有禁止贪婪的作用！</span>
+          </div>
+          <div class="label_body">
+            <p>(1) +?一起使用的时候，?会发挥禁止贪婪的作用，他会使匹配的内容仅仅限制在出现第一次的地方。虽然+本身是代表1-~，但是被?禁止贪婪了</p>
+            <p>(2) *?一起使用的时候，?会发挥禁止贪婪的作用，他会使匹配的内容仅仅限制在出现第零次的地方。虽然*本身是代表0-~，但是被?禁止贪婪了</p>
+            <p>(3) {}?一起使用的时候，?会发挥禁止贪婪的作用，他会使匹配的内容仅仅限制在花括号中最小的那个值那里。</p>
+          </div>
+        </li>
+        <li>
+          <p class="label_title">matchAll方法</p>
+          <div class="summary">
+            <span>matchAll方法可以将每一位匹配的元素都按照match输出的样子输出出来，但是在低版本中的浏览器中可能无法使用。</span>
+            <span>matchAll返回的是一个迭代器类，可以使用for进行循环！</span>
+          </div>
+          <div class="code">
+            <p class="note">//使用递归以及exec方法来模拟matchAll方法</p> 
+            <p class="note">//递归</p>
+            <p class="code_font">String.prototype.matchAll(reg){</p>
+            <p class="code_font tab_1">let res = this.match(reg);</p>
+            <p class="code_font tab_1">if(res){</p>
+            <p class="code_font tab_2">let str = this.replace(res[0], '^'.repeat(res[0.length]));</p>
+            <p class="code_font tab_2">match = str.matchAll(reg);</p>
+            <p class="code_font tab_2">return [res, ...match]</p>
+            <p class="code_font tab_1">}</p>
+            <p class="code_font">}</p>
+            <p class="note">//exec方法</p>
+            <p class="code_font">let str = "=adsionli=1996="</p>
+            <p class="code_font">let reg = new RegExp(/=/gi)</p>
+            <p class="code_font">let showList = [];</p>
+            <p class="code_font">while(res = reg.exec(str)){</p>
+            <p class="code_font tab_1">showList.push(res)</p>
+            <p class="code_font">}</p>
+          </div>
+        </li>
+        <li>
+          <p class="label_title">正则的别名使用</p>
+          <div class="label_body">
+            <p>代码示例</p>
+          </div>
+          <div class="code">
+            <p class="code_font">let reg = new RegExp(/<(a.*href=['"])({{atomHt6}}(http(s)?:\/\/)?(\w+\.)+(com|cn|org|top|xzy)+)['"]>[\s\S]+<\/a>/)</p>
+            <p class="code_font">let str = {{atomHt7}}</p>
+            <p class="code_font">str.match(reg, ${{atomHt8}})</p>
+          </div>
+          <div class="summary">
+            <span>这段代码可以看出：?{{atomHt9}},就是可以设置为正则的别名使用</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <el-divider>正则学习结束啦！如果有新的使用场景，会整理到对应的标签下，感谢学习</el-divider>
   </div>
 </template>
 
@@ -559,7 +631,12 @@ export default {
         http://image.adsionli.com
         http://adsionli.com
       `,
-      regGroup3: '/https?:\/\/((?:\\w+\.)?\w+\.(?:com|org|cn|top))/gi'
+      regGroup3: '/https?:\/\/((?:\\w+\.)?\w+\.(?:com|org|cn|top))/gi',
+      atomHt5: "<font style='font-weight:bolder'>$&<font>",
+      atomHt6: "?<url>",
+      atomHt7: "<a style='color:red' href='adsionli.com.cn'>adsionli blog</a>",
+      atomHt8: "?<url>",
+      atomHt9: "<name>"
     };
   },
   methods: {

@@ -1,0 +1,34 @@
+.highlight_char {
+  background-color: red;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 3px;
+  border-radius: 3px;
+}
+
+.bold_char {
+    font-weight: bolder;
+}
+
+.tilt_char {
+    font-style: italic;
+}
+
+.underline_char {
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.deleteline_char {
+    font-weight: 600;
+    color: #000;
+}
+
+.inlineCode_char {
+    background-color: #E3E4E4;
+    color: #8e8f8f;
+    font-weight: 600;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #f8f8f8;
+}

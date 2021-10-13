@@ -2,15 +2,15 @@
  * @class MatchPattern 模式匹配类
  */
 class MatchPattern {
-    constructor(){
+    constructor() {
         this.specialChar = {
-            tilt: '/\*.+\*/yi',
-            bold: '/\*{2}.+\*{2}/yi',
-            underline: '/<u>.+<\/u>/yi',
-            inlineCode: '/`.+`/yi',
-            deleteLine:  '/~{2}.+~{2}/yi',
-            highlight: '/={2}.+={2}/yi',
-            hyperlinks: '/\[.+\]\((?<=http\\S{0, 255})[#>*+-]\)/yi'
+            tilt: /\*(\S+)\*/gi,
+            bold: /\*{2}(\S+)\*{2}/gi,
+            underline: /<u>(\S+)<\/u>/gi,
+            inlineCode: /`(\S+)`/gi,
+            deleteLine: /~{2}(\S+)~{2}/gi,
+            highlight: /={2}(\S+)={2}/gi,
+            hyperlinks: /(\[(?<name>\s*\S+\s*)\]\((?<url>http?\S{0, 255}[#>*+-])\))/gi
         }
     }
     /**
@@ -37,13 +37,13 @@ class MatchPattern {
      */
     matchTitle(value) {
         value = this.deleteBlank(value);
-        let regular = new RegExp('/^#+/','gi');
-        if(regular.test(value)){
+        let regular = new RegExp('/^#+/', 'gi');
+        if (regular.test(value)) {
             return {
                 result: true,
                 count: value.match('/^#+/gi')
             }
-        }else {
+        } else {
             return {
                 result: false
             }
@@ -54,8 +54,47 @@ class MatchPattern {
      * @method matchSpecialChar 匹配特殊字符
      * @param {String} value 
      */
-    matchSpecialChar(value){
-       
+    matchSpecialChar(value) {
+        for (let key in this.specialChar) {
+            let reg = new RegExp(this.specialChar[key]);
+            if (reg.test(value)) {
+                if (key == 'hyperlinks') {
+                    value = value.replace(reg, this.handleSpecialChar('$<name>', key, '$<url>'));
+                } else {
+                    value = value.replace(reg, this.handleSpecialChar('$&', key))
+                }
+            }
+        }
+
+        return value;
+    }
+
+    /**
+     * @method handleSpecialChar 将特殊字符转为对应的html标签
+     * @param {*} value 插入检索值
+     * @param {*} type 类型
+     * @param {*} url 链接标签时的url
+     */
+    handleSpecialChar(value, type, url = '') {
+        console.log(value);
+        switch (type) {
+            case 'tilt':
+                return `<font class='tilt_char'>${value}</font>`
+            case 'bold':
+                return `<font class='underline_char'>${value}</font>`
+            case 'underline':
+                return `<font class='bold_char'>${value}</font>`
+            case 'inlineCode':
+                return `<span class='inlineCode_char'>${value}</span>`
+            case 'deleteLine':
+                return `<del class='deleteline_char'>${value}</del>`
+            case 'highlight':
+                return `<font class='highlight_char'>${value}</font>`
+            case 'hyperlinks':
+                return `<a href='${url}' rel='noopener noreferrer' target='_blank'>${value}</a>`
+            default:
+                break;
+        }
     }
 
     /**

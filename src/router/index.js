@@ -86,6 +86,10 @@ const routes = [
         component: () => import('@/views/utils/regular/index.vue')
       }
     ]
+  },{
+    path: "/regular_test",
+    name: 'RegularTest',
+    component: () => import('@/views/test/regular_test.vue'),
   }
 ]
 

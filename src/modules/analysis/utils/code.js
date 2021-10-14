@@ -18,51 +18,67 @@ class Code {
             note: "note",
             br: "<br />"
         }
-        this.returnHtml = new String();
         /**
          * @description 定义正则规则表达式参数
          * @property {String} removeEndSpace 去除尾部空格
          * @property {String} space 获取空格数量
          * @property {Array} nodeSign 注释标记
+         * @property {RegExp} morelineAnnotation 多行注释的匹配(暂时没啥用)
          */
-        this.removeEndSpace = '/\\s*$/g';
-        this.space = '/\\s/g';
+        this.removeEndSpace = /\s*$/;
+        this.space = /^\s*/g;
+        this.morelineAnnotation = /^(\/\*{1,}\n)?((\*{1}.*)\n)*(\*{1,}\/)$/gmi
+        this.slashAnnotation = /^(\/{2})(.+)/;
         this.nodeSign = [];
+        this.startIndex = undefined;
+        this.endIndex = undefined;
     }
 
     /**
      * @method setHandleValue 设置待处理内容值
      * @param {*} value 待处理内容
+     * @param {Number} startIndex 在数组中code标签开始下标
+     * @param {Number} endIndex 在数组中code标签结束下标
      */
-    setHandleValue(value) {
+    setHandleValue(value, startIndex, endIndex) {
         this.handleValue = value
+        this.startIndex = startIndex;
+        this.endIndex = endIndex;
 
         return this;
     }
+
 
     /**
      * @method handle 处理代码模块的输入值
      */
     handle() {
-        this.returnHtml += this.handleTag.start;
+        let returnHtml = this.handleTag.start;
         this.handleValue.map((currentValue, index) => {
-            let innerHtml = pS;
-            if(currentValue.length == 0){
-                this.returnHtml += this.handleTag.br;
-                continue;
+            let innerHtml = this.handleTag.pS;
+            if (this.slashAnnotation.test(currentValue)) {
+                innerHtml = this.handleNote(currentValue, innerHtml);
+                returnHtml += innerHtml;
+            } else {
+                if (currentValue.length == 0) {
+                    returnHtml += this.handleTag.br;
+                    return;
+                }
+                /**
+                 * @note 去除字符串尾部的空格，避免污染计算空格数量
+                 */
+                currentValue = currentValue.replace(this.removeEndSpace, '')
+                let spaceCount = currentValue.match(this.space)[0].length;
+                let tabLayour = this.getTabNum(spaceCount);
+                innerHtml = innerHtml.substr(0, innerHtml.length - 2) + (tabLayour != '' ? ` ${tabLayour}` : '') + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
+                innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
+                returnHtml += innerHtml;
             }
-            /**
-             * @note 去除字符串尾部的空格，避免污染计算空格数量
-             */
-            currentValue = currentValue.replace(this.removeEndSpace)
-            let spaceCount = currentValue.match(this.space).length;
-            let tabLayour = this.getTabNum(spaceCount);
-            innerHtml = innerHtml.slice(-3)+ " " + tabLayour + innerHtml.slice(-3, 0);
-            /**
-             * @note 判断是否存在Note的元素，此时去除字符串中全部的空格,并且判断一下是否存在//或者/* *\/ 这里需要分类处理一下
-             */
-            currentValue = currentValue.replace(this.space);
         })
+
+        returnHtml += this.handleTag.end;
+
+        return returnHtml;
     }
 
     /**
@@ -78,11 +94,13 @@ class Code {
             returnData = 'tab_7';
             return returnData;
         }
-        for (let [key, value] in this.handleTag.tab) {
-            if (spaceCount < value) {
-                returnData = key;
+        let last = undefined;
+        for (let key in this.handleTag.tab) {
+            if (spaceCount < this.handleTag.tab[key]) {
+                returnData = last;
                 break;
             }
+            last = key;
         }
         return returnData;
     }
@@ -91,8 +109,11 @@ class Code {
      * @method handleNote 处理note
      * @param {String} handleValue 待处理参数
      */
-    handleNote(handleValue){
-        
+    handleNote(handleValue, innerHtml) {
+        innerHtml.substr(0, innerHtml.indexOf("code_font")) + this.handleTag.note + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
+        innerHtml += handleValue.match(this.slashAnnotation)[0] + this.handleTag.pE;
+
+        return innerHtml
     }
 }
 

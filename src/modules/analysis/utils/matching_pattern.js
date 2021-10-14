@@ -25,11 +25,11 @@ class MatchPattern {
          * @property {Array} codeData 记录一段代码片段的数据
          * @property {Array} allCodeData 记录全部代码片段的位置
          */
-        ths.codeFlag = false;
-        ths.codeStartIndex = undefined;
-        ths.codeEndIndex = undefined;
-        ths.codeData = [];
-        ths.allCodeData = [];
+        this.codeFlag = false;
+        this.codeStartIndex = undefined;
+        this.codeEndIndex = undefined;
+        this.codeData = [];
+        this.allCodeData = [];
     }
 
     /**

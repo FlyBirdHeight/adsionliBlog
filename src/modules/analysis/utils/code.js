@@ -24,10 +24,16 @@ class Code {
          * @property {String} space 获取空格数量
          * @property {Array} nodeSign 注释标记
          * @property {RegExp} morelineAnnotation 多行注释的匹配(暂时没啥用)
+         * @property {RegExp} morelineAnnotationStart 多行注释头匹配
+         * @property {RegExp} morelineAnnotationBody 多行注释身体匹配
+         * @property {RegExp} morelineAnnotationEnd 多行注释尾匹配
          */
         this.removeEndSpace = /\s*$/;
         this.space = /^\s*/g;
-        this.morelineAnnotation = /^(\/\*{1,}\n)?((\*{1}.*)\n)*(\*{1,}\/)$/gmi
+        this.morelineAnnotation = /^(\/\*{1,}\n)?((\*{1}.*)\n)*(\*{1,}\/)$/gmi;
+        this.morelineAnnotationStart = /^(\/\*{1,})(.+)?(\n)?/gi;
+        this.morelineAnnotationBody = /^(\s*)?\*{1,}(.+)[^*/](\n)?$/gi;
+        this.morelineAnnotationEnd = /^(\s*)\*{1,}\/$/gi;
         this.slashAnnotation = /^(\/{2})(.+)/;
         this.nodeSign = [];
         this.startIndex = undefined;
@@ -54,11 +60,55 @@ class Code {
      */
     handle() {
         let returnHtml = this.handleTag.start;
+        let morelineAnnotationStart = undefined;
+        let firstMorelineAnnotationFlag = false;
+        let morelineAnnotationBodyIndex = undefined;
+        let lastBodyIndex = undefined;
+        let morelineAnnotationEnd = undefined;
+        let morelineAnnotationData = [];
         this.handleValue.map((currentValue, index) => {
             let innerHtml = this.handleTag.pS;
             if (this.slashAnnotation.test(currentValue)) {
                 innerHtml = this.handleNote(currentValue, innerHtml);
                 returnHtml += innerHtml;
+            } else if (this.morelineAnnotationStart.test(currentValue)) {
+                morelineAnnotationStart = index;
+                firstMorelineAnnotationFlag = true;
+                morelineAnnotationData.push(currentValue);
+            } else if (this.morelineAnnotationBody.test(currentValue)) {
+                if (typeof (morelineAnnotationBodyIndex) != 'undefined') {
+                    lastBodyIndex = morelineAnnotationBodyIndex;
+                }
+                morelineAnnotationBodyIndex = index;
+                if (!firstMorelineAnnotationFlag && morelineAnnotationBodyIndex - morelineAnnotationStart == 1) {
+                    morelineAnnotationData.push(currentValue);
+                } else {
+                    if (firstMorelineAnnotationFlag && morelineAnnotationBodyIndex - lastBodyIndex == 1 && typeof (morelineAnnotationEnd) == 'undefined') {
+                        morelineAnnotationData.push(currentValue);
+                    } else if (firstMorelineAnnotationFlag && morelineAnnotationBodyIndex - lastBodyIndex != 1 && typeof (morelineAnnotationEnd) == 'undefined') {
+                        morelineAnnotationData.push(currentValue);
+                    } else {
+                        currentValue = currentValue.replace(this.removeEndSpace, '')
+                        let spaceCount = currentValue.match(this.space)[0].length;
+                        let tabLayour = this.getTabNum(spaceCount);
+                        innerHtml = innerHtml.substr(0, innerHtml.length - 2) + (tabLayour != '' ? ` ${tabLayour}` : '') + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
+                        innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
+                        returnHtml += innerHtml;
+                    }
+                }
+            } else if (this.morelineAnnotationEnd.test(currentValue)) {
+                morelineAnnotationEnd = index;
+                morelineAnnotationData.push(currentValue);
+                this.handleMorelineAnnotation(morelineAnnotationData);
+                /**
+                 * @description 当处理完成后，重置全部关于多行注释的内容
+                 */
+                morelineAnnotationBodyIndex = undefined;
+                morelineAnnotationData = [];
+                morelineAnnotationStart = undefined;
+                firstMorelineAnnotationFlag = false;
+                morelineAnnotationStart = undefined;
+                lastBodyIndex = undefined;
             } else {
                 if (currentValue.length == 0) {
                     returnHtml += this.handleTag.br;
@@ -70,9 +120,15 @@ class Code {
                 currentValue = currentValue.replace(this.removeEndSpace, '')
                 let spaceCount = currentValue.match(this.space)[0].length;
                 let tabLayour = this.getTabNum(spaceCount);
-                innerHtml = innerHtml.substr(0, innerHtml.length - 2) + (tabLayour != '' ? ` ${tabLayour}` : '') + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
-                innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
-                returnHtml += innerHtml;
+                if (firstMorelineAnnotationFlag && typeof (morelineAnnotationStart) != 'undefined' && typeof (morelineAnnotationEnd) == 'undefined') {
+                    innerHtml = innerHtml.substr(0, innerHtml.length - 2) + (tabLayour != '' ? ` ${tabLayour}` : '') + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
+                    innerHtml = this.handleNote(currentValue, innerHtml);
+                    returnHtml += innerHtml;
+                } else {
+                    innerHtml = innerHtml.substr(0, innerHtml.length - 2) + (tabLayour != '' ? ` ${tabLayour}` : '') + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
+                    innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
+                    returnHtml += innerHtml;
+                }
             }
         })
 
@@ -110,10 +166,18 @@ class Code {
      * @param {String} handleValue 待处理参数
      */
     handleNote(handleValue, innerHtml) {
-        innerHtml.substr(0, innerHtml.indexOf("code_font")) + this.handleTag.note + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
+        innerHtml = innerHtml.replace(/code_font/i, this.handleTag.note);
         innerHtml += handleValue.match(this.slashAnnotation)[0] + this.handleTag.pE;
 
         return innerHtml
+    }
+
+    /**
+     * @method handleMorelineAnnotation 处理多行注释的样式
+     * @param {Array} handleValue 待处理数据
+     */
+    handleMorelineAnnotation(handleValue) {
+
     }
 }
 

@@ -13,7 +13,12 @@ class Code {
                 tab_4: 16,
                 tab_5: 20,
                 tab_6: 24,
-                tab_7: 28
+                tab_7: 28,
+                tab_8: 32,
+                tab_9: 36,
+                tab_10: 40,
+                tab_11: 44,
+                tab_12: 48,
             },
             note: "note",
             br: "<br />"
@@ -35,7 +40,7 @@ class Code {
         this.morelineAnnotationStart = new RegExp(/^(\s*)?(\/\*{1,})(.+)?(\n*)?$/i);
         this.morelineAnnotationBody = new RegExp(/^(\s*)?\*{1,}([^/]+)?$/i);
         this.morelineAnnotationEnd = new RegExp(/^(\s*)?(\*{1,}.*)*\*\/(\s*)?$/i);
-        this.slashAnnotation = /^(\/{2})(.+)/;
+        this.slashAnnotation = /^(\s*)(\/{2})(.+)/;
         this.nodeSign = [];
         this.startIndex = undefined;
         this.endIndex = undefined;
@@ -64,7 +69,6 @@ class Code {
         let morelineAnnotationStart = undefined;
         let firstMorelineAnnotationFlag = false;
         let morelineAnnotationBodyIndex = undefined;
-        let lastBodyIndex = undefined;
         let morelineAnnotationEndIndex = undefined;
         let morelineAnnotationData = [];
         this.handleValue.map((currentValue, index) => {
@@ -78,32 +82,20 @@ class Code {
                 firstMorelineAnnotationFlag = true;
                 morelineAnnotationData.push(currentValue);
             } else if (this.morelineAnnotationBody.test(currentValue) || currentValue == '*') {
-                if (typeof (morelineAnnotationBodyIndex) != 'undefined') {
-                    lastBodyIndex = morelineAnnotationBodyIndex;
-                }
                 morelineAnnotationBodyIndex = index;
                 if (!firstMorelineAnnotationFlag && morelineAnnotationBodyIndex - morelineAnnotationStart == 1) {
                     morelineAnnotationData.push(currentValue);
                 } else {
-                    if (firstMorelineAnnotationFlag && morelineAnnotationBodyIndex - lastBodyIndex == 1 && typeof (morelineAnnotationEndIndex) == 'undefined') {
-                        morelineAnnotationData.push(currentValue);
-                    } else if (firstMorelineAnnotationFlag && morelineAnnotationBodyIndex - lastBodyIndex != 1 && typeof (morelineAnnotationEndIndex) == 'undefined') {
-                        morelineAnnotationData.push(currentValue);
-                    } else if (firstMorelineAnnotationFlag && morelineAnnotationBodyIndex - lastBodyIndex == 1 && typeof (morelineAnnotationEndIndex) == 'undefined') {
+                    if (firstMorelineAnnotationFlag && typeof (morelineAnnotationEndIndex) == 'undefined') {
                         morelineAnnotationData.push(currentValue);
                     } else {
-                        currentValue = currentValue.replace(this.removeEndSpace, '')
-                        let spaceCount = currentValue.match(this.space)[0].length;
-                        let tabLayour = this.getTabNum(spaceCount);
-                        innerHtml = innerHtml.substr(0, innerHtml.length - 2) + (tabLayour != '' ? ` ${tabLayour}` : '') + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
-                        innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
-                        returnHtml += innerHtml;
+                        let requestData = [currentValue, firstMorelineAnnotationFlag, morelineAnnotationStart, morelineAnnotationEndIndex, innerHtml, 'notAn']
+                        returnHtml += this.handleNormalCode(...requestData);
                     }
                 }
             } else if (this.morelineAnnotationEnd.test(currentValue)) {
                 morelineAnnotationEndIndex = index;
                 morelineAnnotationData.push(currentValue);
-                console.log(morelineAnnotationData);
                 returnHtml += this.handleMorelineAnnotation(morelineAnnotationData);
                 /**
                  * @description 当处理完成后，重置全部关于多行注释的内容
@@ -113,33 +105,24 @@ class Code {
                 morelineAnnotationStart = undefined;
                 firstMorelineAnnotationFlag = false;
                 morelineAnnotationEndIndex = undefined;
-                lastBodyIndex = undefined;
             } else {
                 if (currentValue.length == 0) {
                     returnHtml += this.handleTag.br;
                     return;
                 }
-                /**
-                 * @note 去除字符串尾部的空格，避免污染计算空格数量
-                 */
-                currentValue = currentValue.replace(this.removeEndSpace, '')
-                let spaceCount = currentValue.match(this.space)[0].length;
-                let tabLayour = this.getTabNum(spaceCount);
-                if (firstMorelineAnnotationFlag && typeof (morelineAnnotationStart) != 'undefined' && typeof (morelineAnnotationEndIndex) == 'undefined') {
-                    innerHtml = innerHtml.substr(0, innerHtml.length - 2) + (tabLayour != '' ? ` ${tabLayour}` : '') + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
-                    innerHtml = this.handleNote(currentValue, innerHtml);
-                    returnHtml += innerHtml;
-                } else {
-                    innerHtml = innerHtml.substr(0, innerHtml.length - 2) + (tabLayour != '' ? ` ${tabLayour}` : '') + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
-                    innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
-                    returnHtml += innerHtml;
-                }
+                let requestData = [currentValue, firstMorelineAnnotationFlag, morelineAnnotationStart, morelineAnnotationEndIndex, innerHtml]
+                returnHtml += this.handleNormalCode(...requestData);
             }
         })
 
         returnHtml += this.handleTag.end;
-
-        return returnHtml;
+        let startIndex = this.startIndex;
+        let endIndex = this.endIndex;
+        return {
+            startIndex,
+            endIndex,
+            returnHtml
+        };
     }
 
     /**
@@ -151,8 +134,8 @@ class Code {
         let returnData = '';
         if (spaceCount == 0) {
             return returnData;
-        } else if (spaceCount > 28) {
-            returnData = 'tab_7';
+        } else if (spaceCount > 48) {
+            returnData = 'tab_12';
             return returnData;
         }
         let last = undefined;
@@ -171,7 +154,10 @@ class Code {
      * @param {String} handleValue 待处理参数
      */
     handleNote(handleValue, innerHtml) {
-        innerHtml = innerHtml.replace(/code_font/i, this.handleTag.note);
+        handleValue = handleValue.replace(this.removeEndSpace, '')
+        let spaceCount = handleValue.match(this.space)[0].length;
+        let tabLayour = this.getTabNum(spaceCount);
+        innerHtml = innerHtml.replace(/code_font/i, this.handleTag.note + (tabLayour != '' ? ` ${tabLayour}` : ''));
         innerHtml += handleValue + this.handleTag.pE;
 
         return innerHtml
@@ -194,6 +180,36 @@ class Code {
         }
 
         return returnHtml;
+    }
+
+    /**
+     * @method handleNormalCode 处理普通代码模块
+     * @param {String} 待处理字段
+     * @param {aF} 是否是多行注释的开始
+     * @param {aS} 多行注释开始的下标
+     * @param {aE} 多行注释结束的下标
+     * @param {String} 待添加内容
+     */
+    handleNormalCode(currentValue, aF, aS, aE, innerHtml, type = 'normal') {
+        /**
+         * @note 去除字符串尾部的空格，避免污染计算空格数量
+         */
+        currentValue = currentValue.replace(this.removeEndSpace, '')
+        let spaceCount = currentValue.match(this.space)[0].length;
+        let tabLayour = this.getTabNum(spaceCount);
+        innerHtml = innerHtml.substr(0, innerHtml.length - 2) + (tabLayour != '' ? ` ${tabLayour}` : '') + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
+        if (type == 'normal') {
+            if (aF && typeof (aS) != 'undefined' && typeof (aE) == 'undefined') {
+                innerHtml = this.handleNote(currentValue, innerHtml);
+                return innerHtml;
+            } else {
+                innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
+                return innerHtml;
+            }
+        } else {
+            innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
+            return innerHtml;
+        }
     }
 }
 

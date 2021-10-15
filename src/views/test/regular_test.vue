@@ -31,6 +31,7 @@
 
 <script>
 import Code from '@/modules/analysis/utils/code.js'
+import MatchingPattern from "@/modules/analysis/utils/matching_pattern.js"
 export default {
   data() {
     return {
@@ -49,12 +50,14 @@ export default {
       code: new Code(),
       testCodeValue: '',
       showCodeValue: [],
-      codeHtml: ''
+      codeHtml: '',
+      matchingPattern: new MatchingPattern()
     }
   },
   mounted() {
     this.axios.get("/content/test/code.md").then(res => {
       this.testCodeValue = res.data;
+      this.matchingPattern.handle(this.testCodeValue);
       this.showCodeValue = this.testCodeValue.split('\n');
     }).catch(error => {
       console.log(error);
@@ -87,9 +90,8 @@ export default {
         }
       }
       for(let value of allCodeData){
-        this.codeHtml += this.code.setHandleValue(value.codeData, value.startIndex, value.endIndex).handle();
+        this.codeHtml += this.code.setHandleValue(value.codeData, value.startIndex, value.endIndex).handle().returnHtml;
       }
-      console.log(this.codeHtml)
     },
     testTitle() {
       this.title = this.title.replace(/(^\s+|\s+$)/gi, '')

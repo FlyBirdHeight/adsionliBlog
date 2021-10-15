@@ -24,6 +24,7 @@ class RouteHandle {
                 toPath: to.path
             })
         }
+        *123
         // chrome
         document.body.scrollTop = 0
         // firefox
@@ -109,4 +110,18 @@ class RouteHandle {
 }
 
 export default RouteHandle;
+```
+
+```
+/**
+     * @method concatCoverData 将cover数据与page数据合并，并处理成map
+     */
+    concatCoverData() {
+        for (let key in this.coverList) {
+            this.concatData.set(key, this.coverList[key]);
+        }
+        for (let page of this.pageList) {
+            this.concatData.set(page.routeLink, page);
+        }
+    }
 ```

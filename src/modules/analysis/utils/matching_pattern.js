@@ -7,6 +7,7 @@ class MatchPattern {
         this.title = /(?<titleCount>^#{1,6})(\s{1,})(.+?)/;
         this.codeFragment = /^(\s*)?(`{3})(\s*)?$/;
         this.code = new Code();
+        this.returnCodeHtml = [];
         //TODO 注意，加粗匹配一定要在倾斜匹配之前
         this.specialChar = {
             bold: /(\*{2})(.+?)(\1)/gi,
@@ -30,6 +31,24 @@ class MatchPattern {
         this.codeEndIndex = undefined;
         this.codeData = [];
         this.allCodeData = [];
+        /**
+         * @property {Boolean} tableFlag 是否是表格模块的标记
+         * @property {Object} tableParameter 表格元素
+         * @property {RegExp} tableReg 表格元素判断 start:开始，end:结束，body:表格题，rule:表格属性
+         */
+        this.tableFlag = false;
+        this.tableParameter = {
+            startIndex: undefined,
+            endIndex: undefined,
+            allTableData: [],
+            tableData: []
+        };
+        this.tableReg = {
+            start: /((\|?).+?(\|))+/gi,
+            rule: /((\|?)(\s+)?----(\s+)?(\|))+/gi,
+            body: /((\|?).+?(\|))+/gi,
+            end: /[^(((\|?).+?(\|))+)](\s*)(\n*)/gi
+        };
     }
 
     /**
@@ -38,25 +57,66 @@ class MatchPattern {
     handle(value) {
         let data = value.split('\n');
         for (let i = 0; i < data.length; i++) {
-            if (this.codeFragment.test(data[i]) && !this.codeFlag) {
-                this.codeFlag = true;
-                this.codeStartIndex = i;
-            } else if (this.codeFragment.test(data[i]) && this.codeFlag) {
-                this.codeFlag = false;
-                this.codeEndIndex = i;
-                this.allCodeData.push({
-                    startIndex: this.codeStartIndex,
-                    endIndex: this.codeEndIndex,
-                    codeData: this.codeData
-                })
-                this.codeStartIndex = undefined;
-                this.codeEndIndex = undefined;
-                this.codeData = [];
-            } else if (this.codeFlag) {
-                this.codeData.push(data[i]);
+            if(this.codeFlag){
+                this.matchCodeFragment(data[i], i);
+                continue;
+            }
+            this.matchCodeFragment(data[i], i);
+            
+        }
+        this.replaceToSpan();
+        if(this.returnCodeHtml.length != 0){
+            this.returnCodeHtml.sort((a, b) => {
+                return a.startIndex - b.startIndex;
+            })
+        }
+    }
+
+    /**
+     * @method replaceToSpan 替换全部markdown语法为标签
+     */
+    replaceToSpan() {
+        if (this.allCodeData.length != 0) {
+            for (let value of this.allCodeData) {
+                this.returnCodeHtml.push(this.code.setHandleValue(value.codeData, value.startIndex, value.endIndex).handle())
             }
         }
     }
+
+    /**
+     * @method matchTable 匹配表格模块
+     * @param {*} value 待匹配字符
+     * @param {*} index 
+     */
+    matchTable(){
+
+    }
+
+    /**
+     * @method matchCodeFragment 匹配代码块
+     * @param {*} value 待匹配字符
+     * @param {*} index 行数下标 
+     */
+    matchCodeFragment(value, index) {
+        if (this.codeFragment.test(value) && !this.codeFlag) {
+            this.codeFlag = true;
+            this.codeStartIndex = index;
+        } else if (this.codeFragment.test(value) && this.codeFlag) {
+            this.codeEndIndex = index;
+            this.allCodeData.push({
+                startIndex: this.codeStartIndex,
+                endIndex: this.codeEndIndex,
+                codeData: this.codeData
+            })
+            this.codeStartIndex = undefined;
+            this.codeEndIndex = undefined;
+            this.codeFlag = false;
+            this.codeData = [];
+        } else if (this.codeFlag) {
+            this.codeData.push(value);
+        }
+    }
+
     /**
      * @method matchLineFeed 匹配空白行
      * @param {*} value 

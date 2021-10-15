@@ -27,13 +27,14 @@ class Code {
          * @property {RegExp} morelineAnnotationStart 多行注释头匹配
          * @property {RegExp} morelineAnnotationBody 多行注释身体匹配
          * @property {RegExp} morelineAnnotationEnd 多行注释尾匹配
-         */
+         *
+         **/
         this.removeEndSpace = /\s*$/;
         this.space = /^\s*/g;
         this.morelineAnnotation = /^(\/\*{1,}\n)?((\*{1}.*)\n)*(\*{1,}\/)$/gmi;
-        this.morelineAnnotationStart = /^(\/\*{1,})(.+)?(\n)?/gi;
-        this.morelineAnnotationBody = /^(\s*)?\*{1,}(.+)[^*/](\n)?$/gi;
-        this.morelineAnnotationEnd = /^(\s*)\*{1,}\/$/gi;
+        this.morelineAnnotationStart = new RegExp(/^(\s*)?(\/\*{1,})(.+)?(\n*)?$/i);
+        this.morelineAnnotationBody = new RegExp(/^(\s*)?\*{1,}([^/]+)?$/i);
+        this.morelineAnnotationEnd = new RegExp(/^(\s*)?(\*{1,}.*)*\*\/(\s*)?$/i);
         this.slashAnnotation = /^(\/{2})(.+)/;
         this.nodeSign = [];
         this.startIndex = undefined;
@@ -64,10 +65,11 @@ class Code {
         let firstMorelineAnnotationFlag = false;
         let morelineAnnotationBodyIndex = undefined;
         let lastBodyIndex = undefined;
-        let morelineAnnotationEnd = undefined;
+        let morelineAnnotationEndIndex = undefined;
         let morelineAnnotationData = [];
         this.handleValue.map((currentValue, index) => {
             let innerHtml = this.handleTag.pS;
+            currentValue = currentValue.replace(/\r|\n/g, '');
             if (this.slashAnnotation.test(currentValue)) {
                 innerHtml = this.handleNote(currentValue, innerHtml);
                 returnHtml += innerHtml;
@@ -75,7 +77,7 @@ class Code {
                 morelineAnnotationStart = index;
                 firstMorelineAnnotationFlag = true;
                 morelineAnnotationData.push(currentValue);
-            } else if (this.morelineAnnotationBody.test(currentValue)) {
+            } else if (this.morelineAnnotationBody.test(currentValue) || currentValue == '*') {
                 if (typeof (morelineAnnotationBodyIndex) != 'undefined') {
                     lastBodyIndex = morelineAnnotationBodyIndex;
                 }
@@ -83,9 +85,11 @@ class Code {
                 if (!firstMorelineAnnotationFlag && morelineAnnotationBodyIndex - morelineAnnotationStart == 1) {
                     morelineAnnotationData.push(currentValue);
                 } else {
-                    if (firstMorelineAnnotationFlag && morelineAnnotationBodyIndex - lastBodyIndex == 1 && typeof (morelineAnnotationEnd) == 'undefined') {
+                    if (firstMorelineAnnotationFlag && morelineAnnotationBodyIndex - lastBodyIndex == 1 && typeof (morelineAnnotationEndIndex) == 'undefined') {
                         morelineAnnotationData.push(currentValue);
-                    } else if (firstMorelineAnnotationFlag && morelineAnnotationBodyIndex - lastBodyIndex != 1 && typeof (morelineAnnotationEnd) == 'undefined') {
+                    } else if (firstMorelineAnnotationFlag && morelineAnnotationBodyIndex - lastBodyIndex != 1 && typeof (morelineAnnotationEndIndex) == 'undefined') {
+                        morelineAnnotationData.push(currentValue);
+                    } else if (firstMorelineAnnotationFlag && morelineAnnotationBodyIndex - lastBodyIndex == 1 && typeof (morelineAnnotationEndIndex) == 'undefined') {
                         morelineAnnotationData.push(currentValue);
                     } else {
                         currentValue = currentValue.replace(this.removeEndSpace, '')
@@ -97,9 +101,10 @@ class Code {
                     }
                 }
             } else if (this.morelineAnnotationEnd.test(currentValue)) {
-                morelineAnnotationEnd = index;
+                morelineAnnotationEndIndex = index;
                 morelineAnnotationData.push(currentValue);
-                this.handleMorelineAnnotation(morelineAnnotationData);
+                console.log(morelineAnnotationData);
+                returnHtml += this.handleMorelineAnnotation(morelineAnnotationData);
                 /**
                  * @description 当处理完成后，重置全部关于多行注释的内容
                  */
@@ -107,7 +112,7 @@ class Code {
                 morelineAnnotationData = [];
                 morelineAnnotationStart = undefined;
                 firstMorelineAnnotationFlag = false;
-                morelineAnnotationStart = undefined;
+                morelineAnnotationEndIndex = undefined;
                 lastBodyIndex = undefined;
             } else {
                 if (currentValue.length == 0) {
@@ -120,7 +125,7 @@ class Code {
                 currentValue = currentValue.replace(this.removeEndSpace, '')
                 let spaceCount = currentValue.match(this.space)[0].length;
                 let tabLayour = this.getTabNum(spaceCount);
-                if (firstMorelineAnnotationFlag && typeof (morelineAnnotationStart) != 'undefined' && typeof (morelineAnnotationEnd) == 'undefined') {
+                if (firstMorelineAnnotationFlag && typeof (morelineAnnotationStart) != 'undefined' && typeof (morelineAnnotationEndIndex) == 'undefined') {
                     innerHtml = innerHtml.substr(0, innerHtml.length - 2) + (tabLayour != '' ? ` ${tabLayour}` : '') + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
                     innerHtml = this.handleNote(currentValue, innerHtml);
                     returnHtml += innerHtml;
@@ -167,7 +172,7 @@ class Code {
      */
     handleNote(handleValue, innerHtml) {
         innerHtml = innerHtml.replace(/code_font/i, this.handleTag.note);
-        innerHtml += handleValue.match(this.slashAnnotation)[0] + this.handleTag.pE;
+        innerHtml += handleValue + this.handleTag.pE;
 
         return innerHtml
     }
@@ -177,7 +182,18 @@ class Code {
      * @param {Array} handleValue 待处理数据
      */
     handleMorelineAnnotation(handleValue) {
+        let returnHtml = '';
+        for (let value of handleValue) {
+            let innerHtml = this.handleTag.pS;
+            value = value.replace(this.removeEndSpace, '')
+            let spaceCount = value.match(this.space)[0].length;
+            let tabLayour = this.getTabNum(spaceCount);
+            innerHtml = innerHtml.substr(0, innerHtml.length - 2) + (tabLayour != '' ? ` ${tabLayour}` : '') + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
+            innerHtml = this.handleNote(value, innerHtml);
+            returnHtml += innerHtml;
+        }
 
+        return returnHtml;
     }
 }
 

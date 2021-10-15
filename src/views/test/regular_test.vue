@@ -23,7 +23,7 @@
       <p style="padding:5px" v-for="(item, index) in showCodeValue" :key="index">{{item}}</p>
     </div>
     <el-button @click="testCode">处理代码模块</el-button>
-    <div v-html="codeHtml">
+    <div style="height:500px;overflow-y:scroll" v-html="codeHtml">
 
     </div>
   </div>

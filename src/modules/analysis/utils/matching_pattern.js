@@ -57,15 +57,18 @@ class MatchPattern {
     handle(value) {
         let data = value.split('\n');
         for (let i = 0; i < data.length; i++) {
-            if(this.codeFlag){
+            if (this.codeFlag) {
                 this.matchCodeFragment(data[i], i);
                 continue;
             }
+            if (this.tableFlag) {
+                this.matchTable(data[i], i);
+            }
             this.matchCodeFragment(data[i], i);
-            
+
         }
         this.replaceToSpan();
-        if(this.returnCodeHtml.length != 0){
+        if (this.returnCodeHtml.length != 0) {
             this.returnCodeHtml.sort((a, b) => {
                 return a.startIndex - b.startIndex;
             })
@@ -86,9 +89,9 @@ class MatchPattern {
     /**
      * @method matchTable 匹配表格模块
      * @param {*} value 待匹配字符
-     * @param {*} index 
+     * @param {*} index 行数下标
      */
-    matchTable(){
+    matchTable(value, index) {
 
     }
 

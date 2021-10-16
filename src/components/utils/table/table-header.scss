@@ -1,0 +1,37 @@
+tr {
+  vertical-align: inherit;
+}
+.theadTd {
+  position: relative;
+  @include paddingSet(12px 5px);
+  border-right: 1px solid #ebeef5;
+}
+.table_header-column {
+  overflow: hidden;
+}
+.triangle_down {
+  width: 0;
+  height: 0;
+  border-width: 8px 8px 0;
+  border-style: solid;
+  border-color: #333 transparent transparent;
+  position: absolute;
+  top: 20px;
+  cursor: pointer;
+}
+.triangle_up {
+  width: 0;
+  height: 0;
+  border-width: 0 8px 8px;
+  border-style: solid;
+  border-color: transparent transparent #333;
+  position: absolute;
+  top: 8px;
+  cursor: pointer;
+}
+.tableStyle {
+  background: white;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}

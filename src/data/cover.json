@@ -15,6 +15,22 @@
         "/mine": {
             "title": "关于我",
             "subTitle": "盛年不重来，一日难再晨。及时当勉励，岁月不待人。"
+        },
+        "/test": {
+            "title": "正则测试页",
+            "subTitle": "各类正则表达式测试页"
+        },
+        "/test/total": {
+            "title": "测试汇总页",
+            "subTitle": "在此处可前往各个测试页面"
+        },
+        "/test/regular_test": {
+            "title": "正则测试页",
+            "subTitle": "各类正则表达式测试页"
+        },
+        "/test/component_test": {
+            "title": "组件测试页",
+            "subTitle": "各类自定义组件测试页"
         }
     }
 }

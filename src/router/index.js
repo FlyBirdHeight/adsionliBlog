@@ -86,10 +86,28 @@ const routes = [
         component: () => import('@/views/utils/regular/index.vue')
       }
     ]
-  },{
-    path: "/regular_test",
-    name: 'RegularTest',
-    component: () => import('@/views/test/regular_test.vue'),
+  }, {
+    path: "/test",
+    name: "Test",
+    redirect: '/test/total',
+    component: () => import('@/views/test/index.vue'),
+    children: [
+      {
+        path: "total",
+        name: 'TotalTest',
+        component: () => import('@/views/test/total.vue'),
+      },
+      {
+        path: "regular_test",
+        name: 'RegularTest',
+        component: () => import('@/views/test/regular_test.vue'),
+      },
+      {
+        path: "component_test",
+        name: 'ComponentTest',
+        component: () => import('@/views/test/component_test.vue'),
+      }
+    ]
   }
 ]
 

@@ -1,0 +1,18 @@
+.tdStyle {
+  border-top: 1px solid #ebeef5;
+  border-right: 1px solid #ebeef5;
+  height: 40px;
+  transition: all linear 0.2s;
+  padding: 12px 5px;
+  font-size: 15px;
+  text-overflow: ellipsis;
+}
+tbody {
+  vertical-align: middle;
+}
+.table_body-wrapper {
+  overflow-x: auto;
+}
+tr {
+  vertical-align: inherit;
+}

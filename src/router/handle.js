@@ -8,7 +8,7 @@ class RouteHandle {
         this.store = store;
         this.concatData = new Map();
         this.concatCoverData();
-        this.switchNone = ['/', '/mine', 'catalogue', 'fileing']
+        this.switchNone = ['/', '/mine', 'catalogue', 'fileing', '/test/total', '/test/regular_test', '/test/component_test']
     }
 
     /**

@@ -7,7 +7,11 @@ export default {
     prop: String,
     label: String,
     width: String,
-    sortable: Boolean
+    sortable: Boolean,
+    align: {
+      type: String,
+      default: "left"
+    }
   },
   mounted() {
     let store = this.$parent.store
@@ -15,7 +19,8 @@ export default {
       prop: this.prop,
       label: this.label,
       width: this.width || '200',
-      sortable: this.sortable || false
+      sortable: this.sortable || false,
+      align: this.align || "left"
     })
     store.states.columns.push(option)
   },

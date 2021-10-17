@@ -7,11 +7,41 @@ const TableStore = function (table, initialState) {
         columns: []
     }
     this.tableWidth = 540
+    this.tablePositionLeft = undefined;
     this.syncLeft = 0
     this.theaderUid = undefined;
     this.tbodyUid = undefined;
+    this.resize = {
+        canResize: false,
+        isResize: false,
+        showResizeLine: false,
+        resizeLine: undefined
+    }
+
 }
 TableStore.prototype.mutations = {
+    calculateTableWidth() {
+        let totalWidth = 0;
+        for (let value of this.states.columns) {
+            totalWidth += Number(value.width)
+        }
+        this.tableWidth = totalWidth;
+    },
+    changeWidth(index, width) {
+        let frontWidth = 0;
+        for (let key in this.states.columns) {
+            if (key == index) {
+                break;
+            } else {
+                frontWidth += Number(this.states.columns[key].width);
+            }
+        }
+        let changeWidth = width - frontWidth;
+        this.states.columns[index].width = changeWidth;
+        this.commit('calculateTableWidth');
+        document.querySelector(`[name=${'th-' + this.table._uid + '-col-column-' + index}]`).width = changeWidth + 'px';
+        document.querySelector(`[name=${'tb-' + this.table._uid + '-col-column-' + index}]`).width = changeWidth + 'px';
+    },
     handleRowClick(row) {
         this.table.$emit('row-click', row)
     },
@@ -23,12 +53,13 @@ TableStore.prototype.mutations = {
         var rows = document.querySelector(`#table-body${this.tbodyUid}`).children[0].rows
         for (let i = 0; i < rows.length; i++) {
             rows[i].onmouseover = () => {
-                rows[i].style.background = 'rgba(255, 99, 132, 0.2)'
+                rows[i].style.background = 'rgba(222, 236, 238, 0.3)'
             }
             rows[i].onmouseout = () => {
                 rows[i].style.background = 'white'
             }
         }
+
     }
 }
 TableStore.prototype.commit = function (name, ...args) {

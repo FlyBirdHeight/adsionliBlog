@@ -1,8 +1,9 @@
 <template>
-  <div class="table">
+  <div class="table" :id="`table${_uid}`">
     <table-header class="table-header"></table-header>
     <slot></slot>
     <table-body class="table-body"></table-body>
+    <div :id="`tableResize${_uid}`"  v-show="store.resize.showResizeLine" class="resize-table-column-width"></div>
   </div>
 </template>
 
@@ -26,6 +27,9 @@ export default {
   },
   mounted() {
     this.store.commit('init')
+    this.store.tablePositionLeft = document.querySelector(`#table${this._uid}`).getBoundingClientRect().left;
+    this.store.resize.resizeLine = document.querySelector(`#tableResize${this._uid}`);
+    console.log(this.store.resize.resizeLine.getBoundingClientRect())
   },
   props: {
     dataList: {
@@ -47,8 +51,17 @@ export default {
 
 <style lang="scss" scoped>
 .table {
-  text-align: left;
   margin: 20px;
+  position: relative;
+  .resize-table-column-width {
+    position: absolute;
+    left: 200px;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    border-left: 1px solid #ebeef5;
+    z-index: 10;
+  }
 }
 table {
   border-spacing: 0px;

@@ -10,13 +10,14 @@ export default {
     })
     const dataSource = this.$parent.dataList
     const width = this.$parent.store.tableWidth;
+    const uId = this.$parent._uid;
     return (
       <div class="table_body-wrapper" ref={`table-body${this._uid}`} id={`table-body${this._uid}`}>
         <table cellspacing="0" cellpadding="0" border="0" style={'width:' + width + 'px'}>
           <colgroup>
             {
-              this._l(columns, column =>
-                <col width={column.width ? column.width : ''} />
+              this._l(columns, (column, index) =>
+                <col name={'tb-'+ uId +'-col-column-' + (index)} width={column.width ? column.width : ''} />
               )
             }
           </colgroup>
@@ -27,8 +28,8 @@ export default {
                   <tr on-click={() => this.clickTr(item)}
                     on-mouseover={() => this.handleHoverEvent(item)} >
                     {
-                      this._l(options, option =>
-                        <td class='tdStyle'>{item[option]}</td>
+                      this._l(options, (option, index) =>
+                        <td class={`tdStyle ${'td-column-' + (index)}`}>{item[option]}</td>
                       )
                     }
                   </tr>
@@ -44,7 +45,7 @@ export default {
     document.querySelector(`#table-body${this._uid}`).addEventListener('scroll', (e) => {
       let offsetLeft = e.target.scrollLeft;
       this.$parent.store.syncLeft = offsetLeft;
-      
+
     })
   },
   methods: {

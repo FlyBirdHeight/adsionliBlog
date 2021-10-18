@@ -6,7 +6,7 @@ const TableStore = function (table, initialState) {
     this.states = {
         columns: []
     }
-    this.tableWidth = 540
+    this.tableWidth = undefined
     this.tablePositionLeft = undefined;
     this.syncLeft = 0
     this.theaderUid = undefined;
@@ -37,10 +37,9 @@ TableStore.prototype.mutations = {
             }
         }
         let changeWidth = width - frontWidth;
+        console.log(changeWidth, index);
         this.states.columns[index].width = changeWidth;
         this.commit('calculateTableWidth');
-        console.log(`name=${'th-' + this.table._uid + '-col-column-' + index}`);
-        console.log(changeWidth);
         document.querySelector(`[name=${'th-' + this.table._uid + '-col-column-' + index}]`).width = changeWidth + 'px';
         
         document.querySelector(`[name=${'tb-' + this.table._uid + '-col-column-' + index}]`).width = changeWidth + 'px';

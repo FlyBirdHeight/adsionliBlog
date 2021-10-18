@@ -21,7 +21,7 @@ export default {
               {
                 this._l(columns, (column, index) =>
                   <th  class={`theadTd ${'th-column-' + (index)}`}>
-                    {column.label}
+                    <div domPropsInnerHTML={column.label}> </div>
                     {column.sortable
                       ? <span>
                         <i on-click={() => this.sortUp(column)} class={'triangle_up'} />

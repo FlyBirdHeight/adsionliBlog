@@ -231,7 +231,8 @@ class Table extends AnalysisIndex {
     generateSpan() {
         let returnData = [];
         for (let value of this.tableParameter.allTableData) {
-            let returnHtml = `<table-list :height="200" dataList="${JSON.stringify(value.tableData)}">`
+            console.log(JSON.stringify(value.tableData).replace(/"/g, "'"));
+            let returnHtml = `<table-list :height="200" dataList="${JSON.stringify(value.tableData).replace(/"/g, "'")}">`
                 + this.getTableColumn(value.headerData, value.ruleData) + `</table-list>`
             returnData.push({
                 returnHtml,

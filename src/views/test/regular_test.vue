@@ -40,12 +40,8 @@
       <p v-for="(item, index) in tableRegular.showDataHtml" :key="index">{{ item }}</p>
     </div>
     <h4>处理内容结果如下</h4>
-    <font v-if="tableRegular.html == ''" style="color:red;font-weight:bolder;font-size:20px">暂未完成处理</font>
-    <div v-else>
-      {{ tableRegular.html }}
-      <el-divider></el-divider>
-      <render-page :renderHtml="tableRegular.html" />
-    </div>
+    <div id="table-show"></div>
+    <render-page :renderHtml="tableRegular.html"></render-page>
     <el-divider></el-divider>
   </div>
 </template>
@@ -53,9 +49,7 @@
 <script>
 import Code from '@/modules/analysis/utils/code.js'
 import MatchingPattern from '@/modules/analysis/utils/matching_pattern.js'
-import TableList from '@/components/utils/table/table.vue'
-import TableColumn from '@/components/utils/table/table-column.js'
-import RenderPage from "@/components/pages/render/render_page.js"
+import RenderPage from '@/components/pages/render/render_page.js'
 export default {
   data() {
     return {
@@ -79,7 +73,7 @@ export default {
       mdPath: ['/content/test/code.md', '/content/test/table.md'],
       tableRegular: {
         data: undefined,
-        html: [],
+        html: '',
         showDataHtml: undefined,
       },
     }
@@ -97,7 +91,7 @@ export default {
         console.log(error)
       })
     this.axios
-      .get(this.mdPath[1])
+      .get('/content/test/table.md')
       .then((res) => {
         let matchingPattern = new MatchingPattern()
         this.tableRegular.data = res.data.replace(/\r/gim, '')
@@ -198,9 +192,7 @@ export default {
     },
   },
   components: {
-    TableList,
-    TableColumn,
-    RenderPage
+    RenderPage,
   },
 }
 </script>

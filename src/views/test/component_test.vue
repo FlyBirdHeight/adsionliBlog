@@ -22,8 +22,6 @@
 </template>
 
 <script>
-import TableList from '@/components/utils/table/table.vue'
-import TableColumn from "@/components/utils/table/table-column.js"
 export default {
   data() {
     return {
@@ -76,11 +74,7 @@ export default {
       }
       return ''
     },
-  },
-  components: {
-    TableList,
-    TableColumn
-  },
+  }
 }
 </script>
 

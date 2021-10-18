@@ -16,8 +16,6 @@ store.commit('SET_PAGE_LIST', PageList.page.sort((a, b) => {
   return b.toTop - a.toTop
 }))
 store.commit('SET_TAG_LIST', TagList.tag)
-
-
 Vue.config.productionTip = false
 
 import ElementUI from 'element-ui';
@@ -29,6 +27,11 @@ Vue.prototype.axios = axios
 
 import Analysis from "@/modules/analysis/index.js";
 Vue.prototype.analysis = new Analysis();
+
+import TableList from '@/components/utils/table/table.vue'
+import TableColumn from '@/components/utils/table/table-column.js'
+Vue.component('table-list', TableList);
+Vue.component('table-column', TableColumn);
 
 new Vue({
   router,

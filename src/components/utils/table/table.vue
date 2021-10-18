@@ -26,12 +26,14 @@ export default {
     }
   },
   mounted() {
+    this.dataList = this.dataList.replace(/'/g, '"');
     if(typeof(this.dataList) == 'string'){
       this.dataList = JSON.parse(this.dataList);
     }
     this.store.commit('init')
     this.store.tablePositionLeft = document.querySelector(`#table${this._uid}`).getBoundingClientRect().left;
     this.store.resize.resizeLine = document.querySelector(`#tableResize${this._uid}`);
+    this.store.commit('calculateTableWidth');
   },
   props: {
     dataList: {

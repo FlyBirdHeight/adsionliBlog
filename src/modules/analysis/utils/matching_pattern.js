@@ -1,4 +1,5 @@
 import Code from "./code.js"
+import Table from "./table.js"
 /**
  * @class MatchPattern 模式匹配类
  */
@@ -7,7 +8,9 @@ class MatchPattern {
         this.title = /(?<titleCount>^#{1,6})(\s{1,})(.+?)/;
         this.codeFragment = /^(\s*)?(`{3})(\s*)?$/;
         this.code = new Code();
-        this.returnCodeHtml = [];
+        this.table = new Table();
+        this.htmlSpanList = [];
+        this.returnCodeHtml = '';
         //TODO 注意，加粗匹配一定要在倾斜匹配之前
         this.specialChar = {
             bold: /(\*{2})(.+?)(\1)/gi,
@@ -31,24 +34,6 @@ class MatchPattern {
         this.codeEndIndex = undefined;
         this.codeData = [];
         this.allCodeData = [];
-        /**
-         * @property {Boolean} tableFlag 是否是表格模块的标记
-         * @property {Object} tableParameter 表格元素
-         * @property {RegExp} tableReg 表格元素判断 start:开始，end:结束，body:表格题，rule:表格属性
-         */
-        this.tableFlag = false;
-        this.tableParameter = {
-            startIndex: undefined,
-            endIndex: undefined,
-            allTableData: [],
-            tableData: []
-        };
-        this.tableReg = {
-            start: /((\|?).+?(\|))+/gi,
-            rule: /((\|?)(\s+)?----(\s+)?(\|))+/gi,
-            body: /((\|?).+?(\|))+/gi,
-            end: /[^(((\|?).+?(\|))+)](\s*)(\n*)/gi
-        };
     }
 
     /**
@@ -61,18 +46,23 @@ class MatchPattern {
                 this.matchCodeFragment(data[i], i);
                 continue;
             }
-            if (this.tableFlag) {
+            if (this.table.tableParameter.start || this.table.tableParameter.is) {
                 this.matchTable(data[i], i);
+                continue
             }
             this.matchCodeFragment(data[i], i);
-
+            this.table.judgeHandle(data[i], i);
         }
+
         this.replaceToSpan();
-        if (this.returnCodeHtml.length != 0) {
-            this.returnCodeHtml.sort((a, b) => {
+        if (this.htmlSpanList.length != 0) {
+            this.htmlSpanList.sort((a, b) => {
                 return a.startIndex - b.startIndex;
             })
         }
+        this.htmlSpanList.map((value, index) => {
+            this.returnCodeHtml += value.returnHtml;
+        })
     }
 
     /**
@@ -81,18 +71,9 @@ class MatchPattern {
     replaceToSpan() {
         if (this.allCodeData.length != 0) {
             for (let value of this.allCodeData) {
-                this.returnCodeHtml.push(this.code.setHandleValue(value.codeData, value.startIndex, value.endIndex).handle())
+                this.htmlSpanList.push(this.code.setHandleValue(value.codeData, value.startIndex, value.endIndex).handle())
             }
         }
-    }
-
-    /**
-     * @method matchTable 匹配表格模块
-     * @param {*} value 待匹配字符
-     * @param {*} index 行数下标
-     */
-    matchTable(value, index) {
-
     }
 
     /**
@@ -144,7 +125,6 @@ class MatchPattern {
      */
     matchTitle(value) {
         value = this.deleteBlank(value);
-
         if (this.title.test(value)) {
             let count = this.title.match(/(?<titleCount>^#{1,6})(\s{1,})(.+?)/).groups.titleCount.length
             value = this.title.replace(reg, `<h${count}>$<title></h${count}>`);
@@ -223,6 +203,26 @@ class MatchPattern {
         }
 
         return returnValue;
+    }
+
+    /**
+     * @method resetData 重置数据
+     */
+    resetData() {
+        this.htmlSpanList = [];
+        this.returnCodeHtml = '';
+        this.codeFlag = false;
+        this.codeStartIndex = undefined;
+        this.codeEndIndex = undefined;
+        this.codeData = [];
+        this.allCodeData = [];
+        this.tableFlag = false;
+        this.tableParameter = {
+            startIndex: undefined,
+            endIndex: undefined,
+            allTableData: [],
+            tableData: []
+        };
     }
 }
 

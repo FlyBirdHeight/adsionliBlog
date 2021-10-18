@@ -10,7 +10,7 @@ export default {
     sortable: Boolean,
     align: {
       type: String,
-      default: "left"
+      default: "center"
     }
   },
   mounted() {
@@ -20,7 +20,7 @@ export default {
       label: this.label,
       width: this.width || '200',
       sortable: this.sortable || false,
-      align: this.align || "left"
+      align: this.align || "center"
     })
     store.states.columns.push(option)
   },

@@ -8,11 +8,11 @@ export default {
     const uId = this.$parent._uid;
     return (
       <div ref="tableHeader" ref={`table-header${this._uid}`} id={`table-header${this._uid}`} class="table_header-column">
-        <table class='tableStyle' cellspacing="0" cellpadding="0" border="0" style={'width:' + width + 'px'}>
+        <table class='tableStyle' cellspacing="0" cellpadding="0" border="0" style={`width: ${width}px`}>
           <colgroup>
             {
               this._l(columns, (column, index) =>
-                <col name={'th-' + uId + '-col-column-' + (index)} width={column.width ? column.width : ''} />
+                <col style={`text-align:${column.align || 'center'}`} name={'th-' + uId + '-col-column-' + (index)} width={column.width ? column.width : ''} />
               )
             }
           </colgroup>
@@ -20,7 +20,7 @@ export default {
             <tr class='theadStyle' id={`th${this._uid}`}>
               {
                 this._l(columns, (column, index) =>
-                  <th class={`theadTd ${'th-column-' + (index)}`}>
+                  <th  class={`theadTd ${'th-column-' + (index)}`}>
                     {column.label}
                     {column.sortable
                       ? <span>

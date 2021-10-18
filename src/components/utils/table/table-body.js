@@ -17,7 +17,7 @@ export default {
           <colgroup>
             {
               this._l(columns, (column, index) =>
-                <col name={'tb-'+ uId +'-col-column-' + (index)} width={column.width ? column.width : ''} />
+                <col style={`text-align:${column.align || 'center'}`} name={'tb-'+ uId +'-col-column-' + (index)} width={column.width ? column.width : ''} />
               )
             }
           </colgroup>

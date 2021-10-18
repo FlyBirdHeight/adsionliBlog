@@ -39,7 +39,10 @@ TableStore.prototype.mutations = {
         let changeWidth = width - frontWidth;
         this.states.columns[index].width = changeWidth;
         this.commit('calculateTableWidth');
+        console.log(`name=${'th-' + this.table._uid + '-col-column-' + index}`);
+        console.log(changeWidth);
         document.querySelector(`[name=${'th-' + this.table._uid + '-col-column-' + index}]`).width = changeWidth + 'px';
+        
         document.querySelector(`[name=${'tb-' + this.table._uid + '-col-column-' + index}]`).width = changeWidth + 'px';
     },
     handleRowClick(row) {

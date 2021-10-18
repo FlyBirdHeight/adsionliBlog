@@ -12,7 +12,7 @@ export default {
           <colgroup>
             {
               this._l(columns, (column, index) =>
-                <col name={'th-' + uId + 'col-column-' + (index)} width={column.width ? column.width : ''} />
+                <col name={'th-' + uId + '-col-column-' + (index)} width={column.width ? column.width : ''} />
               )
             }
           </colgroup>

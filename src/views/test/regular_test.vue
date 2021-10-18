@@ -43,6 +43,8 @@
     <font v-if="tableRegular.html == ''" style="color:red;font-weight:bolder;font-size:20px">暂未完成处理</font>
     <div v-else>
       {{ tableRegular.html }}
+      <el-divider></el-divider>
+      <render-page :renderHtml="tableRegular.html" />
     </div>
     <el-divider></el-divider>
   </div>
@@ -53,6 +55,7 @@ import Code from '@/modules/analysis/utils/code.js'
 import MatchingPattern from '@/modules/analysis/utils/matching_pattern.js'
 import TableList from '@/components/utils/table/table.vue'
 import TableColumn from '@/components/utils/table/table-column.js'
+import RenderPage from "@/components/pages/render/render_page.js"
 export default {
   data() {
     return {
@@ -197,6 +200,7 @@ export default {
   components: {
     TableList,
     TableColumn,
+    RenderPage
   },
 }
 </script>

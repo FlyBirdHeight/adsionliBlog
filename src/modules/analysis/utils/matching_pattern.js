@@ -1,27 +1,21 @@
+import AnalysisIndex from "./index.js"
 import Code from "./code.js"
 import Table from "./table.js"
+import OrderList from "./order_list.js"
+import Summary from "./summary.js"
 /**
  * @class MatchPattern 模式匹配类
  */
-class MatchPattern {
+class MatchPattern extends AnalysisIndex{
     constructor() {
-        this.title = /(?<titleCount>^#{1,6})(\s{1,})(.+?)/;
+        super();
         this.codeFragment = /^(\s*)?(`{3})(\s*)?$/;
         this.code = new Code();
         this.table = new Table();
+        this.orderList = new OrderList();
+        this.summary = new Summary();
         this.htmlSpanList = [];
         this.returnCodeHtml = '';
-        //TODO 注意，加粗匹配一定要在倾斜匹配之前
-        this.specialChar = {
-            bold: /(\*{2})(.+?)(\1)/gi,
-            tilt: /(\*)(.+?)\1/gi,
-            boldTilt: /(\*{3})(.+?)(\1)/gi,
-            underline: /(<u>)(.+?)(<\/u>)/gi,
-            inlineCode: /(`{1,5})(.+?)\1/gi,
-            deleteLine: /(~{2})(.+?)(\1)/gi,
-            highlight: /(={2})(.+?)\1/gi,
-            hyperlinks: /(\[(.+?)\])(\((.+?)\))/gi
-        }
         /**
          * @property {Boolean} codeFlag 是否是代码片段的标记
          * @property {Number} codeStartIndex 代码片段开始位置
@@ -41,17 +35,18 @@ class MatchPattern {
      */
     handle(value) {
         let data = value.split('\n');
+        let length = data.length;
         for (let i = 0; i < data.length; i++) {
             if (this.codeFlag) {
                 this.matchCodeFragment(data[i], i);
                 continue;
             }
-            if (this.table.tableParameter.start || this.table.tableParameter.is) {
-                this.matchTable(data[i], i);
-                continue
+            if (this.table.tableParameter.start) {
+                this.table.judgeHandle(data[i], i, length);
+                continue;
             }
             this.matchCodeFragment(data[i], i);
-            this.table.judgeHandle(data[i], i);
+            this.table.judgeHandle(data[i], i, length);
         }
 
         this.replaceToSpan();
@@ -60,6 +55,7 @@ class MatchPattern {
                 return a.startIndex - b.startIndex;
             })
         }
+        
         this.htmlSpanList.map((value, index) => {
             this.returnCodeHtml += value.returnHtml;
         })
@@ -73,6 +69,9 @@ class MatchPattern {
             for (let value of this.allCodeData) {
                 this.htmlSpanList.push(this.code.setHandleValue(value.codeData, value.startIndex, value.endIndex).handle())
             }
+        }
+        if(this.table.tableParameter.allTableData.length != 0){
+            this.htmlSpanList = this.htmlSpanList.concat(this.table.filterTableData().generateTableData().generateSpan());
         }
     }
 
@@ -133,76 +132,6 @@ class MatchPattern {
         } else {
             return value;
         }
-    }
-
-    /**
-     * @method matchSpecialChar 匹配特殊字符
-     * @param {String} value 
-     */
-    matchSpecialChar(value) {
-        for (let key in this.specialChar) {
-            let reg = new RegExp(this.specialChar[key]);
-            if (reg.test(value)) {
-                if (key == 'hyperlinks') {
-                    value = value.replace(reg, this.handleSpecialChar('$2', key, '$4'));
-                } else {
-                    value = value.replace(reg, this.handleSpecialChar('$2', key))
-                }
-            }
-        }
-
-        return value;
-    }
-
-    /**
-     * @method handleSpecialChar 将特殊字符转为对应的html标签
-     * @param {*} value 插入检索值
-     * @param {*} type 类型
-     * @param {*} url 链接标签时的url
-     */
-    handleSpecialChar(value, type, url = '') {
-        switch (type) {
-            case 'tilt':
-                return `<font class='tilt_char'>${value}</font>`
-            case 'bold':
-                return `<font class='bold_char'>${value}</font>`
-            case 'underline':
-                return `<font class='underline_char'>${value}</font>`
-            case 'inlineCode':
-                return `<span class='inlineCode_char'>${value}</span>`
-            case 'deleteLine':
-                return `<del class='deleteline_char'>${value}</del>`
-            case 'highlight':
-                return `<font class='highlight_char'>${value}</font>`
-            case 'hyperlinks':
-                return `<a href='${url}' rel='noopener noreferrer' target='_blank'>${value}</a>`
-            default:
-                break;
-        }
-    }
-
-    /**
-     * @method deleteBlank 去除空白符
-     * @param {String} value 待处理字符串
-     * @param {*} type 1: 去除全部 2: 去除起始空白符 3: 去除结尾空白符
-     */
-    deleteBlank(value, type = 1) {
-        let returnValue;
-        switch (type) {
-            case 1:
-                returnValue = value.replace('/(^\\s*|\\s*$)/gi', '')
-                break;
-            case 2:
-                returnValue = value.replace('/(^\\s*)/gi', '')
-                break;
-            case 3:
-                returnValue = value.replace('/(\\s*$)/gi', '')
-                break
-            default:
-                break;
-        }
-
-        return returnValue;
     }
 
     /**

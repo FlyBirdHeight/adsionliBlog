@@ -211,6 +211,14 @@ class Code {
             return innerHtml;
         }
     }
+
+    /**
+     * TODO: 待完成
+     * @method handleCodeHighLight 处理代码高亮显示
+     */
+    handleCodeHighLight(){
+
+    }
 }
 
 export default Code;

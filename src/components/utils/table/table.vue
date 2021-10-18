@@ -26,14 +26,16 @@ export default {
     }
   },
   mounted() {
+    if(typeof(this.dataList) == 'string'){
+      this.dataList = JSON.parse(this.dataList);
+    }
     this.store.commit('init')
     this.store.tablePositionLeft = document.querySelector(`#table${this._uid}`).getBoundingClientRect().left;
     this.store.resize.resizeLine = document.querySelector(`#tableResize${this._uid}`);
-    console.log(this.store.resize.resizeLine.getBoundingClientRect())
   },
   props: {
     dataList: {
-      type: Array,
+      type: [Array, String],
       default: () => {
         return []
       },

@@ -47,7 +47,7 @@
     <div class="table-regular">
       <p v-for="(item, index) in titleRegular.showDataHtml" :key="index">{{ item }}</p>
     </div>
-    
+    <render-page :renderHtml="titleRegular.html"></render-page>
     <el-divider></el-divider>
   </div>
 </template>

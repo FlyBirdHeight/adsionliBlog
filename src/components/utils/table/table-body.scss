@@ -11,6 +11,9 @@
   -ms-user-select: none; /*IE10*/ /*选中文字时避免出现蓝色背景*/
   user-select: none; /*选中文字时避免出现蓝色背景*/
 }
+.table_body-table{
+  width: 100%;
+}
 tbody {
   vertical-align: middle;
 }
@@ -19,4 +22,26 @@ tbody {
 }
 tr {
   vertical-align: inherit;
+}
+.table_body-no-data {
+  height: 100%;
+  width: 100%;
+  border-top: 1px solid #ebeef5;
+  min-height: 60px;
+  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  .empty-label {
+    color: #909399;
+    font-weight: bolder;
+    width: 50%;
+    line-height: 60px;
+  }
 }

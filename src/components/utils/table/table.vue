@@ -8,6 +8,8 @@
 </template>
 
 <script>
+//TODO 还可以看法的功能：1.固定列 2：固定头 3.多级表头(合并表头) 4. 单选 
+// 5. 多选 6.在table-column加入模板语言，然后放入tbody中去 7. 展开行
 import TableStore from './table-store.js'
 import TableLayout from './table-layout.js'
 import TableColumn from './table-column.js'
@@ -23,20 +25,22 @@ export default {
     return {
       store,
       layout,
-      dataValueList: this.dataList
+      dataValueList: this.dataList,
+      emptyText: '暂无数据',
     }
   },
   mounted() {
-    try {
-      if (typeof this.dataValueList == 'string') {
-        this.dataValueList = this.dataValueList.replace(/'/g, '"')
-        this.dataValueList = JSON.parse(this.dataValueList)
-      }
-      this.store.commit('init')
-      this.store.tablePositionLeft = document.querySelector(`#table${this._uid}`).getBoundingClientRect().left
-      this.store.resize.resizeLine = document.querySelector(`#tableResize${this._uid}`)
+    this.$nextTick(function() {
+      this.store.tableWidth = this.$el.clientWidth - 2;
       this.store.commit('calculateTableWidth')
-    } catch (e) {}
+    })
+    if (typeof this.dataValueList == 'string') {
+      this.dataValueList = this.dataValueList.replace(/'/g, '"')
+      this.dataValueList = JSON.parse(this.dataValueList)
+    }
+    this.store.commit('init')
+    this.store.tablePositionLeft = document.querySelector(`#table${this._uid}`).getBoundingClientRect().left
+    this.store.resize.resizeLine = document.querySelector(`#tableResize${this._uid}`)
   },
   props: {
     dataList: {

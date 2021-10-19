@@ -13,11 +13,11 @@ export default {
     const uId = this.$parent._uid;
     return (
       <div class="table_body-wrapper" ref={`table-body${this._uid}`} id={`table-body${this._uid}`}>
-        <table cellspacing="0" cellpadding="0" border="0" style={'width:' + width + 'px'}>
+        <table class="table_body-table" cellspacing="0" cellpadding="0" border="0" style={'width:' + width + 'px'}>
           <colgroup>
             {
               this._l(columns, (column, index) =>
-                <col style={`text-align:${column.align || 'center'}`} name={'tb-'+ uId +'-col-column-' + (index)} width={column.width ? column.width : ''} />
+                <col style={`text-align:${column.align || 'center'}`} name={'tb-' + uId + '-col-column-' + (index)} width={column.width ? column.width : ''} />
               )
             }
           </colgroup>
@@ -29,14 +29,17 @@ export default {
                     on-mouseover={() => this.handleHoverEvent(item)} >
                     {
                       this._l(options, (option, index) =>
-                        <td class={`tdStyle ${'td-column-' + (index)}`}>{item[option]}</td>
+                        <td class={`tdStyle ${'td-column-' + (index)}`}>
+                          <div domPropsInnerHTML={item[option]}></div>
+                        </td>
                       )
                     }
                   </tr>
-                ) : <tr>{this.$parent.emptyText}</tr>
+                ) : <tr></tr>
             }
           </tbody>
         </table>
+        {dataSource.length == 0? <div style={`width: ${width}px`} class="table_body-no-data"><span class="empty-label">{this.$parent.emptyText}</span></div> : ''}
       </div>
     )
   },
@@ -45,7 +48,6 @@ export default {
     document.querySelector(`#table-body${this._uid}`).addEventListener('scroll', (e) => {
       let offsetLeft = e.target.scrollLeft;
       this.$parent.store.syncLeft = offsetLeft;
-
     })
   },
   methods: {

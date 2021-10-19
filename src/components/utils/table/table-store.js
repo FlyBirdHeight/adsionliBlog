@@ -17,15 +17,39 @@ const TableStore = function (table, initialState) {
         showResizeLine: false,
         resizeLine: undefined
     }
-
+    this.noWidthCount = 0;
+    this.firstRender = false;
 }
 TableStore.prototype.mutations = {
     calculateTableWidth() {
-        let totalWidth = 0;
-        for (let value of this.states.columns) {
-            totalWidth += Number(value.width)
+        console.log(this.states.columns)
+        console.log(this.tableWidth, this.noWidthCount)
+        if (this.tableWidth && this.noWidthCount != 0 && !this.firstRender) {
+            let width = this.tableWidth;
+            for (let value of this.states.columns) {
+                if (!value['width']) {
+                    continue
+                } else {
+                    width -= value['width'];
+                }
+            }
+            let averageWidth = Math.floor(width / this.noWidthCount);
+            console.log('averageWidth', averageWidth)
+            this.states.columns.map((currentValue, index) => {
+                if (!currentValue.width) {
+                    currentValue.width = averageWidth
+                }
+                return currentValue;
+            })
+            this.firstRender = true;
+            this.noWidthCount = 0;
+        } else if (this.noWidthCount == 0) {
+            let totalWidth = 0;
+            for (let value of this.states.columns) {
+                totalWidth += Number(value.width)
+            }
+            this.tableWidth = totalWidth;
         }
-        this.tableWidth = totalWidth;
     },
     changeWidth(index, width) {
         let frontWidth = 0;
@@ -37,11 +61,10 @@ TableStore.prototype.mutations = {
             }
         }
         let changeWidth = width - frontWidth;
-        console.log(changeWidth, index);
         this.states.columns[index].width = changeWidth;
         this.commit('calculateTableWidth');
         document.querySelector(`[name=${'th-' + this.table._uid + '-col-column-' + index}]`).width = changeWidth + 'px';
-        
+
         document.querySelector(`[name=${'tb-' + this.table._uid + '-col-column-' + index}]`).width = changeWidth + 'px';
     },
     handleRowClick(row) {

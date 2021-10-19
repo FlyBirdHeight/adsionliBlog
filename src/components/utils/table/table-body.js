@@ -8,7 +8,7 @@ export default {
     columns.map(function (column) {
       options.push(column['prop'])
     })
-    const dataSource = this.$parent.dataList
+    const dataSource = this.$parent.dataValueList
     const width = this.$parent.store.tableWidth;
     const uId = this.$parent._uid;
     return (

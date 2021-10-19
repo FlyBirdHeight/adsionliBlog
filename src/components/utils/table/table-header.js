@@ -71,12 +71,16 @@ export default {
       }
       //鼠标按下事件
       headerRows[0].onmousedown = (e) => {
-
         if (resize.canResize) {
           resize.isResize = true;
           resize.showResizeLine = true;
+          let checkedHeader = undefined;
           let store = this.$parent.store;
-          let checkedHeader = e.path[0].className.match(/(\d+)?$/gi)[0];
+          if(e.path[0].className == ''){
+            checkedHeader = e.path[1].className.match(/(\d+)?$/gi)[0];
+          }else{
+            checkedHeader = e.path[0].className.match(/(\d+)?$/gi)[0];
+          }
           function bodyMouseUp(e) {
             if (resize.isResize) {
               document.body.removeEventListener('mousemove', bodyMouseMove)

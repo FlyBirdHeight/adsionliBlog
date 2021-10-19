@@ -3,7 +3,7 @@
     <table-header class="table-header"></table-header>
     <slot></slot>
     <table-body class="table-body"></table-body>
-    <div :id="`tableResize${_uid}`"  v-show="store.resize.showResizeLine" class="resize-table-column-width"></div>
+    <div :id="`tableResize${_uid}`" v-show="store.resize.showResizeLine" class="resize-table-column-width"></div>
   </div>
 </template>
 
@@ -23,17 +23,20 @@ export default {
     return {
       store,
       layout,
+      dataValueList: this.dataList
     }
   },
   mounted() {
-    this.dataList = this.dataList.replace(/'/g, '"');
-    if(typeof(this.dataList) == 'string'){
-      this.dataList = JSON.parse(this.dataList);
-    }
-    this.store.commit('init')
-    this.store.tablePositionLeft = document.querySelector(`#table${this._uid}`).getBoundingClientRect().left;
-    this.store.resize.resizeLine = document.querySelector(`#tableResize${this._uid}`);
-    this.store.commit('calculateTableWidth');
+    try {
+      if (typeof this.dataValueList == 'string') {
+        this.dataValueList = this.dataValueList.replace(/'/g, '"')
+        this.dataValueList = JSON.parse(this.dataValueList)
+      }
+      this.store.commit('init')
+      this.store.tablePositionLeft = document.querySelector(`#table${this._uid}`).getBoundingClientRect().left
+      this.store.resize.resizeLine = document.querySelector(`#tableResize${this._uid}`)
+      this.store.commit('calculateTableWidth')
+    } catch (e) {}
   },
   props: {
     dataList: {

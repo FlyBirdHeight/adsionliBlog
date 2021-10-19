@@ -9,10 +9,17 @@ export default {
         });
         return h(com, {})
     },
+    mounted() {
+        this.changeHtmlData();
+    },
     props: {
         renderHtml: {
             type: String,
             default: ''
+        }
+    },
+    methods: {
+        changeHtmlData(){
         }
     },
     components: {

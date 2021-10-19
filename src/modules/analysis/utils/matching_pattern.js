@@ -1,4 +1,5 @@
 import AnalysisIndex from "./index.js"
+import Title from "./title.js"
 import Code from "./code.js"
 import Table from "./table.js"
 import OrderList from "./order_list.js"
@@ -14,6 +15,7 @@ class MatchPattern extends AnalysisIndex{
         this.table = new Table();
         this.orderList = new OrderList();
         this.summary = new Summary();
+        this.title = new Title();
         this.htmlSpanList = [];
         this.returnCodeHtml = '';
         /**
@@ -47,8 +49,8 @@ class MatchPattern extends AnalysisIndex{
             }
             this.matchCodeFragment(data[i], i);
             this.table.judgeHandle(data[i], i, length);
+            this.title.judgeTitle(data[i], i);
         }
-
         this.replaceToSpan();
         if (this.htmlSpanList.length != 0) {
             this.htmlSpanList.sort((a, b) => {
@@ -59,6 +61,8 @@ class MatchPattern extends AnalysisIndex{
         this.htmlSpanList.map((value, index) => {
             this.returnCodeHtml += value.returnHtml;
         })
+
+        console.log(this.returnCodeHtml)
     }
 
     /**
@@ -72,6 +76,9 @@ class MatchPattern extends AnalysisIndex{
         }
         if(this.table.tableParameter.allTableData.length != 0){
             this.htmlSpanList = this.htmlSpanList.concat(this.table.filterTableData().generateTableData().generateSpan());
+        }
+        if(this.title.titleList.length != 0){
+            this.htmlSpanList = this.htmlSpanList.concat(this.title.handleTitleLevel().generateTitleLevel());
         }
     }
 

@@ -1,0 +1,80 @@
+<h1>1. 代码构建</h1>
+<div class="code">
+    <p class="note">/**</p>
+    <p class="note">* @method handleNote 处理note</p>
+    <p class="note">* @param {String} handleValue 待处理参数</p>
+    <p class="note">*/</p>
+    <p class="code_font">handleNote(handleValue, innerHtml) {</p>
+    <p class="code_font tab_1">handleValue = handleValue.replace(this.removeEndSpace, '')</p>
+    <p class="code_font tab_1">let spaceCount = handleValue.match(this.space)[0].length;</p>
+    <p class="code_font tab_1">let tabLayour = this.getTabNum(spaceCount);</p>
+    <p class="code_font tab_1">innerHtml = innerHtml.replace(/code_font/i, this.handleTag.note + (tabLayour != '' ? `
+        ${tabLayour}` : ''));</p>
+    <p class="code_font tab_1">innerHtml += handleValue + this.handleTag.pE;</p><br />
+    <p class="code_font tab_1">return innerHtml</p>
+    <p class="code_font">}</p>
+</div>
+<h2>1.1 测试 table</h2>
+<table-list :height="200" dataList="[{'0':' adsionli ','1':' 多级标题的构建 ','2':' 2021 年 10 月 19 日 ','3':'  未完成  '}]">
+    <table-column prop="0" label="测试人" align="center"></table-column>
+    <table-column prop="1" label="测试内容" align="center"></table-column>
+    <table-column prop="2" label="测试时间" align="center"></table-column>
+    <table-column prop="3" label="是否完成" align="center"></table-column>
+</table-list>
+<h3>1.1.1 测试特殊字符匹配</h3>
+<h2>1.2 测试2级标题2</h2>
+<h3>1.2.1 测试3级标题1</h3>
+<h4>1.2.1.1 测试4级标题1</h4>
+<h6>1.2.1.1.1.1 测试6级标题1</h6>
+<h2>1.3 测试2级标题3</h2>
+<h1>2. 匹配内容的记录</h1>
+<h2>2.1 特殊字符匹配</h2>
+<div class="code">
+    <p class="note">//TODO 注意，加粗匹配一定要在倾斜匹配之前</p>
+    <p class="code_font">this.specialChar = {</p>
+    <p class="code_font tab_1">bold: /(\*{2})(.+?)(\1)/gi,</p>
+    <p class="code_font tab_1">tilt: /(\*)(.+?)\1/gi,</p>
+    <p class="code_font tab_1">boldTilt: /(\*{3})(.+?)(\1)/gi,</p>
+    <p class="code_font tab_1">underline: /(<u>)(.+?)(<\/u>)/gi, </p> <p class="code_font tab_1">inlineCode:
+                /(`{1,5})(.+?)\1/gi,</p>
+    <p class="code_font tab_1">deleteLine: /(~{2})(.+?)(\1)/gi,</p>
+    <p class="code_font tab_1">highlight: /(={2})(.+?)\1/gi,</p>
+    <p class="code_font tab_1">hyperlinks: /(\[(.+?)\])(\((.+?)\))/gi</p>
+    <p class="code_font">}</p>
+</div>
+<h2>2.2 表格匹配</h2>
+<div class="code">
+    <p class="code_font">this.tableReg = {</p>
+    <p class="code_font tab_1">start: /^((\|?)[^|]+(\|{1}))([^|]+(\|?))*([^|]+)$/i,</p>
+    <p class="code_font tab_1">rule: /((\|)?(\s*)((:{1})?-{1,}(:{1})?)(\s*)(\|*))+/i,</p>
+    <p class="code_font tab_1">body: /((\|?).*?)+(\|+)/i,</p>
+    <p class="code_font tab_1">end: /^(\s*)(\n*)?$/i</p>
+    <p class="code_font">};</p>
+</div>
+<h2>2.3 代码匹配（含普通注释及多行注释匹配）</h2>
+<div class="code">
+    <p class="note">/**</p>
+    <p class="note">* @description 定义正则规则表达式参数</p>
+    <p class="note">* @property {String} removeEndSpace 去除尾部空格</p>
+    <p class="note">* @property {String} space 获取空格数量</p>
+    <p class="note">* @property {Array} nodeSign 注释标记</p>
+    <p class="note">* @property {RegExp} morelineAnnotation 多行注释的匹配(暂时没啥用)</p>
+    <p class="note">* @property {RegExp} morelineAnnotationStart 多行注释头匹配</p>
+    <p class="note">* @property {RegExp} morelineAnnotationBody 多行注释身体匹配</p>
+    <p class="note">* @property {RegExp} morelineAnnotationEnd 多行注释尾匹配</p>
+    <p class="note">*</p>
+    <p class="note">**/</p>
+    <p class="code_font">this.removeEndSpace = /\s*$/;</p>
+    <p class="code_font">this.space = /^\s*/g;</p>
+    <p class="code_font">this.morelineAnnotation = /^(\/\*{1,}\n)?((\*{1}.*)\n)*(\*{1,}\/)$/gmi;</p>
+    <p class="code_font">this.morelineAnnotationStart = new RegExp(/^(\s*)?(\/\*{1,})(.+)?(\n*)?$/i);</p>
+    <p class="code_font">this.morelineAnnotationBody = new RegExp(/^(\s*)?\*{1,}([^/]+)?$/i);</p>
+    <p class="code_font">this.morelineAnnotationEnd = new RegExp(/^(\s*)?(\*{1,}.*)*\*\/(\s*)?$/i);</p>
+    <p class="code_font">this.slashAnnotation = /^(\s*)(\/{2})(.+)/;</p>
+</div>
+<h2>2.4 标题匹配</h2>
+<h3>2.4.1 普通标题匹配</h3>
+<div class="code">
+    <p class="code_font">this.title = /(?<titleCount>^#{1,6})(\s{1,})(.+)/;</p>
+</div>
+<h3>2.4.2 多级标题的构建</h3>

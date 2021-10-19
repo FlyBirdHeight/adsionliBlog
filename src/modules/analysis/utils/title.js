@@ -1,10 +1,14 @@
 import AnalysisIndex from "./index.js"
-class Title extends AnalysisIndex{
-    constructor(){
+class Title extends AnalysisIndex {
+    constructor() {
         super();
         this.title = /(?<titleCount>^#{1,6})(\s{1,})(.+)/;
         this.titleList = [];
         this.titleHtml = [];
+        this.titleValueList = new Map();
+        this.lastLevel = undefined;
+        this.maxLevel = undefined;
+        this.root = undefined;
     }
 
     /**
@@ -12,24 +16,118 @@ class Title extends AnalysisIndex{
      * @param {*} value 待判断值
      * @param {Number} index 文件中下标
      */
-    judgeTitle(value, index){
-        if(this.title.test(value)){
-
+    judgeTitle(value, index) {
+        if (this.title.test(value)) {
+            let execData = this.title.exec(value);
+            let level = execData[1].length;
+            let label = execData[3];
+            if (!this.lastLevel) {
+                this.lastLevel = level;
+                this.maxLevel = level;
+                this.root = index;
+                this.joinTitleList({
+                    startIndex: index,
+                    label,
+                    level,
+                    root: undefined,
+                    leave: [],
+                }, index)
+            } else {
+                if (level > this.lastLevel) {
+                    this.lastLevel = level;
+                    this.joinTitleList({
+                        startIndex: index,
+                        label,
+                        level,
+                        root: this.root,
+                        leave: [],
+                    }, index)
+                    this.root = index;
+                } else if (level == this.lastLevel) {
+                    this.joinTitleList({
+                        startIndex: index,
+                        label,
+                        level,
+                        root: this.titleValueList.get(this.root).root,
+                        leave: [],
+                    }, index)
+                    this.root = index;
+                } else if (level < this.lastLevel && level > this.maxLevel) {
+                    let selectRoot = undefined;
+                    let value = this.titleValueList.get(this.root);
+                    while(value.level != level){
+                        selectRoot = value.root;  
+                        value = this.titleValueList.get(value.root);
+                    }
+                    this.joinTitleList({
+                        startIndex: index,
+                        label,
+                        level,
+                        root: this.titleValueList.get(selectRoot).root,
+                        leave: [],
+                    }, index)
+                    this.lastLevel = level;
+                    this.root = index;
+                } else {
+                    this.lastLevel = level;
+                    this.joinTitleList({
+                        startIndex: index,
+                        label,
+                        level,
+                        root: undefined,
+                        leave: [],
+                    }, index)
+                    this.root = index;
+                    this.maxLevel = level;
+                }
+            }
         }
+    }
+
+    /**
+     * @method joinTitleList 添加入titleList数据
+     * @param {*} data 待添加数据
+     * @param {*} index key值
+     */
+    joinTitleList(data, index) {
+        this.titleValueList.set(index, data);
+        this.titleList.push(data);
     }
 
     /**
      * @method handleTitleLevel 处理Title的分级
      */
-    handleTitleLevel(){
+    handleTitleLevel() {
+        let handleData = new Map();
+        for(let [key, value] of this.titleValueList){
+            if(typeof(value.root) == 'undefined'){
+                handleData.set(key, value)
+                continue;
+            }
+            this.titleValueList.get(value.root).leave.push(value);
+        }
+        this.titleValueList = [...handleData];
+        this.titleValueList.map((currentValue) => {
+            currentValue.splice(0, 1);
+            return currentValue;
+        })
+        this.titleValueList = this.titleValueList.flat();
 
+        return this;
     }
 
     /**
      * @method generateTitleLevel 生成title分级列表
      */
-    generateTitleLevel(){
-
+    generateTitleLevel() {
+        for(let value of this.titleList){
+            this.titleHtml.push({
+                startIndex: value.startIndex,
+                returnHtml: `<h${value.level}>${value.label}</h${value.level}>`
+            })
+        }
+        
+        return this.titleHtml
     }
 }
 

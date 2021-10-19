@@ -22,8 +22,6 @@ const TableStore = function (table, initialState) {
 }
 TableStore.prototype.mutations = {
     calculateTableWidth() {
-        console.log(this.states.columns)
-        console.log(this.tableWidth, this.noWidthCount)
         if (this.tableWidth && this.noWidthCount != 0 && !this.firstRender) {
             let width = this.tableWidth;
             for (let value of this.states.columns) {
@@ -34,7 +32,6 @@ TableStore.prototype.mutations = {
                 }
             }
             let averageWidth = Math.floor(width / this.noWidthCount);
-            console.log('averageWidth', averageWidth)
             this.states.columns.map((currentValue, index) => {
                 if (!currentValue.width) {
                     currentValue.width = averageWidth

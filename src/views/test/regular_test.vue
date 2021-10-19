@@ -42,6 +42,12 @@
     <h4>处理内容结果如下</h4>
     <div id="table-show"></div>
     <render-page :renderHtml="tableRegular.html"></render-page>
+    <el-divider>处理标题以及多级标题列表的构建</el-divider>
+    <h3>测试内容</h3>
+    <div class="table-regular">
+      <p v-for="(item, index) in titleRegular.showDataHtml" :key="index">{{ item }}</p>
+    </div>
+    
     <el-divider></el-divider>
   </div>
 </template>
@@ -70,12 +76,17 @@ export default {
       showCodeValue: [],
       codeHtml: '',
       matchingPattern: new MatchingPattern(),
-      mdPath: ['/content/test/code.md', '/content/test/table.md'],
+      mdPath: ['/content/test/code.md', '/content/test/table.md', '/content/test/title.md'],
       tableRegular: {
         data: undefined,
         html: '',
         showDataHtml: undefined,
       },
+      titleRegular: {
+        data: undefined,
+        html: '',
+        showDataHtml: undefined
+      }
     }
   },
   mounted() {
@@ -91,18 +102,26 @@ export default {
         console.log(error)
       })
     this.axios
-      .get('/content/test/table.md')
+      .get(this.mdPath[1])
       .then((res) => {
         let matchingPattern = new MatchingPattern()
         this.tableRegular.data = res.data.replace(/\r/gim, '')
         this.tableRegular.showDataHtml = this.tableRegular.data.split('\n')
-        matchingPattern.resetData()
         matchingPattern.handle(this.tableRegular.data)
         this.tableRegular.html = matchingPattern.returnCodeHtml
       })
       .catch((error) => {
         console.log(error)
       })
+    this.axios.get(this.mdPath[2]).then((res) => {
+      let matchingPattern = new MatchingPattern();
+      this.titleRegular.data = res.data.replace(/\r/gim, '');
+      this.titleRegular.showDataHtml = this.titleRegular.data.split('\n');
+      matchingPattern.handle(this.titleRegular.data);
+      this.titleRegular.html = matchingPattern.returnCodeHtml;
+    }).catch(error => {
+      console.log(error)
+    })
   },
   methods: {
     testTitle() {

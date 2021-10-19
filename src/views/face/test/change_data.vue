@@ -49,7 +49,6 @@ export default {
         }
         newA[list[i].id] = list[i]
       }
-      console.log(newA);
 
       for (let key in newA) {
         let data = newA[key]

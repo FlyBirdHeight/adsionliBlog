@@ -35,7 +35,6 @@ export default {
       const column = {}
       for (let name in options) {
         if(name == 'width'){
-          console.log(options[name]);
           if(!options[name]){
             this.$parent.store.noWidthCount++;
           }

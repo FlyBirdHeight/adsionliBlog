@@ -1,4 +1,7 @@
-@mixin title() {
+@mixin pageTitle() {
+  text-align: left;
+  vertical-align: inherit;
+  padding: 5px;
 }
 
 @mixin subTitle($fontSize, $fontColor: null) {
@@ -36,7 +39,7 @@
   font-weight: bolder;
 }
 
-@mixin createdAt($color: rgb(83, 168, 255), $fontWeight: 'bolder'){
-  color:$color;
+@mixin createdAt($color: rgb(83, 168, 255), $fontWeight: 'bolder') {
+  color: $color;
   font-weight: $fontWeight;
 }

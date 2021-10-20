@@ -62,7 +62,6 @@ class MatchPattern extends AnalysisIndex{
             this.returnCodeHtml += value.returnHtml;
         })
 
-        console.log(this.returnCodeHtml)
     }
 
     /**

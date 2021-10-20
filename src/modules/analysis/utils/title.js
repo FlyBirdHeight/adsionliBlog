@@ -112,6 +112,7 @@ class Title extends AnalysisIndex {
             return currentValue;
         })
         this.titleValueList = this.titleValueList.flat();
+        console.log(this.titleValueList)
 
         return this;
     }
@@ -123,7 +124,7 @@ class Title extends AnalysisIndex {
         for(let value of this.titleList){
             this.titleHtml.push({
                 startIndex: value.startIndex,
-                returnHtml: `<h${value.level}>${value.label}</h${value.level}>`
+                returnHtml: `<h${value.level} class="${value.level < 4? 'page-title': 'page-title-no-line'}">${this.matchSpecialChar(value.label)}</h${value.level}>`
             })
         }
         

@@ -35,7 +35,6 @@
 
   .paragraph {
     text-align: left;
-
   }
 
   .summary {
@@ -49,7 +48,7 @@
     @include marginSet(0 10px 0 10px);
     span {
       @include paddingSet(0 0 0 10px);
-    } 
+    }
 
     .code {
       background-color: getPageValue('code', 'backColor');
@@ -81,14 +80,21 @@
     .label_title {
       text-indent: 0;
     }
-    .label_body{
+    .label_body {
       font-weight: normal;
       font-size: 14px;
-      p{
+      p {
         text-indent: 0px;
       }
     }
   }
+  .page-title {
+    border-bottom: 2px solid getPageValue('pageTitle', 'borderColor');;
+    @include pageTitle();
+  }
+  .page-title-no-line {
+    @include pageTitle();
+  }
 
-  @import "./special_char.scss"
+  @import './special_char.scss';
 }

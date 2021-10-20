@@ -2,6 +2,8 @@
   text-align: left;
   vertical-align: inherit;
   padding: 5px;
+  white-space: pre-line;
+  outline: none;
 }
 
 @mixin subTitle($fontSize, $fontColor: null) {

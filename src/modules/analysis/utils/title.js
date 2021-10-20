@@ -112,7 +112,6 @@ class Title extends AnalysisIndex {
             return currentValue;
         })
         this.titleValueList = this.titleValueList.flat();
-        console.log(this.titleValueList)
 
         return this;
     }

@@ -28,10 +28,7 @@ Vue.prototype.axios = axios
 import Analysis from "@/modules/analysis/index.js";
 Vue.prototype.analysis = new Analysis();
 
-import TableList from '@/components/utils/table/table.vue'
-import TableColumn from '@/components/utils/table/table-column.js'
-Vue.component('table-list', TableList);
-Vue.component('table-column', TableColumn);
+require('./componets_register.js')
 
 new Vue({
   router,

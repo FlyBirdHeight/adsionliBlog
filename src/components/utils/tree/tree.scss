@@ -35,6 +35,10 @@
       .tree-node_icon.expanded {
         transform: rotate(90deg);
       }
+      .tree-node-icon_is_leaf {
+        color: transparent;
+        cursor: default;
+      }
       .tree-nodel_label {
         font-size: 14px;
       }
@@ -42,7 +46,11 @@
     .tree-node-content > .tree-node_icon {
       padding: 6px;
     }
+    .tree-node-content:hover {
+      background-color: rgba(232, 237, 234, 0.4);
+    }
   }
+
   .tree-node-content_children {
     overflow: hidden;
     background-color: transparent;

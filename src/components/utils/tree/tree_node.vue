@@ -3,26 +3,38 @@
     <div
       :style="{ paddingLeft: (node.level - 1) * padding + 'px' }"
       class="tree-node-content"
-      @click.stop="expandNode(node.index)"
+      @click.stop="handleNode()"
     >
+      <a style="padding:5px" @click.stop="goSpecified()" target="_blank" @click="goSpecified" v-if="flyHeight">#</a>
       <span
+        @click.stop="expandNode()"
+        v-show="canExpand"
         :class="{ expanded: isExpanded, 'tree-node-icon_is_leaf': isLeaf }"
         class="tree-node_icon  el-icon-caret-right"
       ></span>
       <span class="tree-nodel_label">{{ node.label }}</span>
     </div>
-    <div
-      class="tree-node-content_children"
-      v-if="typeof node.leave != 'undefined' || node.leave.length != 0"
-      v-show="node.expanded"
-      :ref="`treeNodeChild${node.index}`"
-    >
-      <tree-node v-for="child in node.leave" :key="child.index" :node="child"></tree-node>
-    </div>
+    <collapse>
+      <div
+        class="tree-node-content_children"
+        v-if="typeof node.leave != 'undefined' || node.leave.length != 0"
+        v-show="node.expanded"
+        :ref="`treeNodeChild${node.index}`"
+      >
+        <tree-node
+          :canExpand="canExpand"
+          :canFlyHeight="canFlyHeight"
+          v-for="child in node.leave"
+          :key="child.index"
+          :node="child"
+        ></tree-node>
+      </div>
+    </collapse>
   </div>
 </template>
 
 <script>
+import Collapse from '@/components/utils/translate/collapse.js'
 export default {
   name: 'TreeNode',
   props: {
@@ -33,15 +45,22 @@ export default {
         }
       },
     },
+    canExpand: {
+      type: Boolean,
+      default: true,
+    },
+    canFlyHeight: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       isExpanded: true,
       padding: 18,
       isLeaf: false,
-      show: true,
       tree: null,
-      flyHigh: undefined
+      flyHeight: null,
     }
   },
   created() {
@@ -60,19 +79,40 @@ export default {
       console.warn("Can not find node's tree.")
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.flyHeight = this.node.height
+    })
+  },
   methods: {
-    expandNode(index) {
-      this.isExpanded = !this.isExpanded
-      if (!this.isLeaf) {
+    handleNode() {
+      if (this.canExpand) {
+        this.expandNode()
+      }
+      if (this.canFlyHeight) {
+        this.goSpecified()
+      }
+    },
+    expandNode() {
+      if (this.canExpand && !this.isLeaf) {
+        this.isExpanded = !this.isExpanded
         this.node.expanded = !this.node.expanded
-        if(!this.node.expanded){
-            this.$refs[`treeNodeChild${this.node.index}`].style.transition = "transform 0.5s ease-in-out"
-            this.$refs[`treeNodeChild${this.node.index}`].style.transform = `translateY(-${this.$el.clientHeight - 24}px)`
-        }
+      }
+    },
+    goSpecified() {
+      if (this.canFlyHeight && this.flyHeight) {
+        console.log(this.flyHeight)
       }
     },
   },
-  watch: {},
+  watch: {
+    'node.height'(val) {
+      console.log(val)
+    },
+  },
+  components: {
+    Collapse,
+  },
 }
 </script>
 

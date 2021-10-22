@@ -1,7 +1,7 @@
 <template>
   <div class="tree-list">
     <div class="no-data" v-if="data.length == 0">{{ emptyText }}</div>
-    <tree-node v-else v-for="node in data" :node="node" :key="node.index"></tree-node>
+    <tree-node :canExpand="false" v-else v-for="node in data" :node="node" :key="node.index"></tree-node>
   </div>
 </template>
 

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import RouteHandle from "./handle"
+import Markdown from "@/views/markdown/index.vue"
 var handle = new RouteHandle();
 Vue.use(VueRouter)
 
@@ -108,7 +109,29 @@ const routes = [
         component: () => import('@/views/test/component_test.vue'),
       }
     ]
-  }
+  }, {
+    path: '/markdown',
+    name: 'Markdown',
+    redirect: '/markdown/first',
+    component: Markdown,
+    children: [
+      {
+        path: 'first',
+        name: 'MarkdownFirst',
+        component: Markdown,
+      },
+      {
+        path: 'second',
+        name: 'MarkdownSecond',
+        component: Markdown
+      },
+      {
+        path: 'third',
+        name: 'MarkdownThird',
+        component: Markdown
+      }
+    ]
+  },
 ]
 
 const router = new VueRouter({

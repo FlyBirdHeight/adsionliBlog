@@ -38,7 +38,7 @@ class MatchPattern extends AnalysisIndex{
     handle(value) {
         let data = value.split('\n');
         let length = data.length;
-        for (let i = 0; i < data.length; i++) {
+        for (let i = 0; i < length; i++) {
             if (this.codeFlag) {
                 this.matchCodeFragment(data[i], i);
                 continue;
@@ -62,6 +62,10 @@ class MatchPattern extends AnalysisIndex{
             this.returnCodeHtml += value.returnHtml;
         })
 
+        return {
+            html: this.returnCodeHtml,
+            title: this.title.titleValueList
+        }
     }
 
     /**

@@ -94,8 +94,9 @@ export default {
       }
     },
     expandNode() {
+      this.isExpanded = !this.isExpanded
       if (this.canExpand && !this.isLeaf) {
-        this.isExpanded = !this.isExpanded
+        console.log(this.node.expanded)
         this.node.expanded = !this.node.expanded
       }
     },
@@ -108,7 +109,7 @@ export default {
   watch: {
     'node.height'(val) {
       console.log(val)
-    },
+    }
   },
   components: {
     Collapse,

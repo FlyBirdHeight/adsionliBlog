@@ -22,6 +22,9 @@ TreeHandle.prototype.mutations = {
      * @param {*} data 
      */
     handleTreeData(data) {
+        if(data.length == 0){
+            return;
+        }
         for (let value of data) {
             value['index'] = this.index;
             value['expanded'] = true;

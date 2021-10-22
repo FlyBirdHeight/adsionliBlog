@@ -16,15 +16,10 @@ export default {
     }
   },
   mounted() {
-    this.testAnalysis();
+    
   },
   methods: {
-    testAnalysis(){
-      let returnData = this.analysis.getFile('./content/face/constructor.md');
-      returnData.then(res => {
-        console.log(res)
-      })
-    }
+    
   },
   components: {
     Navigation,

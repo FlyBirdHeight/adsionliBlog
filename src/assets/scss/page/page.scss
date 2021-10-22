@@ -1,6 +1,13 @@
 .page {
   overflow-x: hidden;
   @include marginSet(0 10px 0 10px);
+  .no-page-data {
+    padding: 20px;
+    vertical-align: middle;
+    font-weight: bolder;
+    font-size: 21px;
+    color: #a3a3a3;
+  }
   .title {
     h1 {
       color: getPageValue('utils', 'titleColor');
@@ -89,7 +96,7 @@
     }
   }
   .page-title {
-    border-bottom: 2px solid getPageValue('pageTitle', 'borderColor');;
+    border-bottom: 2px solid getPageValue('pageTitle', 'borderColor');
     @include pageTitle();
   }
   .page-title-no-line {

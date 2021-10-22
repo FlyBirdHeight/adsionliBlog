@@ -1,7 +1,7 @@
 <template>
   <div class="tree-list">
-    <div class="no-data" v-if="data.length == 0">{{ emptyText }}</div>
-    <tree-node :canExpand="false" v-else v-for="node in data" :node="node" :key="node.index"></tree-node>
+    <div class="no-data" v-if="nodes.length == 0">{{ emptyText }}</div>
+    <tree-node :canExpand="true" v-else v-for="node in nodes" :node="node" :key="node.index"></tree-node>
   </div>
 </template>
 
@@ -30,10 +30,10 @@ export default {
     if (this.$attrs.hasOwnProperty('default-expand-all')) {
       this.handle.expandAll = true
     }
-    this.handle.commit('handleTreeData', this.data)
+    this.handle.commit('handleTreeData', this.nodes)
   },
   props: {
-    data: {
+    nodes: {
       type: Array,
       default: () => {
         return []
@@ -43,6 +43,12 @@ export default {
   methods: {},
   components: {
     TreeNode,
+  },
+  watch: {
+    nodes(val) {
+      console.log(val)
+      this.handle.commit('handleTreeData', this.nodes)
+    },
   },
 }
 </script>

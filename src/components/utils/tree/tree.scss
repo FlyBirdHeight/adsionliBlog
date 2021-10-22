@@ -21,11 +21,10 @@
       display: flex;
       align-items: center;
       cursor: pointer;
-      height: 24px;
       .tree-node_icon {
         cursor: pointer;
         color: #c0c4cc;
-        font-size: 12px;
+        font-size: 13px;
         transform: rotate(0deg);
         transition: transform 0.3s ease-in-out;
       }
@@ -41,7 +40,8 @@
         cursor: default;
       }
       .tree-nodel_label {
-        font-size: 14px;
+        font-size: 13px;
+        font-weight: 700;
       }
     }
     .tree-node-content > .tree-node_icon {

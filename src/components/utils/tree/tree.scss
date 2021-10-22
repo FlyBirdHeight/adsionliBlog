@@ -39,7 +39,7 @@
         color: transparent;
         cursor: default;
       }
-      .tree-nodel_label {
+      .tree-node_label {
         font-size: 13px;
         font-weight: 700;
       }
@@ -50,6 +50,10 @@
     .tree-node-content:hover {
       background-color: rgba(232, 237, 234, 0.4);
     }
+  }
+
+  .tree-node-content_children > .tree-node > .tree-node-content > .tree-node_label {
+    font-weight: 500;
   }
 
   .tree-node-content_children {

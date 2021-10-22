@@ -12,7 +12,7 @@
         :class="{ expanded: isExpanded, 'tree-node-icon_is_leaf': isLeaf }"
         class="tree-node_icon  el-icon-caret-right"
       ></span>
-      <span class="tree-nodel_label">{{ node.label }}</span>
+      <span class="tree-node_label">{{ node.label }}</span>
     </div>
     <collapse>
       <div

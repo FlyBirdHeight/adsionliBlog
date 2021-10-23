@@ -1,11 +1,23 @@
 <template>
   <div class="page" :key="key()">
-    <el-row>
-      <el-col :xs="24" :sm="24" :md="{ span: 14, offset: 1 }" :lg="{ span: 14, offset: 2 }">
-        <render-page :renderHtml="pageRender.html"> </render-page>
-      </el-col>
-      <el-col :xs="24" :sm="24" :md="{ span: 8, offset: 1 }" :lg="{ span: 7, offset: 1 }">
-        <tree-list style="margin-top: 20px;" :nodes="pageRender.titleData" highlight-current default-expand-all></tree-list>
+    <el-row style="position:relative">
+      <div class="title-list">
+        <div class="title-toggle" @click="hiddenTreeList">
+          <i v-if="hiddenTree" class="el-icon-remove-outline" style="font-size: 14px"></i>
+          <i v-else class="el-icon-circle-plus-outline" style="font-size: 14px"> </i>
+          CATALOG
+        </div>
+        <tree-list
+          :nodes="pageRender.titleData"
+          :key="$route.fullPath"
+          default-expand-all
+          :expandAll="false"
+          :flyHeight="true"
+          v-show="hiddenTree"
+        ></tree-list>
+      </div>
+      <el-col :xs="24" :sm="24" :md="{ span: 18, offset: 6 }" :lg="{ span: 18, offset: 6 }">
+        <render-page class="marginAll" :renderHtml="pageRender.html"> </render-page>
       </el-col>
     </el-row>
     <turn></turn>
@@ -15,6 +27,20 @@
 <script>
 import Turn from '@/components/pages/turn.vue'
 import RenderPage from '@/components/pages/render/render_page.js'
+import Collapse from '@/components/utils/translate/collapse.js'
+var getTitleHeight = (data) => {
+  if (data.length != 0) {
+    for (let value of data) {
+      let dom = document.querySelector(`#title${value.startIndex}`)
+      value['height'] = dom.getBoundingClientRect().y
+      if (value.leave.length != 0) {
+        getTitleHeight(value.leave)
+      }
+    }
+  } else {
+    return
+  }
+}
 export default {
   name: 'Markdown',
   data() {
@@ -26,6 +52,7 @@ export default {
         html: '',
         titleData: [],
       },
+      hiddenTree: true,
     }
   },
   created() {
@@ -40,10 +67,16 @@ export default {
       }
     })
   },
+  updated() {
+    getTitleHeight(this.pageRender.titleData)
+  },
   methods: {
     key() {
       const randomNumber = Math.random().toString()
       return this.$route.name !== undefined ? this.$route.name + randomNumber : this.$route + randomNumber
+    },
+    hiddenTreeList() {
+      this.hiddenTree = !this.hiddenTree
     },
   },
   watch: {
@@ -55,10 +88,11 @@ export default {
         this.pageRender.titleData = []
         if (this.pageData.path) {
           this.analysis.setFilePath(this.pageData.path).then((res) => {
-            this.pageRender.html = res
+            this.pageRender.html = res.html
+            this.pageRender.titleData = res.title
             if (this.pageRender.html == '') {
               this.pageRender.html = '<div class="no-page-data">暂无数据</div>'
-              this.pageRender.titleData = res.title
+              this.pageRender.titleData = []
             }
           })
         }
@@ -68,8 +102,42 @@ export default {
   components: {
     Turn,
     RenderPage,
+    Collapse,
   },
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.title-list {
+  @media screen and (min-width: 977px){
+    position: fixed;
+    left: 10px;
+    padding: 10px;
+    margin-top: 30px;
+    text-align: left;
+    border: 2px solid #dfe2e5;
+    height: auto;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 977px){
+    margin-top: 10px;
+    padding: 5px;
+    text-align: left;
+    border: 2px solid #dfe2e5;
+    height: auto;
+    cursor: pointer;
+  }
+  .title-toggle {
+    padding: 20px 0;
+    font-size: 15px;
+    font-weight: bolder;
+    color: #a3a3a3;
+  }
+}
+.marginAll {
+  margin: 30px;
+  @media screen and (max-width: 715px) {
+    margin: 5px;
+  }
+}
+</style>

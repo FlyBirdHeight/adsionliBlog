@@ -9,7 +9,7 @@
 
 ## 2. 测试用例
 
-1. code 模块测试测试用例
+### 1. code 模块测试测试用例
 
 ```
 import store from "../store/index"
@@ -124,7 +124,7 @@ class RouteHandle {
 export default RouteHandle;
 ```
 
-2. table 模块测试
+### 2. table 模块测试
 
 `12`|*12*|**12**| 12 |[adsionliBlog](localhost:8080)
  :---: | - | - | - | - 

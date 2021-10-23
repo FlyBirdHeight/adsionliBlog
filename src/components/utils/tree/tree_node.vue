@@ -5,7 +5,7 @@
       class="tree-node-content"
       @click.stop="handleNode()"
     >
-      <a style="padding:5px" @click.stop="goSpecified()" target="_blank" @click="goSpecified" v-if="flyHeight">#</a>
+      <a style="padding:5px" @click.stop="goSpecified()" target="_blank" @click="goSpecified" v-if="canFlyHeight">#</a>
       <span
         @click.stop="expandNode()"
         v-show="canExpand"
@@ -60,7 +60,6 @@ export default {
       padding: 18,
       isLeaf: false,
       tree: null,
-      flyHeight: null,
     }
   },
   created() {
@@ -79,11 +78,6 @@ export default {
       console.warn("Can not find node's tree.")
     }
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.flyHeight = this.node.height
-    })
-  },
   methods: {
     handleNode() {
       if (this.canExpand) {
@@ -96,20 +90,20 @@ export default {
     expandNode() {
       this.isExpanded = !this.isExpanded
       if (this.canExpand && !this.isLeaf) {
-        console.log(this.node.expanded)
         this.node.expanded = !this.node.expanded
       }
     },
     goSpecified() {
-      if (this.canFlyHeight && this.flyHeight) {
-        console.log(this.flyHeight)
+      if (this.canFlyHeight) {
+        window.scrollTo({
+          top: this.node.height,
+          behavior: 'smooth',
+        })
       }
     },
   },
   watch: {
-    'node.height'(val) {
-      console.log(val)
-    }
+    
   },
   components: {
     Collapse,

@@ -1,7 +1,14 @@
 <template>
   <div class="tree-list">
     <div class="no-data" v-if="nodes.length == 0">{{ emptyText }}</div>
-    <tree-node :canExpand="true" v-else v-for="node in nodes" :node="node" :key="node.index"></tree-node>
+    <tree-node
+      :canExpand="expandAll"
+      :canFlyHeight="flyHeight"
+      v-else
+      v-for="node in nodes"
+      :node="node"
+      :key="node.index"
+    ></tree-node>
   </div>
 </template>
 
@@ -39,6 +46,14 @@ export default {
         return []
       },
     },
+    expandAll: {
+      type: Boolean,
+      default: true,
+    },
+    flyHeight: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {},
   components: {
@@ -46,7 +61,6 @@ export default {
   },
   watch: {
     nodes(val) {
-      console.log(val)
       this.handle.commit('handleTreeData', this.nodes)
     },
   },

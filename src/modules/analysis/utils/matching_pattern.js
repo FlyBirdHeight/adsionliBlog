@@ -7,7 +7,7 @@ import Summary from "./summary.js"
 /**
  * @class MatchPattern 模式匹配类
  */
-class MatchPattern extends AnalysisIndex{
+class MatchPattern extends AnalysisIndex {
     constructor() {
         super();
         this.codeFragment = /^(\s*)?(`{3})(\s*)?$/;
@@ -24,12 +24,14 @@ class MatchPattern extends AnalysisIndex{
          * @property {Number} codeEndIndex 代码片段结束的位置
          * @property {Array} codeData 记录一段代码片段的数据
          * @property {Array} allCodeData 记录全部代码片段的位置
+         * @property {Array} normalData 无符合大片段数据记录
          */
         this.codeFlag = false;
         this.codeStartIndex = undefined;
         this.codeEndIndex = undefined;
         this.codeData = [];
         this.allCodeData = [];
+        this.normalData = [];
     }
 
     /**
@@ -57,7 +59,7 @@ class MatchPattern extends AnalysisIndex{
                 return a.startIndex - b.startIndex;
             })
         }
-        
+        this.handleNormalData(data);
         this.htmlSpanList.map((value, index) => {
             this.returnCodeHtml += value.returnHtml;
         })
@@ -77,10 +79,10 @@ class MatchPattern extends AnalysisIndex{
                 this.htmlSpanList.push(this.code.setHandleValue(value.codeData, value.startIndex, value.endIndex).handle())
             }
         }
-        if(this.table.tableParameter.allTableData.length != 0){
+        if (this.table.tableParameter.allTableData.length != 0) {
             this.htmlSpanList = this.htmlSpanList.concat(this.table.filterTableData().generateTableData().generateSpan());
         }
-        if(this.title.titleList.length != 0){
+        if (this.title.titleList.length != 0) {
             this.htmlSpanList = this.htmlSpanList.concat(this.title.handleTitleLevel().generateTitleLevel());
         }
     }
@@ -111,37 +113,25 @@ class MatchPattern extends AnalysisIndex{
     }
 
     /**
-     * @method matchLineFeed 匹配空白行
-     * @param {*} value 
-     * @return {Boolean} 
+     * @method handleNormlaData 处理普通数据
+     * @param {Array} data 原始数据
      */
-    matchLineFeed(value) {
-        if (value.replace(/(^\s*|\s*$)/gi, '') == '') {
-            return {
-                result: true
+    handleNormalData(data) {
+        let noHandleIndex = 0;
+        //NOTE 首先先获取到待处理数据内容
+        this.htmlSpanList.map(value => {
+            if (noHandleIndex != value.endIndex) {
+                this.normalData.push({
+                    data: data.slice(noHandleIndex, (noHandleIndex + (value.startIndex - noHandleIndex))),
+                    startIndex: value.startIndex - noHandleIndex == 1 ? noHandleIndex + (value.startIndex - noHandleIndex) : noHandleIndex + 1,
+                    endIndex: noHandleIndex + (value.startIndex - noHandleIndex)
+                })
+                noHandleIndex = value.endIndex + 1;
+            } else {
+                noHandleIndex = value.endIndex + 1;
             }
-        } else {
-            return {
-                result: false
-            }
-        }
-    }
-
-    /**
-     * @method matchTitle 匹配标题，同时返回其级数
-     * @param {String} value
-     * @return {*}
-     */
-    matchTitle(value) {
-        value = this.deleteBlank(value);
-        if (this.title.test(value)) {
-            let count = this.title.match(/(?<titleCount>^#{1,6})(\s{1,})(.+?)/).groups.titleCount.length
-            value = this.title.replace(reg, `<h${count}>$<title></h${count}>`);
-            value = this.matchSpecialChar(value);
-            return value;
-        } else {
-            return value;
-        }
+        })
+        console.log(this.normalData);
     }
 
     /**

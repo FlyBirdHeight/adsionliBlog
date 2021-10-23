@@ -2,6 +2,10 @@ import AnalysisIndex from "./index.js"
 class Summary extends AnalysisIndex{
     constructor(){
         super();
+        this.summarReg = {
+            start: /^\>.+/gi,
+            end: /^(\s*)(\n*)?$/i
+        }
     }
 
     /**

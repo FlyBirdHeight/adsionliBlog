@@ -3,14 +3,22 @@
     <a class="pre" @click="goPre">
       <div class="preT">上一篇</div>
       <div class="preInfo">
-        {{ typeof pre == 'undefined' ? '已到最前一篇！' : $store.getters.getPageList[pre].title }}
+        {{
+          typeof pre == "undefined"
+            ? "已到最前一篇！"
+            : $store.getters.getPageList[pre].title
+        }}
       </div>
     </a>
 
     <a class="next" @click="goBack">
       <div class="nextT">下一篇</div>
       <div class="nextInfo">
-        {{ typeof next == 'undefined' ? '已到最后一篇！' : $store.getters.getPageList[next].title }}
+        {{
+          typeof next == "undefined"
+            ? "已到最后一篇！"
+            : $store.getters.getPageList[next].title
+        }}
       </div>
     </a>
   </div>
@@ -25,46 +33,50 @@ export default {
     return {
       pre: this.$store.getters.getPrePage,
       next: this.$store.getters.getNextPage,
-    }
+    };
   },
   mounted() {
     // this.$store.commit('', );
   },
   methods: {
     goPre() {
-      if (typeof this.pre == 'undefined') {
+      if (typeof this.pre == "undefined") {
         this.$message({
-          type: 'warning',
-          message: '已经是第一篇啦，无法跳转啦',
-        })
-      }else {
-        this.$router.push({ path: this.$store.getters.getPageList[this.pre].routeLink })
+          type: "warning",
+          message: "已经是第一篇啦，无法跳转啦",
+        });
+      } else {
+        this.$router.push({
+          path: this.$store.getters.getPageList[this.pre].routeLink,
+        });
       }
     },
     goBack() {
-      if (typeof this.next == 'undefined') {
+      if (typeof this.next == "undefined") {
         this.$message({
-          type: 'warning',
-          message: '已经是最后一篇啦，无法跳转啦',
-        })
-      }else {
-        this.$router.push({ path: this.$store.getters.getPageList[this.next].routeLink })
+          type: "warning",
+          message: "已经是最后一篇啦，无法跳转啦",
+        });
+      } else {
+        this.$router.push({
+          path: this.$store.getters.getPageList[this.next].routeLink,
+        });
       }
     },
   },
   watch: {
-    '$store.getters.getPrePage': function(newV, oldV) {
-      if(newV != this.pre){
+    "$store.getters.getPrePage": function (newV, oldV) {
+      if (newV != this.pre) {
         this.pre = newV;
       }
     },
-    '$store.getters.getNextPage': function(newV, oldV) {
-      if(newV != this.next){ 
+    "$store.getters.getNextPage": function (newV, oldV) {
+      if (newV != this.next) {
         this.next = newV;
       }
-    }
+    },
   },
-}
+};
 </script>
 
 <style lang="scss">
@@ -102,6 +114,9 @@ export default {
       }
       letter-spacing: 0.5px;
       font-weight: 600;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
   .pre:hover {
@@ -136,9 +151,12 @@ export default {
       @media screen and (max-width: 750px) {
         font-size: 13px;
       }
-      
+
       letter-spacing: 0.5px;
       font-weight: 600;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
   .next:hover {

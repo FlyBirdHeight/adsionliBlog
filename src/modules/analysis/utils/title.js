@@ -27,6 +27,7 @@ class Title extends AnalysisIndex {
                 this.root = index;
                 this.joinTitleList({
                     startIndex: index,
+                    endIndex: index,
                     label,
                     level,
                     root: undefined,
@@ -37,6 +38,7 @@ class Title extends AnalysisIndex {
                     this.lastLevel = level;
                     this.joinTitleList({
                         startIndex: index,
+                        endIndex: index,
                         label,
                         level,
                         root: this.root,
@@ -46,6 +48,7 @@ class Title extends AnalysisIndex {
                 } else if (level == this.lastLevel) {
                     this.joinTitleList({
                         startIndex: index,
+                        endIndex: index,
                         label,
                         level,
                         root: this.titleValueList.get(this.root).root,
@@ -55,12 +58,13 @@ class Title extends AnalysisIndex {
                 } else if (level < this.lastLevel && level > this.maxLevel) {
                     let selectRoot = undefined;
                     let value = this.titleValueList.get(this.root);
-                    while(value.level != level){
-                        selectRoot = value.root;  
+                    while (value.level != level) {
+                        selectRoot = value.root;
                         value = this.titleValueList.get(value.root);
                     }
                     this.joinTitleList({
                         startIndex: index,
+                        endIndex: index,
                         label,
                         level,
                         root: this.titleValueList.get(selectRoot).root,
@@ -72,6 +76,7 @@ class Title extends AnalysisIndex {
                     this.lastLevel = level;
                     this.joinTitleList({
                         startIndex: index,
+                        endIndex: index,
                         label,
                         level,
                         root: undefined,
@@ -99,8 +104,8 @@ class Title extends AnalysisIndex {
      */
     handleTitleLevel() {
         let handleData = new Map();
-        for(let [key, value] of this.titleValueList){
-            if(typeof(value.root) == 'undefined'){
+        for (let [key, value] of this.titleValueList) {
+            if (typeof (value.root) == 'undefined') {
                 handleData.set(key, value)
                 continue;
             }
@@ -120,13 +125,14 @@ class Title extends AnalysisIndex {
      * @method generateTitleLevel 生成title分级列表
      */
     generateTitleLevel() {
-        for(let value of this.titleList){
+        for (let value of this.titleList) {
             this.titleHtml.push({
                 startIndex: value.startIndex,
+                endIndex: value.endIndex,
                 returnHtml: `<h${value.level} id="title${value.startIndex}" class="${value.level < 4? 'page-title': 'page-title-no-line'}">${this.matchSpecialChar(value.label)}</h${value.level}>`
             })
         }
-        
+
         return this.titleHtml
     }
 }

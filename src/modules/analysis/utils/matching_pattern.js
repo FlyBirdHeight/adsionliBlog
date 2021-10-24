@@ -62,7 +62,7 @@ class MatchPattern extends AnalysisIndex {
                 return a.startIndex - b.startIndex;
             })
         }
-        console.log(this.htmlSpanList)
+
         //NOTE: 处理普通数据，因为这里没有做处理
         this.handleNormalData(data);
 
@@ -145,10 +145,8 @@ class MatchPattern extends AnalysisIndex {
                 endIndex: data.length - 1
             })
         }
-        console.log(this.normalData)
 
         this.normal.setHandleData(this.normalData).handleDataToSpan();
-        console.log(this.normal.returnData)
         this.htmlSpanList = this.htmlSpanList.concat(this.normal.returnData).sort((a, b) => {
             return a.startIndex - b.startIndex;
         })

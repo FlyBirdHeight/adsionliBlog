@@ -33,7 +33,6 @@ class Normal extends AnalysisIndex {
         }
 
         for(let value of this.handleData){
-            console.log(value)
             let innerHtml = '';
             if(value.data.length == 0){
                 continue

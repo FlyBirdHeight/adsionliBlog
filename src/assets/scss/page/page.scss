@@ -68,6 +68,8 @@
       // text-indent: 5px;
     }
 
+    @import "./js_highlight.scss";
+
     .note {
       color: getPageValue('utils', 'noteColor');
       // text-indent: 5px;

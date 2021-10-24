@@ -1,6 +1,10 @@
-class Code {
+import AnalysisIndex from "./index";
+import JsHighLight from "./code/jsHighLight";
+class Code extends AnalysisIndex{
     constructor() {
+        super();
         this.handleValue = new String();
+        this.jsHighLight = new JsHighLight();
         this.handleTag = {
             start: '<div class="code">',
             pS: '<p class="code_font">',
@@ -203,11 +207,11 @@ class Code {
                 innerHtml = this.handleNote(currentValue, innerHtml);
                 return innerHtml;
             } else {
-                innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
+                innerHtml += this.jsHighLight.handleHighLight(currentValue.replace(this.space, '')) + this.handleTag.pE;
                 return innerHtml;
             }
         } else {
-            innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
+            innerHtml += this.jsHighLight.handleHighLight(currentValue.replace(this.space, '')) + this.handleTag.pE;
             return innerHtml;
         }
     }

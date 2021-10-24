@@ -29,9 +29,10 @@
       >
         <render-page class="marginAll" :renderHtml="pageRender.html">
         </render-page>
+        <turn></turn>
       </el-col>
     </el-row>
-    <turn></turn>
+    
   </div>
 </template>
 

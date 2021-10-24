@@ -6,21 +6,25 @@
   cursor: default;
   color: #606266;
   background: #fff;
+
   .no-data {
     text-align: center;
     font-weight: bolder;
     color: #a3a3a3;
     width: 100%;
   }
+
   .tree-node {
     outline: none;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
     .tree-node-content {
       display: flex;
       align-items: center;
       cursor: pointer;
+
       .tree-node_icon {
         cursor: pointer;
         color: #c0c4cc;
@@ -28,31 +32,40 @@
         transform: rotate(0deg);
         transition: transform 0.3s ease-in-out;
       }
+
       .tree-nodel_label {
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
       .tree-node_icon.expanded {
         transform: rotate(90deg);
       }
+
       .tree-node-icon_is_leaf {
         color: transparent;
         cursor: default;
       }
+
       .tree-node_label {
         font-size: 13px;
         font-weight: 700;
       }
     }
-    .tree-node-content > .tree-node_icon {
+
+    .tree-node-content>.tree-node_icon {
       padding: 6px;
     }
+
     .tree-node-content:hover {
       background-color: rgba(232, 237, 234, 0.4);
     }
   }
 
-  .tree-node-content_children > .tree-node > .tree-node-content > .tree-node_label {
+  .tree-node-content_children>.tree-node>.tree-node-content>.tree-node_label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-weight: 500;
   }
 

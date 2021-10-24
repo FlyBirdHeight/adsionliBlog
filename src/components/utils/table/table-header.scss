@@ -3,6 +3,7 @@ tr {
 }
 .theadTd {
   position: relative;
+  word-break: break-all;
   @include paddingSet(12px 5px);
   border-right: 1px solid #ebeef5;
   -moz-user-select: none; /*火狐*/ /*选中文字时避免出现蓝色背景*/

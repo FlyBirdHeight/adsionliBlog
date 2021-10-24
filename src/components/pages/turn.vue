@@ -112,6 +112,7 @@ export default {
       @media screen and (max-width: 750px) {
         font-size: 13px;
       }
+      padding: 0 3px;
       letter-spacing: 0.5px;
       font-weight: 600;
       white-space: nowrap;
@@ -151,7 +152,7 @@ export default {
       @media screen and (max-width: 750px) {
         font-size: 13px;
       }
-
+      padding: 0 3px;
       letter-spacing: 0.5px;
       font-weight: 600;
       white-space: nowrap;

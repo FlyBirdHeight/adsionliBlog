@@ -4,6 +4,7 @@ import Code from "./code.js"
 import Table from "./table.js"
 import OrderList from "./order_list.js"
 import Summary from "./summary.js"
+import Normal from "./normal.js"
 /**
  * @class MatchPattern 模式匹配类
  */
@@ -16,6 +17,7 @@ class MatchPattern extends AnalysisIndex {
         this.orderList = new OrderList();
         this.summary = new Summary();
         this.title = new Title();
+        this.normal = new Normal();
         this.htmlSpanList = [];
         this.returnCodeHtml = '';
         /**
@@ -53,13 +55,18 @@ class MatchPattern extends AnalysisIndex {
             this.table.judgeHandle(data[i], i, length);
             this.title.judgeTitle(data[i], i);
         }
+        //NOTE: 非普通数据的渲染标签替换
         this.replaceToSpan();
         if (this.htmlSpanList.length != 0) {
             this.htmlSpanList.sort((a, b) => {
                 return a.startIndex - b.startIndex;
             })
         }
+        console.log(this.htmlSpanList)
+        //NOTE: 处理普通数据，因为这里没有做处理
         this.handleNormalData(data);
+
+
         this.htmlSpanList.map((value, index) => {
             this.returnCodeHtml += value.returnHtml;
         })
@@ -123,15 +130,28 @@ class MatchPattern extends AnalysisIndex {
             if (noHandleIndex != value.endIndex) {
                 this.normalData.push({
                     data: data.slice(noHandleIndex, (noHandleIndex + (value.startIndex - noHandleIndex))),
-                    startIndex: value.startIndex - noHandleIndex == 1 ? noHandleIndex + (value.startIndex - noHandleIndex) : noHandleIndex + 1,
-                    endIndex: noHandleIndex + (value.startIndex - noHandleIndex)
+                    startIndex: value.startIndex - noHandleIndex == 1 ? noHandleIndex + (value.startIndex - noHandleIndex) - 1 : noHandleIndex,
+                    endIndex: noHandleIndex + (value.startIndex - noHandleIndex) - 1
                 })
                 noHandleIndex = value.endIndex + 1;
             } else {
                 noHandleIndex = value.endIndex + 1;
             }
         })
-        console.log(this.normalData);
+        if (data.length > this.htmlSpanList[this.htmlSpanList.length - 1].endIndex) {
+            this.normalData.push({
+                data: data.slice(this.htmlSpanList[this.htmlSpanList.length - 1].endIndex + 1),
+                startIndex: this.htmlSpanList[this.htmlSpanList.length - 1].endIndex + 1,
+                endIndex: data.length - 1
+            })
+        }
+        console.log(this.normalData)
+
+        this.normal.setHandleData(this.normalData).handleDataToSpan();
+        console.log(this.normal.returnData)
+        this.htmlSpanList = this.htmlSpanList.concat(this.normal.returnData).sort((a, b) => {
+            return a.startIndex - b.startIndex;
+        })
     }
 
     /**

@@ -42,6 +42,7 @@ class Code extends AnalysisIndex {
          * @property {Number} codeEndIndex 代码片段结束的位置
          * @property {Array} codeData 记录一段代码片段的数据
          * @property {Array} allCodeData 记录全部代码片段的位置
+         * @property {Number} summaryLevel 只有在Summary模块中用来区分Code的，层级
          **/
         this.removeEndSpace = /\s*$/;
         this.space = /^\s*/g;
@@ -58,6 +59,8 @@ class Code extends AnalysisIndex {
         this.codeEndIndex = undefined;
         this.codeData = [];
         this.allCodeData = [];
+        this.allSummaryCodeData = [];
+        this.summaryLevel = null;
     }
 
     /**
@@ -155,12 +158,36 @@ class Code extends AnalysisIndex {
                 endIndex: this.codeEndIndex,
                 codeData: this.codeData
             })
-            this.codeStartIndex = undefined;
-            this.codeEndIndex = undefined;
-            this.codeFlag = false;
-            this.codeData = [];
+            this.resetData();
         } else if (this.codeFlag) {
             this.codeData.push(value);
+        }
+    }
+
+    /**
+     * @method judgeHandleSummary 在Summary模块中匹配代码块
+     * @param {*} value 待匹配字符
+     * @param {*} index 行数下标 
+     * @param {*} level 所在summary的层级
+     */
+    judgeHandleSummary(value, index, level) {
+        if (this.codeFragment.test(value) && !this.codeFlag) {
+            this.codeFlag = true;
+            this.codeStartIndex = index;
+            this.summaryLevel = level;
+        } else if (this.codeFragment.test(value) && this.codeFlag && this.summaryLevel == level) {
+            this.codeEndIndex = index;
+            this.allSummaryCodeData.push({
+                startIndex: this.codeStartIndex,
+                endIndex: this.codeEndIndex,
+                codeData: this.codeData,
+                level: this.summaryLevel
+            })
+            this.resetData();
+        } else if (this.codeFlag && this.summaryLevel == level) {
+            this.codeData.push(value);
+        } else if(this.codeFlag && this.summaryLevel != level){
+            this.resetData();
         }
     }
 
@@ -267,7 +294,7 @@ class Code extends AnalysisIndex {
         this.codeStartIndex = undefined;
         this.codeEndIndex = undefined;
         this.codeData = [];
-        this.allCodeData = [];
+        this.summaryLevel = undefined;
     }
 }
 

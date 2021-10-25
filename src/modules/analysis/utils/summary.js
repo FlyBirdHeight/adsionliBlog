@@ -1,7 +1,17 @@
 import AnalysisIndex from "./index.js"
+import Title from "./title.js"
+import Code from "./code.js"
+import Table from "./table.js"
+import OrderList from "./order_list.js"
+import Normal from "./normal.js"
 class Summary extends AnalysisIndex {
     constructor() {
         super();
+        this.code = new Code();
+        this.table = new Table();
+        this.orderList = new OrderList();
+        this.title = new Title();
+        this.normal = new Normal();
         /**
          * @property {*} summaryReg 正则匹配的规则
          * @property {Number} startSummaryIndex Summary开始位置
@@ -81,12 +91,13 @@ class Summary extends AnalysisIndex {
         for (let value of this.summaryHandleData) {
             let innerHtml = this.summarySpan.start;
             if (value.handleData.length > 1) {
+                this.handleOtherModules(value.handleData);
                 //NOTE:这里最特殊的是因为在Summary模块中也还是支持对table,title,code的辨析，所以，需要重复处理
                 for (let label of value.handleData) {
                     let addLabel = label.replace(this.summaryReg.start, '$2')
-                    innerHtml += addLabel == '' ? '</br>' : this.summarySpan.normalSpanStart +
-                        addLabel
-                        + this.summarySpan.normalSpanEnd;
+                    innerHtml += addLabel == '' ? '</br>' : (this.summarySpan.normalSpanStart +
+                        addLabel + '</br>'
+                        + this.summarySpan.normalSpanEnd);
                 }
             } else {
                 innerHtml += this.summarySpan.normalSpanStart +
@@ -102,6 +113,181 @@ class Summary extends AnalysisIndex {
         }
 
         return this.returnData
+    }
+
+    /**
+     * @method handleOtherModules 处理Summary中可能出现的其他模块
+     * @param {*} data 待处理数据
+     */
+    handleOtherModules(data) {
+        let length = data.length;
+        this.title.resetData();
+        this.code.resetData();
+        let returnCodeHtml = '';
+        for (let i = 0; i < length; i++) {
+            let level = data[i].match(/^(\>\s*)*/g)[0].replace(/\s/g, '').length;
+            let judgeData = data[i].replace(/^(\>\s+?)*(.+)/g, '$2');
+            if (this.code.codeFlag) {
+                this.code.judgeHandleSummary(judgeData, i, level);
+                continue;
+            }
+            if (this.table.tableParameter.start) {
+                this.table.judgeHandleSummary(judgeData, i, length, level);
+                continue;
+            }
+
+            this.code.judgeHandleSummary(judgeData, i, level);
+            this.table.judgeHandleSummary(judgeData, i, length, level);
+            this.title.judgeTitle(judgeData, i, level);
+        }
+        let htmlSpanList = this.replaceToSpan();
+        if (htmlSpanList.length != 0) {
+            htmlSpanList.sort((a, b) => {
+                return a.startIndex - b.startIndex;
+            })
+        }
+        //NOTE: 处理普通数据，因为这里没有做处理
+        htmlSpanList = this.handleNormalData(data, htmlSpanList);
+        htmlSpanList = this.generateEndReturnData(htmlSpanList);
+
+        // htmlSpanList.map((value, index) => {
+        //     returnCodeHtml += value.returnHtml;
+        // })
+
+    }
+
+    /**
+     * @method replaceToSpan 替换全部markdown语法为标签
+     */
+    replaceToSpan() {
+        let returnData = [];
+        if (this.code.allSummaryCodeData.length != 0) {
+            for (let value of this.code.allSummaryCodeData) {
+                let level = value.level;
+                let addData = this.code.setHandleValue(value.codeData, value.startIndex, value.endIndex).handle()
+                addData['level'] = level;
+                returnData.push(addData)
+            }
+        }
+        if (this.table.tableParameter.allTableData.length != 0) {
+            returnData = returnData.concat(this.table.filterTableData().generateTableData().generateSpan());
+        }
+        if (this.title.titleList.length != 0) {
+            returnData = returnData.concat(this.title.handleTitleLevel().generateTitleLevel());
+        }
+
+        return returnData;
+    }
+
+    /**
+     * @method handleNormlaData 处理普通数据
+     * @param {Array} data 原始数据
+     */
+    handleNormalData(data, htmlSpanList) {
+        let noHandleIndex = 0;
+        let normalData = [];
+        //NOTE 首先先获取到待处理数据内容
+        htmlSpanList.map(value => {
+            if (noHandleIndex != value.endIndex) {
+                normalData.push({
+                    data: data.slice(noHandleIndex, (noHandleIndex + (value.startIndex - noHandleIndex))),
+                    startIndex: value.startIndex - noHandleIndex == 1 ? noHandleIndex + (value.startIndex - noHandleIndex) - 1 : noHandleIndex,
+                    endIndex: noHandleIndex + (value.startIndex - noHandleIndex) - 1,
+                })
+                noHandleIndex = value.endIndex + 1;
+            } else {
+                noHandleIndex = value.endIndex + 1;
+            }
+        })
+        if (data.length > htmlSpanList[htmlSpanList.length - 1].endIndex) {
+            normalData.push({
+                data: data.slice(htmlSpanList[htmlSpanList.length - 1].endIndex + 1),
+                startIndex: htmlSpanList[htmlSpanList.length - 1].endIndex + 1,
+                endIndex: data.length - 1
+            })
+        }
+        normalData = this.handleNormalDataCreateLevel(normalData);
+        this.normal.setHandleData(normalData).handleDataToSpanForSummary();
+        htmlSpanList = htmlSpanList.concat(this.normal.returnData).sort((a, b) => {
+            return a.startIndex - b.startIndex;
+        })
+
+        return htmlSpanList;
+    }
+
+    /**
+     * @method handleNormalData 处理一下普通数据，确定其层级
+     * @param {*} normalData 
+     */
+    handleNormalDataCreateLevel(normalData) {
+        let returnData = [];
+        for (let value of normalData) {
+            let normalDataA = [];
+            if (value.data.length != 0) {
+                for (let label of value.data) {
+                    let obj = {};
+                    obj['level'] = label.match(/^(\>\s*)*/g)[0].replace(/\s/g, '').length;
+                    obj['label'] = label.replace(/^(\>\s+?)*(.+)/g, '$2');
+                    if (obj['label'] == '>') {
+                        obj['label'] = ''
+                    }
+                    normalDataA.push(obj);
+                }
+                returnData.push({
+                    data: normalDataA,
+                    startIndex: value.startIndex,
+                    endIndex: value.endIndex
+                })
+            }
+        }
+        return returnData;
+    }
+
+    /**
+     * @method generateEndReturnData 生成最终输出数据
+     */
+    generateEndReturnData(handleData) {
+        console.log(handleData);
+        let lastLevel = 1;
+        let innerHtml = '';
+        for (let value of handleData) {
+            if (value.type == 'normal') {
+                for (let normal of value.returnHtml.body) {
+                    if (lastLevel != normal.level) {
+                        if (lastLevel != 1) {
+                            for (let i = 1; i < lastLevel; ++i) {
+                                innerHtml += this.summarySpan.end;
+                            }
+                        }
+                        lastLevel = normal.level;
+                        for (let i = 1; i < lastLevel; i++) {
+                            innerHtml += this.summarySpan.start;
+                        }
+                        // innerHtml += value.returnHtml.
+                    }else{
+
+                    }
+                }
+            } else {
+                if (value.level == 0) {
+                    continue;
+                }
+                if (lastLevel != value.level) {
+                    if (lastLevel != 1) {
+                        for (let i = 1; i < lastLevel; ++i) {
+                            innerHtml += this.summarySpan.end;
+                        }
+                    }
+                    lastLevel = value.level
+                    for (let i = 1; i < lastLevel; i++) {
+                        innerHtml += this.summarySpan.start;
+                    }
+                    innerHtml += value.returnHtml;
+                } else if (lastLevel == value.level) {
+                    innerHtml += value.returnHtml;
+                }
+            }
+        }
     }
 
     /**

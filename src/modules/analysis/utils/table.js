@@ -1,11 +1,4 @@
 import AnalysisIndex from "./index.js"
-/**
- * 1. 表头必须使用| | | | | |这种形式，里面可以没有字符存在，但是必须以这种形式才可以被识别未表头
- * 2. 表格设置：| - | - | - | - |，必须以这种形式，但是其中的-个数不固定，随意多少均可，但是|的数量必须与表头的完全相同才可以，同时可以在-的两侧来设置:来设置表格数据的字体的位置,:-:居中，:-居左，-:居右。注意-是一定要存在，只是数量随意。
-      修正：表格形式的收尾|可以不添加，但是中间是一定要添加的。
- * 3. 表格中，表格体中的|数量是随意的，如果少于表头数量就填充部分，如果等于就全部填充，如果大于就直接舍弃。特别注意：在其开头可以不用添加|符号，如果没添加，直接归于第一列，但是如果要设置在其他列，就必须要添加|符号，否则只会在第一列
- * 4. 判定一个表格结束，必须是一行什么都没有的内容，可以有空格和换行符！
- */
 class Table extends AnalysisIndex {
     constructor() {
         super();
@@ -20,6 +13,7 @@ class Table extends AnalysisIndex {
          * @property {Array} tableParameter.htmlSpan 表格html标签记录
          * @property {Array} tableParameter.allTableData 表格全部数据存放
          * @property {Array} tableParameter.tableData 表格单次数据存放
+         * @property {Array} tableParameter.level 表格在Summary中的level层级
          * @property {RegExp} tableReg 表格元素判断 start:开始，end:结束，body:表格题，rule:表格属性
          */
         this.tableParameter = {
@@ -31,7 +25,8 @@ class Table extends AnalysisIndex {
             endIndex: undefined,
             htmlSpan: [],
             allTableData: [],
-            tableData: []
+            tableData: [],
+            level: null
         };
         this.tableReg = {
             start: /^((\|?)[^|]+(\|{1}))([^|]+(\|?))*([^|]+)/i,
@@ -88,15 +83,68 @@ class Table extends AnalysisIndex {
     }
 
     /**
+     * @method judgeHandleSummary 在Summary模块中匹配表格模块
+     * @param {*} value 待匹配字符
+     * @param {*} index 行数下标
+     * @param {*} length 数据长度
+     * @param {*} level 所在summary的层级
+     */
+    judgeHandleSummary(value, index, length, level) {
+        if (!this.tableParameter.start && !this.tableParameter.is && this.tableReg.start.test(value)) {
+            this.tableParameter.start = true;
+            this.tableParameter.headerIndex = index;
+            this.tableParameter.tableData.push(value);
+            this.tableParameter.level = level;
+        } else if (this.tableParameter.start && !this.tableParameter.is
+            && this.tableReg.rule.test(value) && this.tableParameter.level == level) {
+
+            if (index - this.tableParameter.headerIndex == 1) {
+                this.tableParameter.startIndex = index;
+                this.tableParameter.tableData.push(value);
+                this.tableParameter.is = true;
+                if (index == length - 1) {
+                    this.tableParameter.endIndex = index;
+                    this.recordData(this.tableParameter.level);
+                }
+                return;
+            } else {
+                this.tableParameter.start = false;
+                this.tableParameter.tableData = [];
+                return;
+            }
+        } else if (this.tableParameter.start && this.tableParameter.is && this.tableReg.body.test(value)
+            && !this.tableReg.end.test(value) && this.tableParameter.level == level) {
+
+            if (typeof (this.tableParameter.lastBodyIndex) == 'undefined') {
+                this.tableParameter.lastBodyIndex = index
+            }
+            if (index - this.tableParameter.lastBodyIndex == 0 || index - this.tableParameter.lastBodyIndex == 1) {
+                this.tableParameter.lastBodyIndex = index;
+                this.tableParameter.tableData.push(value);
+                return;
+            } else {
+                this.tableParameter.endIndex = index;
+                this.recordData(this.tableParameter.level);
+                return;
+            }
+        } else if (this.tableParameter.start && this.tableParameter.is && this.tableReg.end.test(value) && this.tableParameter.level == level) {
+            this.tableParameter.endIndex = index;
+            this.recordData(this.tableParameter.level);
+            return;
+        }
+    }
+
+    /**
      * @method recordData 记录数据并重置
      */
-    recordData() {
+    recordData(level = null) {
         this.tableParameter.start = false;
         this.tableParameter.is = false;
         this.tableParameter.allTableData.push({
             startIndex: this.tableParameter.headerIndex,
             endIndex: this.tableParameter.endIndex,
             codeData: this.tableParameter.tableData,
+            level
         });
         this.tableParameter.headerIndex = undefined;
         this.tableParameter.startIndex = undefined;

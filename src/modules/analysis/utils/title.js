@@ -10,13 +10,24 @@ class Title extends AnalysisIndex {
         this.maxLevel = undefined;
         this.root = undefined;
     }
+    /**
+     * @method resetData 重置数据
+     */
+    resetData() {
+        this.titleList = [];
+        this.titleHtml = [];
+        this.titleValueList = new Map();
+        this.lastLevel = undefined;
+        this.maxLevel = undefined;
+        this.root = undefined;
+    }
 
     /**
      * @method judgeTitle 判断是否是Title
      * @param {*} value 待判断值
      * @param {Number} index 文件中下标
      */
-    judgeTitle(value, index) {
+    judgeTitle(value, index, summaryLevel = null) {
         if (this.title.test(value)) {
             let execData = this.title.exec(value);
             let level = execData[1].length;
@@ -30,6 +41,7 @@ class Title extends AnalysisIndex {
                     endIndex: index,
                     label,
                     level,
+                    summaryLevel,
                     root: undefined,
                     leave: [],
                 }, index)
@@ -41,6 +53,7 @@ class Title extends AnalysisIndex {
                         endIndex: index,
                         label,
                         level,
+                        summaryLevel,
                         root: this.root,
                         leave: [],
                     }, index)
@@ -51,6 +64,7 @@ class Title extends AnalysisIndex {
                         endIndex: index,
                         label,
                         level,
+                        summaryLevel,
                         root: this.titleValueList.get(this.root).root,
                         leave: [],
                     }, index)
@@ -67,6 +81,7 @@ class Title extends AnalysisIndex {
                         endIndex: index,
                         label,
                         level,
+                        summaryLevel,
                         root: this.titleValueList.get(selectRoot).root,
                         leave: [],
                     }, index)
@@ -79,6 +94,7 @@ class Title extends AnalysisIndex {
                         endIndex: index,
                         label,
                         level,
+                        summaryLevel,
                         root: undefined,
                         leave: [],
                     }, index)
@@ -127,9 +143,10 @@ class Title extends AnalysisIndex {
     generateTitleLevel() {
         for (let value of this.titleList) {
             this.titleHtml.push({
+                level: value.summaryLevel,
                 startIndex: value.startIndex,
                 endIndex: value.endIndex,
-                returnHtml: `<h${value.level} id="title${value.startIndex}" class="${value.level < 4? 'page-title': 'page-title-no-line'}">${this.matchSpecialChar(value.label)}</h${value.level}>`
+                returnHtml: `<h${value.level} id="title${value.startIndex}" class="${value.level < 4 ? 'page-title' : 'page-title-no-line'}">${this.matchSpecialChar(value.label)}</h${value.level}>`
             })
         }
 

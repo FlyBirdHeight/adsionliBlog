@@ -5,7 +5,7 @@ var JsHighLight = function () {
     this.expression = [
         'let', 'var', 'this', 'class', 'function', 'const', 'import', 'export', 'delete', 'new', 'for', 'while', 'switch',
         'case', 'break', 'continue', 'default', 'async', 'await', 'return', 'typeof', 'do', 'if',
-        'else if', 'else', 'import', 'super', 'try', 'catch', 'yield', 'throw', 'debugger', 'from', 'in', 'of'
+        'else if', 'else', 'import', 'super', 'try', 'catch', 'yield', 'throw', 'debugger', 'from', 'in', 'of', 'console'
     ];
     this.char = /(\`.*\`|\'.*\'|\".*\"|\=|\+|\!|\?|\*|\||\/|\>|\<|\-|\&|\^|\@)/gi
     this.value = /(?<=(let|var|class|function|const|import))(\s+)(.+?)(?=(\s|;)+)/g
@@ -41,7 +41,6 @@ JsHighLight.prototype.handleHighLight = function(data){
     let handleData = this.matchChar(data);
     handleData = this.matchValue(handleData);
     handleData = this.matchExpress(handleData);
-    console.log(handleData);
     return handleData;
 }
 

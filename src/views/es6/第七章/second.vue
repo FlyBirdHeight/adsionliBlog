@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div>
     <div>
       <h1>第七章：函数的拓展 7.2-7.5</h1>
     </div>

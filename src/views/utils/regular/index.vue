@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div>
     <h1>正则学习</h1>
     <el-divider></el-divider>
     <div>

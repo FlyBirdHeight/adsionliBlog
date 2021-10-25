@@ -2,9 +2,26 @@ import AnalysisIndex from "./index.js"
 class Summary extends AnalysisIndex{
     constructor(){
         super();
-        this.summarReg = {
+        /**
+         * @property {*} summaryReg 正则匹配的规则
+         * @property {*} summaryRule Summary模块的内容记录，比如是一块连续的Summary就需要进行详细的记录进行解析
+         */
+        this.summaryReg = {
             start: /^\>.+/gi,
             end: /^(\s*)(\n*)?$/i
+        }
+        this.lastSummaryIndex = null;
+        this.summaryRule = {
+            startIndex: null,
+            endIndex: null,
+            lineCount: null
+        }
+        //TODO 这里是否可以使用Jsx拓展来进行书写，等待调研
+        this.summarySpan = {
+            start: '<div class="summary">',
+            normalSpanStart: '<span>',
+            normalSpanEnd: '</span>',
+            end: '</div>'
         }
     }
 

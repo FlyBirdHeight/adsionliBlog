@@ -15,6 +15,7 @@ import pageList from "../data/page_list.json";
 import coverList from "../data/cover.json";
 class RouteHandle {
     constructor() {
+        console.log(123)
         this.pageList = pageList.page;
         this.coverList = coverList.cover;
         this.store = store;

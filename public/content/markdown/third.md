@@ -11,6 +11,8 @@
 ### 1. summary 模块测试测试用例
 
 > 测试Summary模块以及集成其他模块的用例
+> # 123
+>
 > ```
 > var JsHighLight = function () {
 >     /**
@@ -29,7 +31,7 @@
 >     for(let value of this.expression){
 >         let reg = new RegExp(eval(`/(${value})(\\s|:|\\.){1}/`), 'g');
 >         if(reg.test(data)){
->             data = data.replace(reg, '<font class="expression">$1</font>$2');
+>             data = data.replace(reg, '$1$2');
 >         }
 >     }
 > 
@@ -38,14 +40,14 @@
 > 
 > JsHighLight.prototype.matchChar = function(data){
 >     if(this.char.test(data)){
->         data = data.replace(this.char, '<font class="char">$1</font>')
+>         data = data.replace(this.char, '$1')
 >     }
 >     return data;
 > }
 > 
 > JsHighLight.prototype.matchValue = function(data){
 >     if(this.value.test(data)){
->         data = data.replace(this.value, '$2<font class="value">$3</font>')
+>         data = data.replace(this.value, '$2$3')
 >     }
 > 
 >     return data;

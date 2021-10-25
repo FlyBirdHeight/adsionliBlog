@@ -11,7 +11,6 @@ import Normal from "./normal.js"
 class MatchPattern extends AnalysisIndex {
     constructor() {
         super();
-        this.codeFragment = /^(\s*)?(`{3})(\s*)?$/;
         this.code = new Code();
         this.table = new Table();
         this.orderList = new OrderList();
@@ -21,18 +20,8 @@ class MatchPattern extends AnalysisIndex {
         this.htmlSpanList = [];
         this.returnCodeHtml = '';
         /**
-         * @property {Boolean} codeFlag 是否是代码片段的标记
-         * @property {Number} codeStartIndex 代码片段开始位置
-         * @property {Number} codeEndIndex 代码片段结束的位置
-         * @property {Array} codeData 记录一段代码片段的数据
-         * @property {Array} allCodeData 记录全部代码片段的位置
          * @property {Array} normalData 无符合大片段数据记录
          */
-        this.codeFlag = false;
-        this.codeStartIndex = undefined;
-        this.codeEndIndex = undefined;
-        this.codeData = [];
-        this.allCodeData = [];
         this.normalData = [];
     }
 
@@ -43,15 +32,21 @@ class MatchPattern extends AnalysisIndex {
         let data = value.split('\n');
         let length = data.length;
         for (let i = 0; i < length; i++) {
-            if (this.codeFlag) {
-                this.matchCodeFragment(data[i], i);
+            if (this.code.codeFlag) {
+                this.code.judgeHandle(data[i], i);
                 continue;
             }
             if (this.table.tableParameter.start) {
                 this.table.judgeHandle(data[i], i, length);
                 continue;
             }
-            this.matchCodeFragment(data[i], i);
+            if(this.summary.summaryStart){
+                this.summary.judgeSummary(data[i], i);
+                continue;
+            }
+
+            this.summary.judgeSummary(data[i], i)
+            this.code.judgeHandle(data[i], i);
             this.table.judgeHandle(data[i], i, length);
             this.title.judgeTitle(data[i], i);
         }
@@ -62,15 +57,11 @@ class MatchPattern extends AnalysisIndex {
                 return a.startIndex - b.startIndex;
             })
         }
-
         //NOTE: 处理普通数据，因为这里没有做处理
         this.handleNormalData(data);
-
-
         this.htmlSpanList.map((value, index) => {
             this.returnCodeHtml += value.returnHtml;
         })
-
         return {
             html: this.returnCodeHtml,
             title: this.title.titleValueList
@@ -81,8 +72,8 @@ class MatchPattern extends AnalysisIndex {
      * @method replaceToSpan 替换全部markdown语法为标签
      */
     replaceToSpan() {
-        if (this.allCodeData.length != 0) {
-            for (let value of this.allCodeData) {
+        if (this.code.allCodeData.length != 0) {
+            for (let value of this.code.allCodeData) {
                 this.htmlSpanList.push(this.code.setHandleValue(value.codeData, value.startIndex, value.endIndex).handle())
             }
         }
@@ -92,30 +83,9 @@ class MatchPattern extends AnalysisIndex {
         if (this.title.titleList.length != 0) {
             this.htmlSpanList = this.htmlSpanList.concat(this.title.handleTitleLevel().generateTitleLevel());
         }
-    }
-
-    /**
-     * @method matchCodeFragment 匹配代码块
-     * @param {*} value 待匹配字符
-     * @param {*} index 行数下标 
-     */
-    matchCodeFragment(value, index) {
-        if (this.codeFragment.test(value) && !this.codeFlag) {
-            this.codeFlag = true;
-            this.codeStartIndex = index;
-        } else if (this.codeFragment.test(value) && this.codeFlag) {
-            this.codeEndIndex = index;
-            this.allCodeData.push({
-                startIndex: this.codeStartIndex,
-                endIndex: this.codeEndIndex,
-                codeData: this.codeData
-            })
-            this.codeStartIndex = undefined;
-            this.codeEndIndex = undefined;
-            this.codeFlag = false;
-            this.codeData = [];
-        } else if (this.codeFlag) {
-            this.codeData.push(value);
+        if(this.summary.summaryHandleData.length != 0){
+            let returnData = this.summary.handleSummaryData();
+            this.htmlSpanList = this.htmlSpanList.concat(returnData);
         }
     }
 
@@ -158,11 +128,6 @@ class MatchPattern extends AnalysisIndex {
     resetData() {
         this.htmlSpanList = [];
         this.returnCodeHtml = '';
-        this.codeFlag = false;
-        this.codeStartIndex = undefined;
-        this.codeEndIndex = undefined;
-        this.codeData = [];
-        this.allCodeData = [];
         this.tableFlag = false;
         this.tableParameter = {
             startIndex: undefined,

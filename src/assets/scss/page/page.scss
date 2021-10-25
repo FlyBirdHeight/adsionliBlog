@@ -28,7 +28,6 @@
     width: 1870px;
   }
 
-
   @include marginSet(auto);
 
   .no-page-data {
@@ -65,13 +64,17 @@
     .code_font {
       font-weight: bolder;
       font-size: 16px;
+      white-space: nowrap;
+      word-break: break-all;
       // text-indent: 5px;
     }
 
-    @import "./js_highlight.scss";
+    @import './js_highlight.scss';
 
     .note {
       color: getPageValue('utils', 'noteColor');
+      white-space: nowrap;
+      word-break: break-all;
       // text-indent: 5px;
     }
   }
@@ -85,8 +88,8 @@
     }
   }
 
-  @import "./summary.scss";
-  
+  @import './summary.scss';
+
   a {
     color: getPageValue('utils', 'hrefColor');
     font-weight: 500;

@@ -1,6 +1,6 @@
 import AnalysisIndex from "./index";
 import JsHighLight from "./code/jsHighLight";
-class Code extends AnalysisIndex{
+class Code extends AnalysisIndex {
     constructor() {
         super();
         this.handleValue = new String();
@@ -27,6 +27,7 @@ class Code extends AnalysisIndex{
             note: "note",
             br: "<br />"
         }
+        this.codeFragment = /^(\s*)?(`{3})(\s*)?$/;
         /**
          * @description 定义正则规则表达式参数
          * @property {String} removeEndSpace 去除尾部空格
@@ -36,7 +37,11 @@ class Code extends AnalysisIndex{
          * @property {RegExp} morelineAnnotationStart 多行注释头匹配
          * @property {RegExp} morelineAnnotationBody 多行注释身体匹配
          * @property {RegExp} morelineAnnotationEnd 多行注释尾匹配
-         *
+         * @property {Boolean} codeFlag 是否是代码片段的标记
+         * @property {Number} codeStartIndex 代码片段开始位置
+         * @property {Number} codeEndIndex 代码片段结束的位置
+         * @property {Array} codeData 记录一段代码片段的数据
+         * @property {Array} allCodeData 记录全部代码片段的位置
          **/
         this.removeEndSpace = /\s*$/;
         this.space = /^\s*/g;
@@ -48,6 +53,11 @@ class Code extends AnalysisIndex{
         this.nodeSign = [];
         this.startIndex = undefined;
         this.endIndex = undefined;
+        this.codeFlag = false;
+        this.codeStartIndex = undefined;
+        this.codeEndIndex = undefined;
+        this.codeData = [];
+        this.allCodeData = [];
     }
 
     /**
@@ -127,6 +137,31 @@ class Code extends AnalysisIndex{
             endIndex,
             returnHtml
         };
+    }
+
+    /**
+     * @method judgeHandle 匹配代码块
+     * @param {*} value 待匹配字符
+     * @param {*} index 行数下标 
+     */
+    judgeHandle(value, index) {
+        if (this.codeFragment.test(value) && !this.codeFlag) {
+            this.codeFlag = true;
+            this.codeStartIndex = index;
+        } else if (this.codeFragment.test(value) && this.codeFlag) {
+            this.codeEndIndex = index;
+            this.allCodeData.push({
+                startIndex: this.codeStartIndex,
+                endIndex: this.codeEndIndex,
+                codeData: this.codeData
+            })
+            this.codeStartIndex = undefined;
+            this.codeEndIndex = undefined;
+            this.codeFlag = false;
+            this.codeData = [];
+        } else if (this.codeFlag) {
+            this.codeData.push(value);
+        }
     }
 
     /**
@@ -220,8 +255,19 @@ class Code extends AnalysisIndex{
      * TODO: 待完成
      * @method handleCodeHighLight 处理代码高亮显示
      */
-    handleCodeHighLight(){
+    handleCodeHighLight() {
 
+    }
+
+    /**
+     * @method resetData 重置数据
+     */
+    resetData() {
+        this.codeFlag = false;
+        this.codeStartIndex = undefined;
+        this.codeEndIndex = undefined;
+        this.codeData = [];
+        this.allCodeData = [];
     }
 }
 

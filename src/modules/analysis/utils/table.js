@@ -79,6 +79,9 @@ class Table extends AnalysisIndex {
             this.tableParameter.endIndex = index;
             this.recordData();
             return;
+        } else if (this.tableParameter.start && !this.tableReg.end.test(value) && !this.tableReg.body.test(value) && !this.tableReg.rule.test(value)){
+            this.tableParameter.start = false;
+            this.tableParameter.tableData = [];
         }
     }
 

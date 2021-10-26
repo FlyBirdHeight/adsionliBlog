@@ -1,6 +1,6 @@
 <template>
   <div class="page-list">
-    <div class="page-info" v-for="(value, index) in pageListValue" :key="index">
+    <div class="page-info" v-for="(value, index) in showPageingList" :key="index">
       <a @click="goToPageRoute(value.routeLink)">
         <h2 class="title">
           <font class="top" v-if="value.toTop">[置顶]</font>{{ value.title }}
@@ -89,7 +89,8 @@ export default {
       this.changePage(page);
     },
     changePage(val = 1) {
-      this.showPageingList = this.pagePageingList[val - 1];
+      console.log(val)
+      this.showPageingList = this.pagePageingList[(val - 1)];
     },
   },
   components: {

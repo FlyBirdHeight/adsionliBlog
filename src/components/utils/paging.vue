@@ -113,6 +113,7 @@ export default {
       }
     }
     this.generatePagingList()
+    console.log(this);
   },
   methods: {
     /**

@@ -153,6 +153,7 @@ class Code extends AnalysisIndex {
             this.codeStartIndex = index;
         } else if (this.codeFragment.test(value) && this.codeFlag) {
             this.codeEndIndex = index;
+            this.jsHighLight.matchScope(this.codeData);
             this.allCodeData.push({
                 startIndex: this.codeStartIndex,
                 endIndex: this.codeEndIndex,

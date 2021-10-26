@@ -4,15 +4,24 @@
   background-color: getPageValue('summary', 'backColor');
   font-size: 16px;
   font-weight: 700;
-  @include paddingSet(10px);
+  @include paddingSet(0 5px);
   text-align: left;
   @include marginSet(0 10px 0 10px);
 
   span, p {
-    @include paddingSet(0 0 0 10px);
+    @include paddingSet(10px 0 5px 10px);
+  }
+
+  p {
+    margin: 0 auto;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0 auto;
   }
 
   .code {
+    margin-top: 10px;
     background-color: getPageValue('code', 'backColor');
     @include paddingSet(10px);
     color: getPageValue('code', 'color');

@@ -88,7 +88,6 @@ class Summary extends AnalysisIndex {
      * @method handleSummaryData 处理Summary模块的html标签
      */
     handleSummaryData() {
-        console.log(this.summaryHandleData)
         for (let value of this.summaryHandleData) {
             let innerHtml = this.summarySpan.start;
             if (value.handleData.length > 1) {

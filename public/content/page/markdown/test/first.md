@@ -29,7 +29,8 @@ class RouteHandle {
      * @param {*} to 前往路由对象
      * @param {*} from 来自路由对象
      */
-    beforeRouteSkip(to, from) {
+    beforeRouteSkip(to, from) 
+    {
         this.handleQuery('SET_COVER', to);
         if (this.switchNone.indexOf(to.path) == -1) {
             this.handleQuery('SWITCH_PAGE', {

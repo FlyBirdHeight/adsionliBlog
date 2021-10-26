@@ -3,7 +3,7 @@
   border-left: 3px solid #dfe2e5;
   background-color: getPageValue('summary', 'backColor');
   font-size: 16px;
-  font-weight: bolder;
+  font-weight: 700;
   @include paddingSet(10px);
   text-align: left;
   @include marginSet(0 10px 0 10px);
@@ -22,6 +22,7 @@
     border: 1px solid #f8f8f8;
     @include marginSet(0);
     width: 100%;
+    font-weight: 400;
     .code_font {
       white-space: nowrap;
       word-break: break-all;

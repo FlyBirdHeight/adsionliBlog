@@ -239,7 +239,6 @@ class Summary extends AnalysisIndex {
      * @method generateEndReturnData 生成最终输出数据
      */
     generateEndReturnData(handleData) {
-        console.log(handleData);
         let lastLevel = 1;
         let innerHtml = '';
         let count = 1;
@@ -292,7 +291,6 @@ class Summary extends AnalysisIndex {
             }
             count++;
         }
-        console.log(innerHtml)
         return innerHtml
     }
 

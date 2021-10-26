@@ -116,8 +116,6 @@ class RouteHandle {
             }
         }
     }
-
-
 }
 
 export default RouteHandle;

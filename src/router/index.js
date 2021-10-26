@@ -149,6 +149,11 @@ const routes = [
         path: 'markdown_review_table',
         name: 'MarkdownReviewTable',
         component: Page
+      },
+      {
+        path: 'markdown_review_title',
+        name: 'MarkdownReviewTitle',
+        component: Page
       }
     ]
   },

@@ -1,4 +1,5 @@
 .summary {
+  line-height: 30px;
   color: getPageValue('summary', 'color');
   border-left: 3px solid #dfe2e5;
   background-color: getPageValue('summary', 'backColor');
@@ -8,20 +9,32 @@
   text-align: left;
   @include marginSet(0 10px 0 10px);
 
-  span, p {
+  span,
+  p {
     @include paddingSet(10px 0 5px 10px);
+    letter-spacing: 0.5px;
   }
 
   p {
     margin: 0 auto;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     margin: 0 auto;
+  }
+  .inlineCode_char {
+    padding: 0 5px;
   }
 
   .code {
-    margin-top: 10px;
+    line-height: 17px;
+    margin: 10px;
+    letter-spacing: 0px;
     background-color: getPageValue('code', 'backColor');
     @include paddingSet(10px);
     color: getPageValue('code', 'color');
@@ -29,7 +42,6 @@
     text-align: left;
     text-indent: getPageValue('code', 'textIndent');
     border: 1px solid #f8f8f8;
-    @include marginSet(0);
     width: 100%;
     font-weight: 400;
     .code_font {
@@ -37,7 +49,7 @@
       word-break: break-all;
       font-weight: bolder;
       font-size: 16px;
-      // text-indent: 5px;
+      letter-spacing: 0px;
     }
 
     @import './js_highlight.scss';
@@ -46,7 +58,7 @@
       white-space: nowrap;
       word-break: break-all;
       color: getPageValue('utils', 'noteColor');
-      // text-indent: 5px;
+      letter-spacing: 0px;
     }
   }
 }

@@ -10,7 +10,7 @@ var JsHighLight = function () {
     this.char = /(\`.*\`|\'.*\'|\".*\"|\=|\+|\!|\?|\*|\||\/|\>|\<|\-|\&|\^|\@)/gi
     this.value = /(?<=(let|var|class|function|const|import))(\s+)(.+?)(?=(\s|;)+)/g
 }
-
+//匹配表达式
 JsHighLight.prototype.matchExpress = function (data) {
     for(let value of this.expression){
         let reg = new RegExp(eval(`/(${value})(\\s|:|\\.){1}/`), 'g');
@@ -21,20 +21,24 @@ JsHighLight.prototype.matchExpress = function (data) {
 
     return data;
 }
-
+//匹配特殊字符
 JsHighLight.prototype.matchChar = function(data){
     if(this.char.test(data)){
         data = data.replace(this.char, '<font class="char">$1</font>')
     }
     return data;
 }
-
+//匹配变量
 JsHighLight.prototype.matchValue = function(data){
     if(this.value.test(data)){
         data = data.replace(this.value, '$2<font class="value">$3</font>')
     }
 
     return data;
+}
+//作用域匹配
+JsHighLight.prototype.matchScope = function(data){
+
 }
 
 JsHighLight.prototype.handleHighLight = function(data){
@@ -43,5 +47,6 @@ JsHighLight.prototype.handleHighLight = function(data){
     handleData = this.matchExpress(handleData);
     return handleData;
 }
+
 
 export default JsHighLight;

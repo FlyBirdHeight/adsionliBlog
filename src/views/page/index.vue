@@ -1,18 +1,17 @@
 <template>
   <div class="page">
     <div class="title-list">
-      <div class="title-toggle" @click="hiddenTreeList">
+      <!-- <div class="title-toggle" @click="hiddenTreeList">
         <i v-if="hiddenTree" class="el-icon-remove-outline" style="font-size: 14px"></i>
         <i v-else class="el-icon-circle-plus-outline" style="font-size: 14px"> </i>
         CATALOG
-      </div>
+      </div> -->
       <tree-list
         :nodes="pageRender.titleData"
         :key="$route.fullPath"
         default-expand-all
         :expandAll="false"
         :flyHeight="true"
-        v-show="hiddenTree"
       ></tree-list>
     </div>
 
@@ -72,6 +71,9 @@ export default {
         this.pageRender.html = '<div class="no-page-data">暂无数据</div>'
       }
     })
+  },
+  mounted() {
+    this.$nextTick
   },
   updated() {
     setTimeout(() => {

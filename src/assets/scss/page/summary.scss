@@ -8,7 +8,7 @@
   text-align: left;
   @include marginSet(0 10px 0 10px);
 
-  span {
+  span, p {
     @include paddingSet(0 0 0 10px);
   }
 

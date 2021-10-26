@@ -26,5 +26,7 @@ this.summarySpan = {
 2. 同上，也可以分别匹配Title模块和Table模块和OrderList模块，但是匹配Title模块有一个很特殊的点，其内的title模块是不能生成在Title索引中的，只是返回其中的样式。
 3. 多个summary连在一起时，就可以组成一个大的summary模块，就像上面的表现形式是一样的。
 4. 根据以上的点进行代码的编写！
+### 3.1 开发过程遇到的新增注意
+1. 在summary的code中，如果不是头尾段标记符的Summary等级发生改变，一律不处理，直接作为code中内容输出
 
 ## 4.开发Summary模块时遇到的问题的记录

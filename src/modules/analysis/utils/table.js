@@ -32,7 +32,7 @@ class Table extends AnalysisIndex {
             start: /^((\|?)[^|]+(\|{1}))([^|]+(\|?))*([^|]+)/i,
             rule: /((\|)?(\s*)((:{1})?-{1,}(:{1})?)(\s*)(\|*))+/i,
             body: /((\|?).*?)+(\|+)/i,
-            end: /^(\s*)(\n*)?$/i
+            end: /^(\s*)(\n*|\r*)?$/i
         };
     }
 
@@ -97,7 +97,6 @@ class Table extends AnalysisIndex {
             this.tableParameter.level = level;
         } else if (this.tableParameter.start && !this.tableParameter.is
             && this.tableReg.rule.test(value) && this.tableParameter.level == level) {
-
             if (index - this.tableParameter.headerIndex == 1) {
                 this.tableParameter.startIndex = index;
                 this.tableParameter.tableData.push(value);
@@ -114,7 +113,6 @@ class Table extends AnalysisIndex {
             }
         } else if (this.tableParameter.start && this.tableParameter.is && this.tableReg.body.test(value)
             && !this.tableReg.end.test(value) && this.tableParameter.level == level) {
-
             if (typeof (this.tableParameter.lastBodyIndex) == 'undefined') {
                 this.tableParameter.lastBodyIndex = index
             }

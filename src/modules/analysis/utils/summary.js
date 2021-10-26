@@ -91,18 +91,12 @@ class Summary extends AnalysisIndex {
         for (let value of this.summaryHandleData) {
             let innerHtml = this.summarySpan.start;
             if (value.handleData.length > 1) {
-                this.handleOtherModules(value.handleData);
+                innerHtml += this.handleOtherModules(value.handleData);
                 //NOTE:这里最特殊的是因为在Summary模块中也还是支持对table,title,code的辨析，所以，需要重复处理
-                for (let label of value.handleData) {
-                    let addLabel = label.replace(this.summaryReg.start, '$2')
-                    innerHtml += addLabel == '' ? '</br>' : (this.summarySpan.normalSpanStart +
-                        addLabel + '</br>'
-                        + this.summarySpan.normalSpanEnd);
-                }
             } else {
                 innerHtml += this.summarySpan.normalSpanStart +
-                    this.matchSpecialChar(value.handleData[0].replace(this.summaryReg.start, '$2'))
-                    + this.summarySpan.normalSpanEnd;
+                    this.matchSpecialChar(value.handleData[0].replace(this.summaryReg.start, '$2')) +
+                    this.summarySpan.normalSpanEnd;
             }
             innerHtml += this.summarySpan.end;
             this.returnData.push({
@@ -132,6 +126,7 @@ class Summary extends AnalysisIndex {
                 continue;
             }
             if (this.table.tableParameter.start) {
+                judgeData = judgeData.replace(/(\r|\>)/g, '');
                 this.table.judgeHandleSummary(judgeData, i, length, level);
                 continue;
             }
@@ -148,12 +143,9 @@ class Summary extends AnalysisIndex {
         }
         //NOTE: 处理普通数据，因为这里没有做处理
         htmlSpanList = this.handleNormalData(data, htmlSpanList);
-        htmlSpanList = this.generateEndReturnData(htmlSpanList);
+        returnCodeHtml = this.generateEndReturnData(htmlSpanList);
 
-        // htmlSpanList.map((value, index) => {
-        //     returnCodeHtml += value.returnHtml;
-        // })
-
+        return returnCodeHtml;
     }
 
     /**
@@ -227,7 +219,7 @@ class Summary extends AnalysisIndex {
                 for (let label of value.data) {
                     let obj = {};
                     obj['level'] = label.match(/^(\>\s*)*/g)[0].replace(/\s/g, '').length;
-                    obj['label'] = label.replace(/^(\>\s+?)*(.+)/g, '$2');
+                    obj['label'] = label.replace(/^(\>\s+?)*(.+)/g, '$2').replace(/\r/g, '');
                     if (obj['label'] == '>') {
                         obj['label'] = ''
                     }
@@ -250,6 +242,7 @@ class Summary extends AnalysisIndex {
         console.log(handleData);
         let lastLevel = 1;
         let innerHtml = '';
+        let count = 1;
         for (let value of handleData) {
             if (value.type == 'normal') {
                 for (let normal of value.returnHtml.body) {
@@ -263,9 +256,14 @@ class Summary extends AnalysisIndex {
                         for (let i = 1; i < lastLevel; i++) {
                             innerHtml += this.summarySpan.start;
                         }
-                        // innerHtml += value.returnHtml.
-                    }else{
-
+                        innerHtml += normal.html;
+                    } else {
+                        innerHtml += normal.html;
+                    }
+                    if (count == handleData.length && lastLevel != 1) {
+                        for (let i = 1; i < lastLevel; i++) {
+                            innerHtml += this.summarySpan.end;
+                        }
                     }
                 }
             } else {
@@ -286,8 +284,16 @@ class Summary extends AnalysisIndex {
                 } else if (lastLevel == value.level) {
                     innerHtml += value.returnHtml;
                 }
+                if (count == handleData.length && lastLevel != 1) {
+                    for (let i = 1; i < lastLevel; i++) {
+                        innerHtml += this.summarySpan.end;
+                    }
+                }
             }
+            count++;
         }
+        console.log(innerHtml)
+        return innerHtml
     }
 
     /**

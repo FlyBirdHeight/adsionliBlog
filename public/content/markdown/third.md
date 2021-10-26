@@ -50,7 +50,11 @@
 >     return handleData;
 > }
 > 
-> export default JsHighLight;
+> > > > export default JsHighLight;
+> 
 > ```
->
-> 也许这就是命运的选择
+> | a | b |
+> | - | - |
+> | 1| 2 |
+> 
+> > > > **也许这就是命运的选择**

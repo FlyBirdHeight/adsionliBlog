@@ -184,7 +184,7 @@ class Code extends AnalysisIndex {
                 level: this.summaryLevel
             })
             this.resetData();
-        } else if (this.codeFlag && this.summaryLevel == level) {
+        } else if (this.codeFlag) {
             this.codeData.push(value);
         } else if(this.codeFlag && this.summaryLevel != level){
             this.resetData();

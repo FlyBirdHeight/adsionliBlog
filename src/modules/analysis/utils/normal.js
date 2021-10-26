@@ -105,6 +105,14 @@ class Normal extends AnalysisIndex {
             })
         }
     }
+
+    /**
+     * @method resetData 重置数据
+     */
+    resetData(){
+        this.handleData = [];
+        this.returnData = [];
+    }
 }
 
 export default Normal;

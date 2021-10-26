@@ -40,7 +40,7 @@ class MatchPattern extends AnalysisIndex {
                 this.table.judgeHandle(data[i], i, length);
                 continue;
             }
-            if(this.summary.summaryStart){
+            if (this.summary.summaryStart) {
                 this.summary.judgeSummary(data[i], i);
                 continue;
             }
@@ -83,7 +83,7 @@ class MatchPattern extends AnalysisIndex {
         if (this.title.titleList.length != 0) {
             this.htmlSpanList = this.htmlSpanList.concat(this.title.handleTitleLevel().generateTitleLevel());
         }
-        if(this.summary.summaryHandleData.length != 0){
+        if (this.summary.summaryHandleData.length != 0) {
             let returnData = this.summary.handleSummaryData();
             this.htmlSpanList = this.htmlSpanList.concat(returnData);
         }
@@ -95,26 +95,35 @@ class MatchPattern extends AnalysisIndex {
      */
     handleNormalData(data) {
         let noHandleIndex = 0;
-        //NOTE 首先先获取到待处理数据内容
-        this.htmlSpanList.map(value => {
-            if (noHandleIndex != value.endIndex) {
-                this.normalData.push({
-                    data: data.slice(noHandleIndex, (noHandleIndex + (value.startIndex - noHandleIndex))),
-                    startIndex: value.startIndex - noHandleIndex == 1 ? noHandleIndex + (value.startIndex - noHandleIndex) - 1 : noHandleIndex,
-                    endIndex: noHandleIndex + (value.startIndex - noHandleIndex) - 1
-                })
-                noHandleIndex = value.endIndex + 1;
-            } else {
-                noHandleIndex = value.endIndex + 1;
-            }
-        })
-        if (data.length > this.htmlSpanList[this.htmlSpanList.length - 1].endIndex) {
+        if (this.htmlSpanList.length == 0) {
             this.normalData.push({
-                data: data.slice(this.htmlSpanList[this.htmlSpanList.length - 1].endIndex + 1),
-                startIndex: this.htmlSpanList[this.htmlSpanList.length - 1].endIndex + 1,
+                data: data,
+                startIndex: 0,
                 endIndex: data.length - 1
             })
+        } else {
+            //NOTE 首先先获取到待处理数据内容
+            this.htmlSpanList.map(value => {
+                if (noHandleIndex != value.endIndex) {
+                    this.normalData.push({
+                        data: data.slice(noHandleIndex, (noHandleIndex + (value.startIndex - noHandleIndex))),
+                        startIndex: value.startIndex - noHandleIndex == 1 ? noHandleIndex + (value.startIndex - noHandleIndex) - 1 : noHandleIndex,
+                        endIndex: noHandleIndex + (value.startIndex - noHandleIndex) - 1
+                    })
+                    noHandleIndex = value.endIndex + 1;
+                } else {
+                    noHandleIndex = value.endIndex + 1;
+                }
+            })
+            if (data.length > this.htmlSpanList[this.htmlSpanList.length - 1].endIndex) {
+                this.normalData.push({
+                    data: data.slice(this.htmlSpanList[this.htmlSpanList.length - 1].endIndex + 1),
+                    startIndex: this.htmlSpanList[this.htmlSpanList.length - 1].endIndex + 1,
+                    endIndex: data.length - 1
+                })
+            }
         }
+
 
         this.normal.setHandleData(this.normalData).handleDataToSpan();
         this.htmlSpanList = this.htmlSpanList.concat(this.normal.returnData).sort((a, b) => {

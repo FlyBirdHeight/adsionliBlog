@@ -18,6 +18,10 @@
             "label": "相关测试"
         },{
             "label": "markdown"
+        },{
+            "label": "代码review"
+        },{
+            "label": "components"
         }
     ]
 }

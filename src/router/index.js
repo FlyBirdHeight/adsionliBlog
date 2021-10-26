@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import RouteHandle from "./handle"
-import Markdown from "@/views/markdown/index.vue"
+import Page from "@/views/page/index.vue"
 var handle = new RouteHandle();
 Vue.use(VueRouter)
 
@@ -63,7 +63,7 @@ const routes = [
       },
       {
         path: "test",
-        name: 'Test',
+        name: 'FaceTest',
         redirect: '/face/test/change_data',
         component: () => import('@/views/face/test/index.vue'),
         children: [
@@ -110,25 +110,40 @@ const routes = [
       }
     ]
   }, {
-    path: '/markdown',
-    name: 'Markdown',
-    redirect: '/markdown/first',
-    component: Markdown,
+    path: '/page',
+    name: 'Page',
+    redirect: '/page/markdown_test_first',
+    component: Page,
     children: [
       {
-        path: 'first',
+        path: 'markdown_test_first',
         name: 'MarkdownFirst',
-        component: Markdown,
+        component: Page,
       },
       {
-        path: 'second',
+        path: 'markdown_test_second',
         name: 'MarkdownSecond',
-        component: Markdown
+        component: Page
       },
       {
-        path: 'third',
+        path: 'markdown_test_third',
         name: 'MarkdownThird',
-        component: Markdown
+        component: Page
+      },
+      {
+        path: 'markdown_review_code',
+        name: 'MarkdownReviewCode',
+        component: Page
+      },
+      {
+        path: 'markdown_review_summary',
+        name: 'MarkdownReviewSummary',
+        component: Page
+      },
+      {
+        path: 'markdown_review_render',
+        name: 'MarkdownReviewRender',
+        component: Page
       }
     ]
   },

@@ -25,7 +25,7 @@ class Summary extends AnalysisIndex {
          * @property {Array} returnData 返回的html片段数据
          */
         this.summaryReg = {
-            start: /(^\>)(.*)/i,
+            start: /(^\s*\>)(.*)/i,
             end: /^(\s*)(\n*)?$/i
         }
         this.startSummaryIndex = null;
@@ -88,6 +88,7 @@ class Summary extends AnalysisIndex {
      * @method handleSummaryData 处理Summary模块的html标签
      */
     handleSummaryData() {
+        console.log(this.summaryHandleData)
         for (let value of this.summaryHandleData) {
             let innerHtml = this.summarySpan.start;
             if (value.handleData.length > 1) {
@@ -178,32 +179,41 @@ class Summary extends AnalysisIndex {
     handleNormalData(data, htmlSpanList) {
         let noHandleIndex = 0;
         let normalData = [];
-        //NOTE 首先先获取到待处理数据内容
-        htmlSpanList.map(value => {
-            if (noHandleIndex != value.endIndex) {
-                normalData.push({
-                    data: data.slice(noHandleIndex, (noHandleIndex + (value.startIndex - noHandleIndex))),
-                    startIndex: value.startIndex - noHandleIndex == 1 ? noHandleIndex + (value.startIndex - noHandleIndex) - 1 : noHandleIndex,
-                    endIndex: noHandleIndex + (value.startIndex - noHandleIndex) - 1,
-                })
-                noHandleIndex = value.endIndex + 1;
-            } else {
-                noHandleIndex = value.endIndex + 1;
-            }
-        })
-        if (data.length > htmlSpanList[htmlSpanList.length - 1].endIndex) {
+        if (htmlSpanList.length == 0) {
             normalData.push({
-                data: data.slice(htmlSpanList[htmlSpanList.length - 1].endIndex + 1),
-                startIndex: htmlSpanList[htmlSpanList.length - 1].endIndex + 1,
+                data: data,
+                startIndex: 0,
                 endIndex: data.length - 1
             })
+        } else {
+            //NOTE 首先先获取到待处理数据内容
+            htmlSpanList.map(value => {
+                if (noHandleIndex != value.endIndex) {
+                    normalData.push({
+                        data: data.slice(noHandleIndex, (noHandleIndex + (value.startIndex - noHandleIndex))),
+                        startIndex: value.startIndex - noHandleIndex == 1 ? noHandleIndex + (value.startIndex - noHandleIndex) - 1 : noHandleIndex,
+                        endIndex: noHandleIndex + (value.startIndex - noHandleIndex) - 1,
+                    })
+                    noHandleIndex = value.endIndex + 1;
+                } else {
+                    noHandleIndex = value.endIndex + 1;
+                }
+            })
+            if (data.length > htmlSpanList[htmlSpanList.length - 1].endIndex) {
+                normalData.push({
+                    data: data.slice(htmlSpanList[htmlSpanList.length - 1].endIndex + 1),
+                    startIndex: htmlSpanList[htmlSpanList.length - 1].endIndex + 1,
+                    endIndex: data.length - 1
+                })
+            }
         }
+        
         normalData = this.handleNormalDataCreateLevel(normalData);
         this.normal.setHandleData(normalData).handleDataToSpanForSummary();
         htmlSpanList = htmlSpanList.concat(this.normal.returnData).sort((a, b) => {
             return a.startIndex - b.startIndex;
         })
-
+        this.normal.resetData()
         return htmlSpanList;
     }
 
@@ -239,6 +249,9 @@ class Summary extends AnalysisIndex {
      * @method generateEndReturnData 生成最终输出数据
      */
     generateEndReturnData(handleData) {
+        if (handleData.length == 0) {
+            return '';
+        }
         let lastLevel = 1;
         let innerHtml = '';
         let count = 1;

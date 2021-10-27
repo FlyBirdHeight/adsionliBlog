@@ -9,7 +9,7 @@
 
 ## 2. 测试用例
 ### 1. code 模块测试测试用例
-```
+``` js
 import store from "../store/index"
 import pageList from "../data/page_list.json";
 import coverList from "../data/cover.json";

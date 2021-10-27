@@ -1,15 +1,13 @@
 import AnalysisIndex from "./index.js";
-import Highlight from "./highlight/highlight.js";
 class Code extends AnalysisIndex {
     constructor() {
         super();
         this.handleValue = new String();
-        this.highlight = new Highlight();
         this.handleTag = {
             start: '<div class="code">',
             normalCodeHighlight: '<pre v-highlight>',
             normalCodeHighlightEnd: '</pre>',
-            highlightStart: '<code style="overflow:unset; padding: 0" class="javascript">',
+            highlightStart: '<code style="overflow:unset; padding: 0" class="">',
             highlightEnd: '</code>',
             pS: '<p class="code_font">',
             pE: '</p>',
@@ -181,6 +179,8 @@ class Code extends AnalysisIndex {
      */
     judgeHandleSummary(value, index, level) {
         if (this.codeFragment.test(value) && !this.codeFlag) {
+            this.showHighlightLanguage = value.replace(this.codeFragment, '$4');
+            this.handleCodeHighLight()
             this.codeFlag = true;
             this.codeStartIndex = index;
             this.summaryLevel = level;
@@ -281,18 +281,16 @@ class Code extends AnalysisIndex {
                 if(currentValue.replace(this.space, '') == '>'){
                     return '';
                 }
-                let start = this.handleTag.highlightStart.replace(/(class=")/, `$1${tabLayour} `);
+                let start = this.handleTag.highlightStart.replace(/(class=")/, `$1${tabLayour} ${this.showHighlightLanguage}`);
                 innerHtml = start + currentValue.replace(this.space, '') + this.handleTag.highlightEnd;
-                // innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
                 return innerHtml;
             }
         } else {
             if(currentValue.replace(this.space, '') == '>'){
                 return '';
             }
-            let start = this.handleTag.highlightStart.replace(/(class=")/, `$1${tabLayour} `);
+            let start = this.handleTag.highlightStart.replace(/(class=")/, `$1${tabLayour} ${this.showHighlightLanguage}`);
             innerHtml = start + currentValue.replace(this.space, '') + this.handleTag.highlightEnd;
-            // innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
             return innerHtml;
         }
     }
@@ -305,9 +303,15 @@ class Code extends AnalysisIndex {
         this.showHighlightLanguage = this.showHighlightLanguage.replace(/(\s|\r|\n)/g, '');
         if(this.showHighlightLanguage.length != 0){
             if(this.languageList.indexOf(this.showHighlightLanguage) == -1){
-                this.showHighlightLanguage = '';
+                this.showHighlightLanguage = 'javascript';
             }
+            if(this.showHighlightLanguage == 'js'){
+                this.showHighlightLanguage = 'javascript'
+            }
+        }else{
+            this.showHighlightLanguage = 'javascript'
         }
+        console.log(this.showHighlightLanguage)
     }
 
     /**

@@ -32,7 +32,7 @@
   }
 
   .code {
-    line-height: 17px;
+    line-height: 20px;
     margin: 10px;
     letter-spacing: 0px;
     background-color: getPageValue('code', 'backColor');
@@ -52,16 +52,9 @@
       letter-spacing: 0px;
     }
 
-    .expression {
-      color: rgb(127, 54, 150);
-    }
-
-    .char {
-      color: rgb(147, 67, 65);
-    }
-
-    .value {
-      color: rgb(55, 65, 250);
+    span {
+      padding: 0;
+      letter-spacing: 0px;
     }
 
     .note {

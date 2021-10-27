@@ -7,6 +7,10 @@ class Code extends AnalysisIndex {
         this.highlight = new Highlight();
         this.handleTag = {
             start: '<div class="code">',
+            normalCodeHighlight: '<pre v-highlight>',
+            normalCodeHighlightEnd: '</pre>',
+            highlightStart: '<code style="overflow:unset; padding: 0" class="javascript">',
+            highlightEnd: '</code>',
             pS: '<p class="code_font">',
             pE: '</p>',
             end: '</div>',
@@ -27,7 +31,7 @@ class Code extends AnalysisIndex {
             note: "note",
             br: "<br />"
         }
-        this.codeFragment = /^(\s*)?(`{3})(\s*)?$/;
+        this.codeFragment = /^(\s*)?(`{3})(\s*)?(.+)?$/;
         /**
          * @description 定义正则规则表达式参数
          * @property {String} removeEndSpace 去除尾部空格
@@ -61,6 +65,8 @@ class Code extends AnalysisIndex {
         this.allCodeData = [];
         this.allSummaryCodeData = [];
         this.summaryLevel = null;
+        this.showHighlightLanguage = 'javascript';
+        this.languageList = ['c++', 'c#', 'go', 'c', 'swift', 'javascript', 'java', 'php', 'sql', 'python', 'html', 'xml', 'bash', 'css', 'ruby', 'json','kotlin','objective-c','scss','typescript','glsl'];
     }
 
     /**
@@ -83,6 +89,7 @@ class Code extends AnalysisIndex {
      */
     handle() {
         let returnHtml = this.handleTag.start;
+        returnHtml += this.handleTag.normalCodeHighlight;
         let morelineAnnotationStart = undefined;
         let firstMorelineAnnotationFlag = false;
         let morelineAnnotationBodyIndex = undefined;
@@ -131,7 +138,7 @@ class Code extends AnalysisIndex {
                 returnHtml += this.handleNormalCode(...requestData);
             }
         })
-
+        returnHtml += this.handleTag.normalCodeHighlightEnd;
         returnHtml += this.handleTag.end;
         let startIndex = this.startIndex;
         let endIndex = this.endIndex;
@@ -149,6 +156,8 @@ class Code extends AnalysisIndex {
      */
     judgeHandle(value, index) {
         if (this.codeFragment.test(value) && !this.codeFlag) {
+            this.showHighlightLanguage = value.replace(this.codeFragment, '$4');
+            this.handleCodeHighLight()
             this.codeFlag = true;
             this.codeStartIndex = index;
         } else if (this.codeFragment.test(value) && this.codeFlag) {
@@ -269,12 +278,20 @@ class Code extends AnalysisIndex {
                 innerHtml = this.handleNote(currentValue, innerHtml);
                 return innerHtml;
             } else {
-                innerHtml += this.highlight.handleHighLight(currentValue.replace(this.space, '')) + this.handleTag.pE;
+                if(currentValue.replace(this.space, '') == '>'){
+                    return '';
+                }
+                let start = this.handleTag.highlightStart.replace(/(class=")/, `$1${tabLayour} `);
+                innerHtml = start + currentValue.replace(this.space, '') + this.handleTag.highlightEnd;
                 // innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
                 return innerHtml;
             }
         } else {
-            innerHtml += this.highlight.handleHighLight(currentValue.replace(this.space, '')) + this.handleTag.pE;
+            if(currentValue.replace(this.space, '') == '>'){
+                return '';
+            }
+            let start = this.handleTag.highlightStart.replace(/(class=")/, `$1${tabLayour} `);
+            innerHtml = start + currentValue.replace(this.space, '') + this.handleTag.highlightEnd;
             // innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
             return innerHtml;
         }
@@ -285,7 +302,12 @@ class Code extends AnalysisIndex {
      * @method handleCodeHighLight 处理代码高亮显示
      */
     handleCodeHighLight() {
-
+        this.showHighlightLanguage = this.showHighlightLanguage.replace(/(\s|\r|\n)/g, '');
+        if(this.showHighlightLanguage.length != 0){
+            if(this.languageList.indexOf(this.showHighlightLanguage) == -1){
+                this.showHighlightLanguage = '';
+            }
+        }
     }
 
     /**

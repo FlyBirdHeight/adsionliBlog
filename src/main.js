@@ -25,6 +25,9 @@ Vue.use(ElementUI);
 import axios from 'axios'
 Vue.prototype.axios = axios
 
+import Highlight from './utils/highlight.js';
+Vue.use(Highlight);
+
 import Analysis from "@/modules/analysis/index.js";
 Vue.prototype.analysis = new Analysis();
 

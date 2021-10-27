@@ -89,7 +89,6 @@ export default {
       this.changePage(page);
     },
     changePage(val = 1) {
-      console.log(val)
       this.showPageingList = this.pagePageingList[(val - 1)];
     },
   },

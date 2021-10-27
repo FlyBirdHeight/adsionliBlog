@@ -54,6 +54,7 @@
     background-color: getPageValue('code', 'backColor');
     @include paddingSet(10px);
     @include marginSet(10px 0 0 0);
+    line-height: 22px;
     color: getPageValue('code', 'color');
     border-radius: 15px;
     text-align: left;
@@ -66,26 +67,13 @@
       font-size: 16px;
       white-space: nowrap;
       word-break: break-all;
-      // text-indent: 5px;
-    }
-
-    .expression {
-      color: rgb(127, 54, 150);
-    }
-
-    .char {
-      color: rgb(147, 67, 65);
-    }
-
-    .value {
-      color: rgb(55, 65, 250);
     }
 
     .note {
       color: getPageValue('utils', 'noteColor');
       white-space: nowrap;
       word-break: break-all;
-      // text-indent: 5px;
+      margin: 0;
     }
   }
 

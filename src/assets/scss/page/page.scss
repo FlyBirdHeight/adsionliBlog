@@ -69,7 +69,17 @@
       // text-indent: 5px;
     }
 
-    @import './js_highlight.scss';
+    .expression {
+      color: rgb(127, 54, 150);
+    }
+
+    .char {
+      color: rgb(147, 67, 65);
+    }
+
+    .value {
+      color: rgb(55, 65, 250);
+    }
 
     .note {
       color: getPageValue('utils', 'noteColor');

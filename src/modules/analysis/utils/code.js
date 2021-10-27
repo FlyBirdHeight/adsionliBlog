@@ -1,10 +1,10 @@
-import AnalysisIndex from "./index";
-import JsHighLight from "./code/jsHighLight";
+import AnalysisIndex from "./index.js";
+import Highlight from "./highlight/highlight.js";
 class Code extends AnalysisIndex {
     constructor() {
         super();
         this.handleValue = new String();
-        this.jsHighLight = new JsHighLight();
+        this.highlight = new Highlight();
         this.handleTag = {
             start: '<div class="code">',
             pS: '<p class="code_font">',
@@ -153,7 +153,6 @@ class Code extends AnalysisIndex {
             this.codeStartIndex = index;
         } else if (this.codeFragment.test(value) && this.codeFlag) {
             this.codeEndIndex = index;
-            this.jsHighLight.matchScope(this.codeData);
             this.allCodeData.push({
                 startIndex: this.codeStartIndex,
                 endIndex: this.codeEndIndex,
@@ -270,11 +269,13 @@ class Code extends AnalysisIndex {
                 innerHtml = this.handleNote(currentValue, innerHtml);
                 return innerHtml;
             } else {
-                innerHtml += this.jsHighLight.handleHighLight(currentValue.replace(this.space, '')) + this.handleTag.pE;
+                innerHtml += this.highlight.handleHighLight(currentValue.replace(this.space, '')) + this.handleTag.pE;
+                // innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
                 return innerHtml;
             }
         } else {
-            innerHtml += this.jsHighLight.handleHighLight(currentValue.replace(this.space, '')) + this.handleTag.pE;
+            innerHtml += this.highlight.handleHighLight(currentValue.replace(this.space, '')) + this.handleTag.pE;
+            // innerHtml += currentValue.replace(this.space, '') + this.handleTag.pE;
             return innerHtml;
         }
     }

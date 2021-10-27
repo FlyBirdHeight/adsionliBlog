@@ -64,7 +64,7 @@ class Code extends AnalysisIndex {
         this.allSummaryCodeData = [];
         this.summaryLevel = null;
         this.showHighlightLanguage = 'javascript';
-        this.languageList = ['c++', 'c#', 'go', 'c', 'swift', 'javascript', 'java', 'php', 'sql', 'python', 'html', 'xml', 'bash', 'css', 'ruby', 'json','kotlin','objective-c','scss','typescript','glsl'];
+        this.languageList = ['c++', 'c#', 'go', 'c', 'swift', 'javascript', 'java', 'php', 'sql', 'python', 'html', 'xml', 'bash', 'css', 'ruby', 'json', 'kotlin', 'objective-c', 'scss', 'typescript', 'glsl'];
     }
 
     /**
@@ -195,7 +195,7 @@ class Code extends AnalysisIndex {
             this.resetData();
         } else if (this.codeFlag) {
             this.codeData.push(value);
-        } else if(this.codeFlag && this.summaryLevel != level){
+        } else if (this.codeFlag && this.summaryLevel != level) {
             this.resetData();
         }
     }
@@ -216,7 +216,11 @@ class Code extends AnalysisIndex {
         let last = undefined;
         for (let key in this.handleTag.tab) {
             if (spaceCount < this.handleTag.tab[key]) {
-                returnData = last;
+                if (spaceCount > 2 && spaceCount < 5) {
+                    returnData = key
+                } else {
+                    returnData = last;
+                }
                 break;
             }
             last = key;
@@ -272,13 +276,14 @@ class Code extends AnalysisIndex {
         currentValue = currentValue.replace(this.removeEndSpace, '')
         let spaceCount = currentValue.match(this.space)[0].length;
         let tabLayour = this.getTabNum(spaceCount);
+        console.log(spaceCount, tabLayour)
         innerHtml = innerHtml.substr(0, innerHtml.length - 2) + (tabLayour != '' ? ` ${tabLayour}` : '') + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
         if (type == 'normal') {
             if (aF && typeof (aS) != 'undefined' && typeof (aE) == 'undefined') {
                 innerHtml = this.handleNote(currentValue, innerHtml);
                 return innerHtml;
             } else {
-                if(currentValue.replace(this.space, '') == '>'){
+                if (currentValue.replace(this.space, '') == '>') {
                     return '';
                 }
                 let start = this.handleTag.highlightStart.replace(/(class=")/, `$1${tabLayour} ${this.showHighlightLanguage}`);
@@ -286,7 +291,7 @@ class Code extends AnalysisIndex {
                 return innerHtml;
             }
         } else {
-            if(currentValue.replace(this.space, '') == '>'){
+            if (currentValue.replace(this.space, '') == '>') {
                 return '';
             }
             let start = this.handleTag.highlightStart.replace(/(class=")/, `$1${tabLayour} ${this.showHighlightLanguage}`);
@@ -301,17 +306,16 @@ class Code extends AnalysisIndex {
      */
     handleCodeHighLight() {
         this.showHighlightLanguage = this.showHighlightLanguage.replace(/(\s|\r|\n)/g, '');
-        if(this.showHighlightLanguage.length != 0){
-            if(this.languageList.indexOf(this.showHighlightLanguage) == -1){
+        if (this.showHighlightLanguage.length != 0) {
+            if (this.languageList.indexOf(this.showHighlightLanguage) == -1) {
                 this.showHighlightLanguage = 'javascript';
             }
-            if(this.showHighlightLanguage == 'js'){
+            if (this.showHighlightLanguage == 'js') {
                 this.showHighlightLanguage = 'javascript'
             }
-        }else{
+        } else {
             this.showHighlightLanguage = 'javascript'
         }
-        console.log(this.showHighlightLanguage)
     }
 
     /**

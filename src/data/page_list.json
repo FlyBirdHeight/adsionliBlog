@@ -213,49 +213,22 @@
             "path": "/content/page/markdown/review/title.md"
         },
         {
-            "title": "测试动态路由匹配",
-            "subTitle": "测试动态路由匹配",
+            "title": "vue-router之动态路由匹配开发",
+            "subTitle": "基于本博客的动态路由开发",
             "createTime": "Posted by adsionli on October 27, 2021",
             "created_at": "2021-10-27",
             "tags": [
                 {
-                    "label": "相关测试"
-                }
-            ],
-            "description": "测试动态路由匹配",
-            "routeLink": "/page/test/dynamicRoute",
-            "toTop": 0,
-            "path": "/content/page/markdown/review/title.md"
-        },
-        {
-            "title": "测试动态路由匹配2",
-            "subTitle": "测试动态路由匹配2",
-            "createTime": "Posted by adsionli on October 27, 2021",
-            "created_at": "2021-10-27",
-            "tags": [
+                    "label": "vue"
+                },
                 {
-                    "label": "相关测试"
+                    "label": "vue-router"
                 }
             ],
-            "description": "测试动态路由匹配2",
-            "routeLink": "/page/test/dynamic/route/2",
+            "description": "因为嫌每一次添加一条page_list数据就需要手动去添加一条路由太麻烦，直接在main.js导入一个动态路由生成的代码，直接处理page_list里的routeLink数据",
+            "routeLink": "/page/vue/router/dynamic",
             "toTop": 0,
-            "path": "/content/page/markdown/review/title.md"
-        },
-        {
-            "title": "测试动态路由匹配3",
-            "subTitle": "测试动态路由匹配3",
-            "createTime": "Posted by adsionli on October 27, 2021",
-            "created_at": "2021-10-27",
-            "tags": [
-                {
-                    "label": "相关测试"
-                }
-            ],
-            "description": "测试动态路由匹配3",
-            "routeLink": "/page/test/dynamic/route",
-            "toTop": 0,
-            "path": "/content/page/markdown/review/title.md"
+            "path": "/content/page/vue/router/dynamic.md"
         }
     ]
 }

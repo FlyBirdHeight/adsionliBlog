@@ -1,0 +1,76 @@
+# 动态路由匹配
+
+> 虽然这里说是动态路由匹配，其实只是因为自己太懒了，实在不想每一次写一次page_list.json文件中的内容之后，还要再去router下面的index.js里面添加一条route记录，实在太麻烦了。所以为了一劳永逸，直接使用vue-router中提供的`addRoute`方法，结合`RouteConfig`结构，直接生成路由。然后在main.js添加进去，避免了总是需要自己去添加的麻烦。
+
+## vue-router中使用到的方法及类型说明
+
+1. RouteConfig路由数据
+
+> 通过查阅vue-router的api，可以很简单的找到RouteConfig这种路由数据的结构
+
+官网给出的结构：
+
+```typescript
+interface RouteConfig = {
+  	path: string,
+  	component?: Component,
+  	name?: string, // 命名路由
+  	components?: { [name: string]: Component }, // 命名视图组件
+  	redirect?: string | Location | Function,
+  	props?: boolean | Object | Function,
+  	alias?: string | Array[string],
+  	children?: Array[RouteConfig], // 嵌套路由
+  	beforeEnter?: (to: Route, from: Route, next: Function) => void,
+  	meta?: any,
+	
+  	// 2.6.0+
+  	caseSensitive?: boolean, // 匹配规则是否大小写敏感？(默认值：false)
+  	pathToRegexpOptions?: Object // 编译正则的选项
+}
+```
+
+> 在本次的动态路由匹配中，实际上主要使用的是以下几个参数: path,component,children,caseSesitive。因为我们的代码是不需要进行权限设置的，所以meta还有beforeEnter方法都不需要写，而且在路由里面已经进行了beforeEach的处理。
+
+2. addRoute方法
+
+> addRoute方法的使用非常简单，只需要传入RouteConfig的类型数据(可以嵌套的哦)，也可以传入Parent Name, RouteConfig的形式。
+
+```typescript
+addRoute(parentName: string, route: RouteConfig): () => void
+addRoute(route: RouteConfig): () => void
+//注意使用addRoute时，添加一条新的路由规则记录作为现有路由的子路由。如果该路由规则有 name，并且已经存在一个与之相同的名字，则会覆盖它。
+```
+
+## 具体实现思路
+
+1. 借助数据结构中的树形结构**(劳模)**，来存放数据，这里选用了Js中Map类，因为用来存放数据非常简单，然后再利用了Js中的引用，来修改最初提供的数据。
+
+2. 处理很多特殊情况
+
+   (1) 比如在一开始的时候定义了一个路径为`/vue/router/dynamic`的路由路径，那么这种情况下生成的RouteConfig的结构该是什么样子的呢，如下所示
+
+```js
+{
+    path: "/vue",
+    caseSensitive: true,
+    children: [
+        {
+            path: "router",
+        	caseSensitive: true,
+            children: [
+                {
+                    path: "dynamic",
+                    caseSensitive: true,
+                    children: [],
+                    component: Page
+                }
+            ]
+        }
+    ]
+}
+```
+
+> 为什么会是上述的结构呢，因为在最外层的vue,和router中，都没有相关的配置文件，所以此时他们的component一定为空的
+>
+> ==其实这里忘记处理了一个很重要的东西，这里应该加上redirect，否则会出现问题==
+

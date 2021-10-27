@@ -22,6 +22,10 @@
             "label": "代码review"
         },{
             "label": "components"
+        },{
+            "label": "vue"
+        },{
+            "label": "vue-router"
         }
     ]
 }

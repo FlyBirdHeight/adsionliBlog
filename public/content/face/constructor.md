@@ -17,3 +17,4 @@ let a = f1.prototype.constructor.__proto__
 ```
 {{isEqualPrototype}}
 ```
+

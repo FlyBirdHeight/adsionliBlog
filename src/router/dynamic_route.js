@@ -1,6 +1,4 @@
 import axios from 'axios'
-import Vue from 'vue'
-import VueRouter from 'vue-router'
 import Page from "@/views/page/index.vue"
 var DynamicRoute = function (routeInfo, router) {
     /**
@@ -76,7 +74,6 @@ DynamicRoute.prototype.generateRoute = function () {
         for(let value of this.routeData){
             this.router.addRoute("Page", value);
         }
-        console.log(this.router.getRoutes());
     }
 }
 /**

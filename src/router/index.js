@@ -112,49 +112,9 @@ const routes = [
   }, {
     path: '/page',
     name: 'Page',
-    redirect: '/page/markdown_test_first',
     component: Page,
     children: [
-      {
-        path: 'markdown_test_first',
-        name: 'MarkdownFirst',
-        component: Page,
-      },
-      {
-        path: 'markdown_test_second',
-        name: 'MarkdownSecond',
-        component: Page
-      },
-      {
-        path: 'markdown_test_third',
-        name: 'MarkdownThird',
-        component: Page
-      },
-      {
-        path: 'markdown_review_code',
-        name: 'MarkdownReviewCode',
-        component: Page
-      },
-      {
-        path: 'markdown_review_summary',
-        name: 'MarkdownReviewSummary',
-        component: Page
-      },
-      {
-        path: 'markdown_review_render',
-        name: 'MarkdownReviewRender',
-        component: Page
-      },
-      {
-        path: 'markdown_review_table',
-        name: 'MarkdownReviewTable',
-        component: Page
-      },
-      {
-        path: 'markdown_review_title',
-        name: 'MarkdownReviewTitle',
-        component: Page
-      }
+     
     ]
   },
 ]

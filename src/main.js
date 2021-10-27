@@ -27,6 +27,10 @@ Vue.prototype.axios = axios
 
 import Highlight from './utils/highlight.js';
 Vue.use(Highlight);
+//动态添加路由
+import DynamicRoute from './router/dynamic_route.js';
+let dynamicRoute = new DynamicRoute(PageList.page, router);
+dynamicRoute.generateRoute();
 
 import Analysis from "@/modules/analysis/index.js";
 Vue.prototype.analysis = new Analysis();

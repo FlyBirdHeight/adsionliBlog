@@ -64,7 +64,7 @@ class Code extends AnalysisIndex {
         this.allSummaryCodeData = [];
         this.summaryLevel = null;
         this.showHighlightLanguage = 'javascript';
-        this.languageList = ['c++', 'c#', 'go', 'c', 'swift', 'javascript', 'java', 'php', 'sql', 'python', 'html', 'xml', 'bash', 'css', 'ruby', 'json', 'kotlin', 'objective-c', 'scss', 'typescript', 'glsl'];
+        this.languageList = ['shell', 'c++', 'c#', 'go', 'c', 'swift', 'javascript', 'java', 'php', 'sql', 'python', 'html', 'xml', 'bash', 'css', 'ruby', 'json', 'kotlin', 'objective-c', 'scss', 'typescript', 'glsl'];
     }
 
     /**
@@ -156,7 +156,6 @@ class Code extends AnalysisIndex {
         value = value.replace(/\r/g, '')
         if (this.codeFragment.test(value) && !this.codeFlag) {
             this.showHighlightLanguage = value.replace(this.codeFragment, '$4');
-            console.log(this.showHighlightLanguage, value, index)
             this.handleCodeHighLight()
             this.codeFlag = true;
             this.codeStartIndex = index;
@@ -180,6 +179,7 @@ class Code extends AnalysisIndex {
      * @param {*} level 所在summary的层级
      */
     judgeHandleSummary(value, index, level) {
+        value = value.replace(/\r/g, '')
         if (this.codeFragment.test(value) && !this.codeFlag) {
             this.showHighlightLanguage = value.replace(this.codeFragment, '$4');
             this.handleCodeHighLight()
@@ -317,6 +317,7 @@ class Code extends AnalysisIndex {
         } else {
             this.showHighlightLanguage = 'javascript'
         }
+        console.log(this.showHighlightLanguage);
     }
 
     /**

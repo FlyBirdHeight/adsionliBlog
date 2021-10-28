@@ -7,9 +7,9 @@
 ## 1. 什么是npx
 > 官方给出的解释如下：
 >
-> Executes `<command>` either from a local `node_modules/.bin`, or from a central cache, installing any packages needed in order for `<command>` to run.
+> Executes `command` either from a local `node_modules/.bin`, or from a central cache, installing any packages needed in order for `command` to run.
 >
-> By default, `npx` will check whether `<command>` exists in `$PATH`, or in the local project binaries, and execute that. If `<command>` is not found, it will be installed prior to execution.
+> By default, `npx` will check whether `command` exists in `$PATH`, or in the local project binaries, and execute that. If `command` is not found, it will be installed prior to execution.
 >
 > Unless a `--package` option is specified, `npx` will try to guess the name of the binary to invoke depending on the specifier provided. All package specifiers understood by `npm` may be used with `npx`, including git specifiers, remote tarballs, local directories, or scoped packages.
 >
@@ -17,7 +17,7 @@
 >
 > 翻译过来的意思其实也很简单：
 >
-> 1. **npx**作为npm在5.2版本之后支持的内容，它可以从`node_modules`文件夹下，找到对应的本地节点_modules/.bin或从中央缓存执行<command>，安装运行<command>所需的任何软件包。
+> 1. **npx**作为npm在5.2版本之后支持的内容，它可以从`node_modules`文件夹下，找到对应的本地节点_modules/.bin或从中央缓存执行command，安装运行command所需的任何软件包。
 > 2. 在默认情况下，**npx**会优先去查找项目中是否存在对应的command,如果不存在就从远程拉取到本地，然后再进行执行(这些过程是执行在使用之前)。同时npx也会去查找全局变量的$PATH下的可执行路径，来进行本身的操作。
 > 3. 除非指定了**package**选项，否则**npx将根据提供的说明符尝试猜测要调用的二进制文件的名称**。npm理解的所有包说明符都可以与npx一起使用，包括git说明符、远程tarball、本地目录或作用域包。
 >
@@ -37,7 +37,29 @@
    npx webpack --version
    ```
 
-   
+> 注意：Bash 内置的命令不在$PATH里面，所以不能用。比如，cd是 Bash 命令，因此就不能用npx cd。
 
-2. 
+2. npx能够避免全局安装的模块，它只会在当前项目下进行执行，而不会去查找全局，如果说npx未找到指定的模块，那么npx会将模块从远程仓库拉取，放在临时目录下，在使用完成后会进行删除，同时在下一次的时候依然会执行当前操作。
+
+> npx 还可以指定其模块的版本，用来获取远程的模块版本：
+>
+> ```shell
+> npx uglify-js@3.1.0 main.js -o ./dist/main.js
+> ```
+>
+> 注意，只要 npx 后面的模块无法在本地发现，就会下载同名模块。比如，本地没有安装`http-server`模块，下面的命令会自动下载该模块，在当前目录启动一个 Web 服务。
+
+3. npx的相关参数说明
+
+| 参数名              | 参数说明 | 参数使用方式 |
+| ------------------- | -------- | ------------ |
+| --no-install      | 123      | 123          |
+| --ignore-existing | 123      | 123          |
+| 123                 | 123      | 123          |
+
+
+
+
+
+
 

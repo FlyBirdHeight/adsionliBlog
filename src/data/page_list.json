@@ -242,6 +242,22 @@
             "toTop": 0,
             "path": "/content/page/vue/router/dynamic.md",
             "recommend": true
+        },
+        {
+            "title": "学习使用Npm下的npx命令",
+            "subTitle": "npx的使用与学习",
+            "createTime": "Posted by adsionli on October 28, 2021",
+            "created_at": "2021-10-28",
+            "tags": [
+                {
+                    "label": "npm"
+                }
+            ],
+            "description": "学习Npm中的npx命令",
+            "routeLink": "/page/utils/npx",
+            "toTop": 0,
+            "path": "/content/page/utils/npx.md",
+            "recommend": true
         }
     ]
 }

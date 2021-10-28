@@ -139,7 +139,7 @@ DynamicRoute.prototype.handleRouteDataForNormal = function (routeData) {
                     return value
                 }
             })
-            return this.handleRouteDataForNormal(value.children);
+            this.handleRouteDataForNormal(value.children);
         }
     }
 }

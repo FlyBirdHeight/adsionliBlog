@@ -26,6 +26,8 @@
             "label": "vue"
         },{
             "label": "vue-router"
+        },{
+            "label": "npm"
         }
     ]
 }

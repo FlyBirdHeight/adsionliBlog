@@ -153,8 +153,10 @@ class Code extends AnalysisIndex {
      * @param {*} index 行数下标 
      */
     judgeHandle(value, index) {
+        value = value.replace(/\r/g, '')
         if (this.codeFragment.test(value) && !this.codeFlag) {
             this.showHighlightLanguage = value.replace(this.codeFragment, '$4');
+            console.log(this.showHighlightLanguage, value, index)
             this.handleCodeHighLight()
             this.codeFlag = true;
             this.codeStartIndex = index;

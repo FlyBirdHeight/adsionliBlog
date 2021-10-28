@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 import structure from "./modules/structure/index"
 import utils from "./modules/utils/utils"
+import router from "./modules/router/router"
 
 export default new Vuex.Store({
   state: {
@@ -13,6 +14,7 @@ export default new Vuex.Store({
   },
   modules: {
     structure,
-    utils
+    utils,
+    router
   }
 })

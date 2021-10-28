@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Page from "@/views/page/index.vue"
+import store from "@/store/index.js"
 var DynamicRoute = function (routeInfo, router) {
     /**
      * @property {*} routeInfo 路由信息
@@ -11,6 +12,7 @@ var DynamicRoute = function (routeInfo, router) {
     this.routeMap = new Map();
     this.routeData = [];
     this.router = router;
+    this.remRedirct = '';
     this.RouteConfig = {
         path: '',
         component: null,
@@ -19,6 +21,7 @@ var DynamicRoute = function (routeInfo, router) {
         caseSensitive: true,
     }
 }
+
 DynamicRoute.prototype.handleAndCreate = function (routeData) {
     for (let value of routeData) {
         let route = value.routeLink.split('/');
@@ -34,8 +37,11 @@ DynamicRoute.prototype.createRouteMap = function (data) {
     if (this.routeMap.has(data[0])) {
         if (data.length > 1) {
             this.findRoot(data, this.routeMap);
-        } else {
-
+        } else{
+            if(typeof(this.routeMap.get(data[0]).component) == 'undefined'){
+                this.routeMap.get(data[0])['component'] = Page;
+                delete this.routeMap.get(data[0]).redirect;
+            }
         }
     } else {
         let children = new Map();
@@ -45,7 +51,8 @@ DynamicRoute.prototype.createRouteMap = function (data) {
             this.routeMap.set(path, {
                 path,
                 children,
-                caseSensitive: true
+                caseSensitive: true,
+                redirect: ''
             });
             children = this.addChildren(data, children, 'no-root')
         } else {
@@ -70,9 +77,51 @@ DynamicRoute.prototype.generateRoute = function () {
             }
         })
         this.handleRouteDataForNormal(this.routeData);
-        
+        this.filterRouteData(this.routeData);
         for(let value of this.routeData){
             this.router.addRoute("Page", value);
+        }
+        
+        store.commit('SET_PAGE_DATA_ROUTER', this.routeData);
+    }
+}
+/**
+ * @method filterRouteData 过滤路由数据，为没有组件的前置路由添加redirect
+ * @param {*} data
+ */
+DynamicRoute.prototype.filterRouteData = function(data){
+    let findRedirectPath = function(data, path){
+        let completePath = path;
+        if(data.length > 0){
+            for(let value of data){
+                if(typeof(value.component) != 'undefined'){
+                    return `${completePath}/${value.path}`;
+                }else if(value.children.length > 0){
+                    return findRedirectPath(value.children, `${completePath}/${value.path}`);
+                }
+            }
+        }
+    }
+    let setRedirectPath = function(data, path){
+        for(let value of data){
+            if(typeof(value.component) == 'undefined'){
+                value['redirect'] = path;
+            }else {
+                delete value.redirect;
+            }
+            if(value.children.length != 0){
+                setRedirectPath(value.children, path)
+            }
+        }
+    }
+
+    for(let value of data){
+        if(value.children.length != 0 && typeof(value.component) == 'undefined'){
+            let redirectPath = findRedirectPath(value.children, `/page/${value.path}`);
+            value['redirect'] = redirectPath;
+            setRedirectPath(value.children, redirectPath)
+        }else{
+            continue;
         }
     }
 }
@@ -116,7 +165,8 @@ DynamicRoute.prototype.addChildren = function (data, root, type = 'normal') {
             root.set(path, {
                 path,
                 children: new Map(),
-                caseSensitive: true
+                caseSensitive: true,
+                redirect: ''
             })
             if (data.length >= 1) {
                 return this.addChildren(data, root.get(path).children, 'no-root');

@@ -269,14 +269,13 @@ class Code extends AnalysisIndex {
      * @param {aE} 多行注释结束的下标
      * @param {String} 待添加内容
      */
-    handleNormalCode(currentValue, aF, aS, aE, innerHtml, type = 'normal') {
+    handleNormalCode(currentValue, aF, aS, aE, innerHtml, type = 'normal') {        
         /**
          * @note 去除字符串尾部的空格，避免污染计算空格数量
          */
         currentValue = currentValue.replace(this.removeEndSpace, '')
         let spaceCount = currentValue.match(this.space)[0].length;
         let tabLayour = this.getTabNum(spaceCount);
-        console.log(spaceCount, tabLayour)
         innerHtml = innerHtml.substr(0, innerHtml.length - 2) + (tabLayour != '' ? ` ${tabLayour}` : '') + innerHtml.substr(innerHtml.length - 2, innerHtml.length);
         if (type == 'normal') {
             if (aF && typeof (aS) != 'undefined' && typeof (aE) == 'undefined') {

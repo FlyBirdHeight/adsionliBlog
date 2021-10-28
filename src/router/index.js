@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import RouteHandle from "./handle"
 import Page from "@/views/page/index.vue"
+import store from "@/store/index.js"
 var handle = new RouteHandle();
 Vue.use(VueRouter)
 
@@ -125,7 +126,18 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   handle.beforeRouteSkip(to, from)
-
+  if(to.matched.length == 1 && to.matched[0].path == '/page'){
+    let routerData = store.getters.getPageDataRouter;
+    if(routerData.length > 0){
+      if(typeof(routerData[0].component) != 'undefined'){
+        next(routerData[0].redirect)
+      }else{
+        next(`/page/${routerData[0].path}`)
+      }
+    }else{
+      next('/')
+    }
+  }
   next()
 })
 

@@ -4,6 +4,7 @@
     display: -webkit-flex;
     height: 50px;
     line-height: 50px;
+    justify-content: center;
     .total {
       color: getBodyValue('paging', 'totalColor');
       @include marginSet(0 10px 0 0);

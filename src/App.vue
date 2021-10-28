@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <navigation />
-    <cover />
+    <cover v-if="$route.name != 'Error'"/>
     <router-view />
     <el-backtop :bottom="30" :right="30" style="font-size:15px;height:30px;width:30px"></el-backtop>
   </div>
@@ -15,12 +15,6 @@ export default {
       lastHeight: '',
     }
   },
-  mounted() {
-    
-  },
-  methods: {
-    
-  },
   components: {
     Navigation,
     Cover,
@@ -29,7 +23,6 @@ export default {
 </script>
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

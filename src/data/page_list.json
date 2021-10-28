@@ -12,7 +12,8 @@
             ],
             "description": "学习正则表达式的一些学习笔记，整理了常见的元字符、模式匹配符、贪心等",
             "routeLink": "/utils/regular",
-            "toTop": 1
+            "toTop": 1,
+            "recommend": true
         },
         {
             "title": "es6标准入门-第三章",
@@ -29,7 +30,8 @@
             ],
             "description": "学习书籍es6标准入门一书的第三章变量解构赋值内容的笔记及自己的整理",
             "routeLink": "/third/structure-function",
-            "toTop": 0
+            "toTop": 0,
+            "recommend": false
         },
         {
             "title": "es6标准入门-第七章(1)",
@@ -46,7 +48,8 @@
             ],
             "description": "学习书籍es6标准入门一书的第七章函数拓展内容第一部分的笔记及自己的整理",
             "routeLink": "/seventh/first",
-            "toTop": 0
+            "toTop": 0,
+            "recommend": false
         },
         {
             "title": "es6标准入门-第七章(2)",
@@ -63,7 +66,8 @@
             ],
             "description": "学习书籍es6标准入门一书的第章函数拓展内容第二部分的笔记及自己的整理",
             "routeLink": "/seventh/second",
-            "toTop": 1
+            "toTop": 1,
+            "recommend": false
         },
         {
             "title": "markdown解析第一期测试",
@@ -81,7 +85,8 @@
             "description": "对markdown解析器的建设记录",
             "routeLink": "/page/markdown_test_first",
             "toTop": 0,
-            "path": "/content/page/markdown/test/first.md"
+            "path": "/content/page/markdown/test/first.md",
+            "recommend": false
         },
         {
             "title": "markdown解析第二期测试",
@@ -99,7 +104,8 @@
             "description": "对markdown解析器的建设记录",
             "routeLink": "/page/markdown_test_second",
             "toTop": 0,
-            "path": "/content/page/markdown/test/second.md"
+            "path": "/content/page/markdown/test/second.md",
+            "recommend": false
         },
         {
             "title": "markdown解析第三期测试",
@@ -117,7 +123,8 @@
             "description": "对markdown解析器的建设记录",
             "routeLink": "/page/markdown_test_third",
             "toTop": 0,
-            "path": "/content/page/markdown/test/third.md"
+            "path": "/content/page/markdown/test/third.md",
+            "recommend": false
         },
         {
             "title": "markdown模块开发之Code模块解析",
@@ -135,7 +142,8 @@
             "description": "对markdown解析器的建设记录",
             "routeLink": "/page/markdown_review_code",
             "toTop": 0,
-            "path": "/content/page/markdown/review/code.md"
+            "path": "/content/page/markdown/review/code.md",
+            "recommend": true
         },
         {
             "title": "markdown模块开发之Summary模块解析",
@@ -153,7 +161,8 @@
             "description": "对markdown解析器的建设记录",
             "routeLink": "/page/markdown_review_summary",
             "toTop": 0,
-            "path": "/content/page/markdown/review/summary.md"
+            "path": "/content/page/markdown/review/summary.md",
+            "recommend": true
         },
         {
             "title": "markdown模块开发之Render解析内容",
@@ -174,7 +183,8 @@
             "description": "对markdown解析器的建设记录",
             "routeLink": "/page/markdown_review_render",
             "toTop": 0,
-            "path": "/content/page/markdown/review/render.md"
+            "path": "/content/page/markdown/review/render.md",
+            "recommend": true
         },
         {
             "title": "markdown模块开发之Table解析内容",
@@ -192,7 +202,8 @@
             "description": "对markdown解析器的建设记录",
             "routeLink": "/page/markdown_review_table",
             "toTop": 0,
-            "path": "/content/page/markdown/review/table.md"
+            "path": "/content/page/markdown/review/table.md",
+            "recommend": true
         },
         {
             "title": "markdown模块开发之Title解析内容",
@@ -210,7 +221,8 @@
             "description": "对markdown解析器的建设记录",
             "routeLink": "/page/markdown_review_title",
             "toTop": 0,
-            "path": "/content/page/markdown/review/title.md"
+            "path": "/content/page/markdown/review/title.md",
+            "recommend": true
         },
         {
             "title": "vue-router之动态路由匹配开发",
@@ -228,7 +240,8 @@
             "description": "因为嫌每一次添加一条page_list数据就需要手动去添加一条路由太麻烦，直接在main.js导入一个动态路由生成的代码，直接处理page_list里的routeLink数据",
             "routeLink": "/page/vue/router/dynamic",
             "toTop": 0,
-            "path": "/content/page/vue/router/dynamic.md"
+            "path": "/content/page/vue/router/dynamic.md",
+            "recommend": true
         }
     ]
 }

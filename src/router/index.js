@@ -24,6 +24,10 @@ const routes = [
     name: 'Catalogue',
     component: () => import('@/views/main/Catalogue.vue')
   }, {
+    path: "/error404",
+    name: "Error",
+    component: () => import('@/views/main/error404.vue')
+  },{
     path: "/third",
     name: 'Third',
     redirect: '/third/structure-function',
@@ -114,9 +118,7 @@ const routes = [
     path: '/page',
     name: 'Page',
     component: Page,
-    children: [
-     
-    ]
+    children: []
   },
 ]
 
@@ -126,15 +128,18 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   handle.beforeRouteSkip(to, from)
-  if(to.matched.length == 1 && to.matched[0].path == '/page'){
+  if(to.matched.length == 0){
+    next('/error404');
+  }
+  if (to.matched.length == 1 && to.matched[0].path == '/page') {
     let routerData = store.getters.getPageDataRouter;
-    if(routerData.length > 0){
-      if(typeof(routerData[0].component) != 'undefined'){
+    if (routerData.length > 0) {
+      if (typeof (routerData[0].component) != 'undefined') {
         next(routerData[0].redirect)
-      }else{
+      } else {
         next(`/page/${routerData[0].path}`)
       }
-    }else{
+    } else {
       next('/')
     }
   }

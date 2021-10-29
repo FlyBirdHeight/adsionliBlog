@@ -29,23 +29,19 @@
 
    局部安装的方法可以很好的统一所有开发者的webpack版本，通过npm进行引入，然后使用npx指令进行使用即可。
 
-## 3. webpack的简单实用
-
-
-
-## 4. webpack的终端指令集合
+## 3. webpack的终端指令集合
 
 |    指令名称     |                         指令作用                         |                           示例                            |
 | :-------------: | :------------------------------------------------------: | :-------------------------------------------------------: |
 |    `--entry`    | 可以指定其目标文件路径，而不再去默认寻找./src/index.js了 |            `npx webpack --entry ./src/main.js`            |
 | `--output-path` |                可以指定编译文件的输出目录                | `npx webpack --entry ./src/main.js --output-path ./build` |
-|                 |                                                          |                                                           |
+|    --config     |                    指定配置文件的地址                    |         npx webpack --config ./webpack.config.js          |
 |                 |                                                          |                                                           |
 |                 |                                                          |                                                           |
 |                 |                                                          |                                                           |
 |                 |                                                          |                                                           |
 
-## 5.webpack的文件配置
+## 4.webpack的文件配置
 
 ```js
 const path = require('path')
@@ -71,7 +67,8 @@ module.exports = {
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "webpack"
+        //"build": "webpack --entry ./src/main.js --output-path ./build"
+        "build": "webpack --config webpack.config.js"
     },
     "keywords": [
         "webpack1.0"
@@ -82,6 +79,80 @@ module.exports = {
         "webpack": "^5.60.0",
         "webpack-cli": "^4.9.1"
     }
+}
+```
+
+## 5. webpack的使用
+
+### webpack的依赖
+
+ 1. 每一个需要使用的modules都应该放入到入口文件处，如main.js中
+
+```js
+//无论CommonJs的导入方式，还是es6的模块导入方式，都需要导入进来
+import {sum, square} from "./js/util"
+
+const getData = require('./js/api')
+console.log(sum(10, 20))
+console.log(square(10));
+console.log(getData('localhost:8080/getData', 'post'))
+```
+
+### css-loader在webpack中的使用
+
+> 1. 为什么需要loader？
+>
+> 如果不是loader的话，webpack就无法对除了js**代码之外的内容进行打包**，所以我们需要通过引入loader来让webpack能够获取到loader编译成为js后的内容，然后再作为一个模块进行打包。
+>
+> 同时loader通过npm安装之后，**还需再webpack中进行配置进行添加，这样才能让loader起效**，不然loader在webpack打包的时候就没有作用！
+>
+> 2. loader是什么?
+>
+> 
+
+1. loader的使用主要分为两种，一种是行内loader,还有一种就是配置文件中的loader配置
+
+```js
+//行内loader,只需要在路径前添加需要使用的loader就可以了，同时用!结尾
+import "css-loader!../css/login.css"
+```
+
+2. 配置文件的loader配置,配置在modules下
+
+```js
+module: {
+    rules: [
+        {
+            test: /\.css$/, //test一般是一个正则表达式，用来匹配需要处理的文件的类型
+            use: [
+                {
+                    loader: 'css-loader'
+                }
+            ]
+        },
+        //下面的写法都是简写，主要是当loader没有什么特殊需要的时候，比如不需要额外参数options配置时，就可以使用
+        // {
+        //     test: /\.css$/,
+        //     loader: 'css-loader',
+        // },
+        // {
+        //     test: /\.css$/,
+        //     use: ['css-loader']
+        // }
+    ]
+}
+```
+
+3. 但是此时的css-loader是没办法解析代码导入的css文件的代码的，还需要继续导入style-loader，在可以识别class，style，css link等标签，在通过css-loader转成所需要的内容
+
+```js
+module: {
+    rules: [
+        {
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader']
+        }
+    ]
 }
 ```
 

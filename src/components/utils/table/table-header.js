@@ -55,7 +55,7 @@ export default {
     handleEventListener() {
       var headerRows = document.querySelector(`#table-header${this._uid}`).children[0].rows
       let resize = this.$parent.store.resize;
-
+      
       //鼠标移动事件
       headerRows[0].onmousemove = (e) => {
         if (e.offsetX > 0 && Math.abs(e.path[0].clientWidth - e.offsetX) < 5) {
@@ -69,43 +69,43 @@ export default {
           }
         }
       }
-      //鼠标按下事件
-      headerRows[0].onmousedown = (e) => {
-        if (resize.canResize) {
-          resize.isResize = true;
-          resize.showResizeLine = true;
-          let checkedHeader = undefined;
-          let store = this.$parent.store;
-          if(e.path[0].className == ''){
-            checkedHeader = e.path[1].className.match(/(\d+)?$/gi)[0];
-          }else{
-            checkedHeader = e.path[0].className.match(/(\d+)?$/gi)[0];
-          }
-          function bodyMouseUp(e) {
-            if (resize.isResize) {
-              document.body.removeEventListener('mousemove', bodyMouseMove)
-              resize.isResize = false;
-              resize.showResizeLine = false;
-              resize.canResize = false;
-              let changeWidth = resize.resizeLine.getBoundingClientRect().left - store.tablePositionLeft;
-              store.commit('changeWidth', ...[checkedHeader, changeWidth]);
-            }
-          }
-          function bodyMouseMove(e) {
-            resize.resizeLine.style = 'left:' + (e.clientX - store.tablePositionLeft) + 'px'
-            document.body.onmouseup = bodyMouseUp;
-          }
+      // //鼠标按下事件
+      // headerRows[0].onmousedown = (e) => {
+      //   if (resize.canResize) {
+      //     resize.isResize = true;
+      //     resize.showResizeLine = true;
+      //     let checkedHeader = undefined;
+      //     let store = this.$parent.store;
+      //     if(e.path[0].className == ''){
+      //       checkedHeader = e.path[1].className.match(/(\d+)?$/gi)[0];
+      //     }else{
+      //       checkedHeader = e.path[0].className.match(/(\d+)?$/gi)[0];
+      //     }
+      //     function bodyMouseUp(e) {
+      //       if (resize.isResize) {
+      //         document.removeEventListener('mousemove', bodyMouseMove)
+      //         resize.isResize = false;
+      //         resize.showResizeLine = false;
+      //         resize.canResize = false;
+      //         let changeWidth = resize.resizeLine.getBoundingClientRect().left - store.tablePositionLeft;
+      //         store.commit('changeWidth', ...[checkedHeader, changeWidth]);
+      //       }
+      //     }
+      //     function bodyMouseMove(e) {
+      //       resize.resizeLine.style = 'left:' + (e.clientX - store.tablePositionLeft) + 'px'
+      //       document.onmouseup = bodyMouseUp;
+      //     }
+          
+      //     document.addEventListener('mousemove', bodyMouseMove)
+      //   }
+      // }
 
-          document.body.addEventListener('mousemove', bodyMouseMove)
-        }
-      }
-
-      //鼠标松开事件
-      headerRows[0].onmouseup = (e) => {
-        resize.isResize = false;
-        resize.showResizeLine = false;
-        resize.canResize = false;
-      }
+      // //鼠标松开事件
+      // headerRows[0].onmouseup = (e) => {
+      //   resize.isResize = false;
+      //   resize.showResizeLine = false;
+      //   resize.canResize = false;
+      // }
       //鼠标移出事件
       headerRows[0].onmouseout = (e) => {
         document.body.style.cursor = 'default'

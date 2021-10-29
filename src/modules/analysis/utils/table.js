@@ -238,7 +238,7 @@ class Table extends AnalysisIndex {
             returnArray[key] = [];
             let body = value[key].split('|');
             for (let bodyValue of body) {
-                returnArray[key].push(this.matchSpecialChar(bodyValue));
+                returnArray[key].push(bodyValue);
             }
             if (returnArray[key].length > length) {
                 returnArray[key].splice(0, 1);

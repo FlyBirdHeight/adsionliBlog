@@ -51,13 +51,51 @@
 
 3. npx的相关参数说明
 
-| 参数名              | 参数说明 | 参数使用方式 |
-| ------------------- | -------- | ------------ |
-| --no-install      | 123      | 123          |
-| --ignore-existing | 123      | 123          |
-| 123                 | 123      | 123          |
+| 参数名            | 参数说明                                 | 参数使用方式                                                 |
+| ----------------- | ---------------------------------------- | ------------------------------------------------------------ |
+| `--no-install`    | 让 npx 强制使用本地模块，不下载远程模块  | npx --no-install http-server                                 |
+| --ignore-existing | 忽略本地的同名模块，强制安装使用远程模块 | npx --ignore-existing create-react-app my-react-app          |
+| -p                | 用于指定 npx 所要安装的模块              | npx -p lolcatjs -p cowsay [command]（多个模块使用会非常简单） |
+
+4. npx可以用于切换node版本的功能，这个功能就让npx可以作为版本管理器来使用，就很舒服。不过这种也就是临时下载下来，在网络比较好的环境的下会比使用nvm来管理node版本要来得方便，具体代码如下
+
+```shell
+npx node@0.12.8 -v
+```
+
+5. npx的-c参数的使用(内容较多，单独提出来)
+
+```shell
+npx -p lolcatjs -p cowsay 'cowsay hello | lolcatjs'
+```
+
+在上述指令中，作为**npx**指挥临时下载`cosway`而不会下载`lolcatjs`，npx会把`lolcatjs`交给`shell`去进行处理，这样就可能会导致报错。那么使用了**-c**参数之后，**npx**就全部都会用**npx**来解释。
+
+```shell
+npx -p lolcatjs -p cowsay -c 'cowsay hello | lolcatjs'
+```
+
+`-c`参数的另一个作用，是将环境变量带入所要执行的命令。
+
+```shell
+//npm 提供当前项目的一些环境变量，可以用下面的命令查看
+npm run env | grep npm_
+//-c参数可以把这些 npm 的环境变量带入 npx 命令
+npx -c 'echo "$npm_package_name"'
+```
+
+5. npx还可以执行远程代码，但是这个远程代码也有前提，**必须是一个模块(必须包含`package.json`和其入口文件)**
+
+```shell
+# 执行 Gist 代码
+$ npx https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32
+# 执行仓库代码
+$ npx github:piuccio/cowsay hello
+```
 
 
+
+本篇文章主要参考了阮一峰老师的关于npx使用的说明加上自己的一些理解，[内容来源](http://www.ruanyifeng.com/blog/2019/02/npx.html)。
 
 
 

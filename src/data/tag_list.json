@@ -28,6 +28,8 @@
             "label": "vue-router"
         },{
             "label": "npm"
+        },{
+            "label": "webpack"
         }
     ]
 }

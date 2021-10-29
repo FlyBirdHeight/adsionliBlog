@@ -63,6 +63,7 @@ class Code extends AnalysisIndex {
         this.allCodeData = [];
         this.allSummaryCodeData = [];
         this.summaryLevel = null;
+        this.startSpaceCount = 0;
         this.showHighlightLanguage = 'javascript';
         this.languageList = ['shell', 'c++', 'c#', 'go', 'c', 'swift', 'javascript', 'java', 'php', 'sql', 'python', 'html', 'xml', 'bash', 'css', 'ruby', 'json', 'kotlin', 'objective-c', 'scss', 'typescript', 'glsl'];
     }
@@ -155,6 +156,7 @@ class Code extends AnalysisIndex {
     judgeHandle(value, index) {
         value = value.replace(/\r/g, '')
         if (this.codeFragment.test(value) && !this.codeFlag) {
+            this.startSpaceCount = value.match(/^\s*/)[0].length;
             this.showHighlightLanguage = value.replace(this.codeFragment, '$4');
             this.handleCodeHighLight()
             this.codeFlag = true;
@@ -215,14 +217,11 @@ class Code extends AnalysisIndex {
             returnData = 'tab_12';
             return returnData;
         }
+        spaceCount = spaceCount - this.startSpaceCount;
         let last = undefined;
         for (let key in this.handleTag.tab) {
             if (spaceCount < this.handleTag.tab[key]) {
-                if (spaceCount > 2 && spaceCount < 5) {
-                    returnData = key
-                } else {
-                    returnData = last;
-                }
+                returnData = last;
                 break;
             }
             last = key;
@@ -271,7 +270,7 @@ class Code extends AnalysisIndex {
      * @param {aE} 多行注释结束的下标
      * @param {String} 待添加内容
      */
-    handleNormalCode(currentValue, aF, aS, aE, innerHtml, type = 'normal') {        
+    handleNormalCode(currentValue, aF, aS, aE, innerHtml, type = 'normal') {
         /**
          * @note 去除字符串尾部的空格，避免污染计算空格数量
          */

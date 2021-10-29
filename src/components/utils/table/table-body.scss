@@ -10,6 +10,7 @@
   -webkit-user-select: none; /*webkit浏览器*/ /*选中文字时避免出现蓝色背景*/
   -ms-user-select: none; /*IE10*/ /*选中文字时避免出现蓝色背景*/
   user-select: none; /*选中文字时避免出现蓝色背景*/
+  word-break: break-all;
 }
 .table_body-table{
   width: 100%;

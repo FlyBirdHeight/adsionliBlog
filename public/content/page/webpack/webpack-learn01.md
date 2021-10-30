@@ -98,7 +98,7 @@ console.log(square(10));
 console.log(getData('localhost:8080/getData', 'post'))
 ```
 
-### css-loader在webpack中的使用
+### loader在webpack中的使用
 
 > 1. 为什么需要loader？
 >
@@ -108,7 +108,7 @@ console.log(getData('localhost:8080/getData', 'post'))
 >
 > 2. loader是什么?
 >
-> 
+> loader让 webpack 能够去处理那些非 JavaScript 文件，经过loader处理后可以将所有类型的文件转换为webpack能够处理的有效模块，然后你就可以利用webpack的打包能力，对它们进行处理。
 
 1. loader的使用主要分为两种，一种是行内loader,还有一种就是配置文件中的loader配置
 
@@ -143,7 +143,7 @@ module: {
 }
 ```
 
-3. 但是此时的css-loader是没办法解析代码导入的css文件的代码的，还需要继续导入style-loader，在可以识别class，style，css link等标签，在通过css-loader转成所需要的内容
+3. 但是此时的css-loader是没办法解析代码导入的css文件的代码的，只会识别css语法，还需要继续导入style-loader，在可以识别class，style，css link等标签，在通过css-loader转成所需要的内容
 
 ```js
 module: {
@@ -155,4 +155,35 @@ module: {
     ]
 }
 ```
+
+> ==注意：==loader的use顺序是会影响最后的打包效果的，如果css-loader在use数组中的位置比style-loader的位置要前面的话，还是会无效解析css文件且会报错。只有当style-loader在css-loader之前的时候，打包的时候才可以正确的应用css文件并解析。
+>
+> **`loader`在`$`中的执行顺序要么是从右到左，要么是从下到上，所以在上述的执行顺序是：`css-loader`去解析css标签然后在传递到style-loader，style-loader在解析代码中class,style,link等标签，最终完成输出**
+
+4. 在webpack中配置sass
+
+   ​		Sass是一款css预处理语言，支持变量，嵌套，mixin和导入等功能，可以很大程度上方便和简化css的写法。
+
+   ​		支持sass支持sass首先需要安装**sass-loader**和**node-sass** 另外还需要安装**style-loader**和**css-loader**
+
+   > 如果说还需要自己测试sass的编译，就需要在项目中安装sass，然后通过npx来进行scss文件的实时编译
+
+   Sass使用在webpack.config.js中的配置
+
+   ```js
+   module: {
+        rules: [
+            {
+                test: /\.scss$/,
+                use: ['style-loader', 'css-loader', 'sass-loader']
+            }
+        ]
+   }
+   ```
+
+   > 为什么use中的顺序如上段代码的书写，解释如下：
+   >
+   > > 首先当我们取到scss文件之后，需要先通过sass-loader对scss文件中的语法进行编译转换成普通的css，然后通过css-loader进行编译，使其成为style-loader可以识别的标签，最后输出给webpack，让webpack完成打包。**这一个过程就像管道处理一样**，一个一个接下去。
+
+### browserslistrc配置
 

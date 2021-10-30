@@ -74,7 +74,7 @@ class MatchPattern extends AnalysisIndex {
     replaceToSpan() {
         if (this.code.allCodeData.length != 0) {
             for (let value of this.code.allCodeData) {
-                this.htmlSpanList.push(this.code.setHandleValue(value.codeData, value.startIndex, value.endIndex).handle())
+                this.htmlSpanList.push(this.code.setHandleValue(value.codeData, value.startIndex, value.endIndex, value.startSpaceCount).handle())
             }
         }
         if (this.table.tableParameter.allTableData.length != 0) {

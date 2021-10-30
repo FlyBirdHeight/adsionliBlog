@@ -206,7 +206,7 @@ class Summary extends AnalysisIndex {
                 })
             }
         }
-        
+
         normalData = this.handleNormalDataCreateLevel(normalData);
         this.normal.setHandleData(normalData).handleDataToSpanForSummary();
         htmlSpanList = htmlSpanList.concat(this.normal.returnData).sort((a, b) => {
@@ -227,11 +227,9 @@ class Summary extends AnalysisIndex {
             if (value.data.length != 0) {
                 for (let label of value.data) {
                     let obj = {};
-                    obj['level'] = label.match(/^(\>\s*)*/g)[0].replace(/\s/g, '').length;
+                    obj['level'] = label.match(/^(\s*\>\s*)*/g)[0].replace(/\s/g, '').length;
                     obj['label'] = label.replace(/^(\>\s+?)*(.+)/g, '$2').replace(/\r/g, '');
-                    if (obj['label'] == '>') {
-                        obj['label'] = ''
-                    }
+                    obj['label'] = obj['label'].replace(/(\s*)\>/g, '');
                     normalDataA.push(obj);
                 }
                 returnData.push({

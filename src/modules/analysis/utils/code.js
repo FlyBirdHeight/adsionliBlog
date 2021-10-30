@@ -64,6 +64,7 @@ class Code extends AnalysisIndex {
         this.allSummaryCodeData = [];
         this.summaryLevel = null;
         this.startSpaceCount = 0;
+        this.handleStartSpaceCount = 0;
         this.showHighlightLanguage = 'javascript';
         this.languageList = ['shell', 'c++', 'c#', 'go', 'c', 'swift', 'javascript', 'java', 'php', 'sql', 'python', 'html', 'xml', 'bash', 'css', 'ruby', 'json', 'kotlin', 'objective-c', 'scss', 'typescript', 'glsl'];
     }
@@ -73,11 +74,13 @@ class Code extends AnalysisIndex {
      * @param {*} value 待处理内容
      * @param {Number} startIndex 在数组中code标签开始下标
      * @param {Number} endIndex 在数组中code标签结束下标
+     * @param {Number} startSpaceCount 起始位置空格数量
      */
-    setHandleValue(value, startIndex, endIndex) {
+    setHandleValue(value, startIndex, endIndex, startSpaceCount) {
         this.handleValue = value
         this.startIndex = startIndex;
         this.endIndex = endIndex;
+        this.handleStartSpaceCount = startSpaceCount;
 
         return this;
     }
@@ -166,7 +169,8 @@ class Code extends AnalysisIndex {
             this.allCodeData.push({
                 startIndex: this.codeStartIndex,
                 endIndex: this.codeEndIndex,
-                codeData: this.codeData
+                codeData: this.codeData,
+                startSpaceCount: this.startSpaceCount
             })
             this.resetData();
         } else if (this.codeFlag) {
@@ -183,6 +187,7 @@ class Code extends AnalysisIndex {
     judgeHandleSummary(value, index, level) {
         value = value.replace(/\r/g, '')
         if (this.codeFragment.test(value) && !this.codeFlag) {
+            this.startSpaceCount = value.match(/^\s*/)[0].length;
             this.showHighlightLanguage = value.replace(this.codeFragment, '$4');
             this.handleCodeHighLight()
             this.codeFlag = true;
@@ -194,7 +199,8 @@ class Code extends AnalysisIndex {
                 startIndex: this.codeStartIndex,
                 endIndex: this.codeEndIndex,
                 codeData: this.codeData,
-                level: this.summaryLevel
+                level: this.summaryLevel,
+                startSpaceCount: this.startSpaceCount
             })
             this.resetData();
         } else if (this.codeFlag) {
@@ -217,11 +223,12 @@ class Code extends AnalysisIndex {
             returnData = 'tab_12';
             return returnData;
         }
-        spaceCount = spaceCount - this.startSpaceCount;
+        spaceCount = spaceCount - this.handleStartSpaceCount;
         let last = undefined;
         for (let key in this.handleTag.tab) {
             if (spaceCount < this.handleTag.tab[key]) {
                 returnData = last;
+                // console.log(returnData, spaceCount)
                 break;
             }
             last = key;
@@ -316,7 +323,6 @@ class Code extends AnalysisIndex {
         } else {
             this.showHighlightLanguage = 'javascript'
         }
-        console.log(this.showHighlightLanguage);
     }
 
     /**

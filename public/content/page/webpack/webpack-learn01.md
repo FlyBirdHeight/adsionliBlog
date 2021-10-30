@@ -183,7 +183,112 @@ module: {
 
    > 为什么use中的顺序如上段代码的书写，解释如下：
    >
-   > > 首先当我们取到scss文件之后，需要先通过sass-loader对scss文件中的语法进行编译转换成普通的css，然后通过css-loader进行编译，使其成为style-loader可以识别的标签，最后输出给webpack，让webpack完成打包。**这一个过程就像管道处理一样**，一个一个接下去。
+   > 首先当我们取到scss文件之后，需要先通过sass-loader对scss文件中的语法进行编译转换成普通的css，然后通过css-loader进行编译，使其成为style-loader可以识别的标签，最后输出给webpack，让webpack完成打包。**这一个过程就像管道处理一样**，一个一个接下去。
 
 ### browserslistrc配置
 
+1. broewserslistrc主要在webpack中的作用就是为了让我们能够支持相对应的平台，我们可以设置让我们的项目能够支持占有率在1%之上的浏览器，那我们就可以设置相对应的broewserlistrc，这里就有一个比较好的网站，可以查看: [caniuse](caniuse.com)
+
+   > 一个项目的要求有哪一些
+   >
+   > 1. 工程化
+   > 2. 兼容性，例如：css js
+   > 3. 如何实现项目的兼容性：loader
+   > 4. 到底需要兼容哪一些平台(设置browserslistrc)
+
+   在项目创建的时候，就会默认的导入browserslistrc，可以在node_modules中查找到，然后其中就是通过对`caniuse-lite`的请求，来返回符合我们要求的平台。
+
+   具体操作如下：
+
+   ```shell
+   //市场占有率>1%,且是最新的两个版本的平台返回
+   npx browserslist '1%, last 2 version'
+   ```
+
+   部分配置
+
+   ```json
+   {
+       "browserslist": [
+           "last 1 version",//最新的一个版本
+           "> 1%",//市场占有率>1%的
+           "maintained node versions",
+           "not dead" // 这里就是指没有死去的网站，就是一直在更新，且最后一次更新<24个月的网站
+       ]
+   }
+   ```
+
+   > 这些配置可以设置在package.json中
+   >
+   > ```json
+   > {
+   >       "name": "webpack_01",
+   >       "version": "1.0.0",
+   >       "description": "webpack学习1.0",
+   >       "main": "index.js",
+   >       "scripts": {
+   >           "test": "echo \"Error: no test specified\" && exit 1",
+   >           "build": "webpack --config ./webpack.config.js"
+   >       },
+   >       "keywords": [
+   >        	   "webpack1.0"
+   >       ],
+   >       "author": "adsionli",
+   >       "license": "ISC",
+   >       "dependencies": {
+   >           "webpack": "^5.60.0",
+   >           "webpack-cli": "^4.9.1"
+   >       },
+   >       "devDependencies": {
+   >       	   "browserslist": "^4.17.5",
+   >            "css-loader": "^6.5.0",
+   >            "node-sass": "^6.0.1",
+   >            "sass": "^1.43.4",
+   >            "sass-loader": "^12.3.0",
+   >            "style-loader": "^3.3.1"
+   >       },
+   >       //就是放在同一级下即可
+   >       "browserslist": [
+   >             "last 1 version",//最新的一个版本
+   >             "> 1%",//市场占有率>1%的
+   >             "maintained node versions",// 所有 Node.js 版本，仍由 Node.js Foundation维护
+   >             "not ie <= 12",
+   >             "not dead" // 这里就是指没有死去的网站，就是一直在更新，且最后一次更新<24个月的网站
+   >       ]
+   > }
+   > ```
+   >
+   > 或者是在文件根目录下面创建一个.browserslistrc文件，然后在其中配置
+   >
+   > ```
+   > >= 1%
+   > last 2 version
+   > not ie <= 12
+   > not dead
+   > maintained node version
+   > ```
+
+### postcss工作流程
+
+1. 在上面我们说了如何筛选出我们需要适配的平台的版本，那么在这里，我们需要去做针对这些平台的兼容性设置，就如`postcss`。
+
+2. `postcss`: 利用`javascript`转换样式的工具,针对所需要适配的平台做出相应适配的改变。
+
+3. 安装`postcss`:
+
+   ```shell
+   sudo cnpm install postcss-cli postcss -D
+   ```
+
+4. postcss在线处理软件地址: [autoprefixer](autoprefixer.github.io)
+
+5. postcss-loader的作用就和sass-loader,less-loader的作用是类似的，都是取代了需要自己去编译代码的步骤，直接在webpack中配置通过postcss-loader来处理css代码，就可以在打包的时候起到效果，具体代码如下：
+
+```js
+{
+    test: /\.scss$/,
+    use: ['style-loader', 'postcss-loader', 'css-loader', 'sass-loader']
+}
+```
+
+> 步骤：首先通过sass-loader来处理scss文件中的代码，然后再通过css-loader来识别这些css标签，再通过postcss-loader来添加所需要支持的browserslist中的浏览器的内容,最后通过style-loader来输出最后的结果。

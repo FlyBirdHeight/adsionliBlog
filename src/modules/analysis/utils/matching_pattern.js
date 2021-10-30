@@ -124,7 +124,6 @@ class MatchPattern extends AnalysisIndex {
             }
         }
 
-
         this.normal.setHandleData(this.normalData).handleDataToSpan();
         this.htmlSpanList = this.htmlSpanList.concat(this.normal.returnData).sort((a, b) => {
             return a.startIndex - b.startIndex;

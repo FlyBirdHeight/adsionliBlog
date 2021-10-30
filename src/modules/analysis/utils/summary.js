@@ -117,10 +117,11 @@ class Summary extends AnalysisIndex {
         let length = data.length;
         this.title.resetData();
         this.code.resetData();
+        this.code.allSummaryCodeData = [];
         let returnCodeHtml = '';
         for (let i = 0; i < length; i++) {
-            let level = data[i].match(/^(\>\s*)*/g)[0].replace(/\s/g, '').length;
-            let judgeData = data[i].replace(/^(\>\s+?)*(.+)/g, '$2');
+            let level = data[i].match(/^\s*(\>\s*)*/g)[0].replace(/\s/g, '').length;
+            let judgeData = data[i].replace(/^\s*(\>\s+?)*(.+)/g, '$2');
             if (this.code.codeFlag) {
                 this.code.judgeHandleSummary(judgeData, i, level);
                 continue;
@@ -153,10 +154,11 @@ class Summary extends AnalysisIndex {
      */
     replaceToSpan() {
         let returnData = [];
+
         if (this.code.allSummaryCodeData.length != 0) {
             for (let value of this.code.allSummaryCodeData) {
                 let level = value.level;
-                let addData = this.code.setHandleValue(value.codeData, value.startIndex, value.endIndex).handle()
+                let addData = this.code.setHandleValue(value.codeData, value.startIndex, value.endIndex, value.startSpaceCount).handle()
                 addData['level'] = level;
                 returnData.push(addData)
             }
@@ -206,7 +208,6 @@ class Summary extends AnalysisIndex {
                 })
             }
         }
-
         normalData = this.handleNormalDataCreateLevel(normalData);
         this.normal.setHandleData(normalData).handleDataToSpanForSummary();
         htmlSpanList = htmlSpanList.concat(this.normal.returnData).sort((a, b) => {

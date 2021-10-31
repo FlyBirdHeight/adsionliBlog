@@ -287,8 +287,129 @@ module: {
 ```js
 {
     test: /\.scss$/,
-    use: ['style-loader', 'postcss-loader', 'css-loader', 'sass-loader']
+    use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
 }
 ```
 
-> 步骤：首先通过sass-loader来处理scss文件中的代码，然后再通过css-loader来识别这些css标签，再通过postcss-loader来添加所需要支持的browserslist中的浏览器的内容,最后通过style-loader来输出最后的结果。
+> 步骤：首先通过sass-loader来处理scss文件中的代码，然后再通过postcss-loader来对css进行处理，再通过css-loader来识别css内容,最后通过style-loader来输出最后的结果。
+
+6. 如果需要使用postcss去为不同的浏览器平台适配css代码加前缀，那么就需要为postcss添加相关插件，这样postcss才可以进行添加前缀的操作。
+
+   > postcss相当于是一个用来处理css文件的插槽，想要他真正的进行工作，就必须要往这个插槽里面加插件，这样他才可以进行使用这些插件进行工作，比如加前缀的这个操作，就需要安装autoprefixer这个插件，这样postcss才可以正常的工作。
+
+7. postcss一些常用的指令
+
+   | 指令名  | 指令含义                      | 使用方式                                                     |
+   | ------- | ----------------------------- | ------------------------------------------------------------ |
+   | `--use` | 使用指定插件对css代码进行处理 | `npx postcss --use autoprefixer -o res.css ./src/css/test.css` |
+   | `-o`    | 设置输出路径                  | `npx postcss -o res.css ./src/css/test.css`                  |
+
+8. postcss-loader在webpack.config.js，postcss.config.js以及vue中的配置方式
+
+   ```js
+   //webpack.config.js
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader', {
+                    loader: 'postcss-loader',
+                    options: {
+                        postcssOptions: {
+                            plugins: [
+                                require('autoprefixer')
+                            ]
+                        }
+                    }
+                }]
+            },
+            {
+                test: /\.scss$/,
+                use: ['style-loader', 'css-loader', {
+                    loader: 'postcss-loader',
+                    options: {
+                        postcssOptions: {
+                            plugins: [
+                                require('autoprefixer'),
+                                require('postcss-pxtorem')({
+                                    //根元素字体大小或根据input参数返回根元素字体大小。实际就是多少个px转换成1rem的匹配规则
+                                    rootValue: 16,
+                                    //REM单位增加的十进制数字
+                                    unitPrecision: 5,
+                                    //需要转换成rem单位的选择器
+                                    propList: ['font', 'font-size', 'line-height'],
+                                    //忽略的选择器，保留px
+                                    selectorBlackList: ['letter-spacing', 'height', 'width', 'padding', 'border', 'margin'],
+                                    //替换包含rem的规则
+                                    replace: true,
+                                    //最小替换元素的大小
+                                    minPixelValue: 15
+                                })
+                            ]
+                        }
+                    }
+                }, 'sass-loader']
+            }
+        ]
+    }
+   //postcss.config.js自己在根目录下创建的文件，可以被自动读取到
+   module.exports = () => ({
+       plugins: [
+           require('autoprefixer'),
+           require('postcss-pxtorem')({
+               //根元素字体大小或根据input参数返回根元素字体大小。实际就是多少个px转换成1rem的匹配规则
+               rootValue: 16,
+               //REM单位增加的十进制数字
+               unitPrecision: 5,
+               //需要转换成rem单位的选择器
+               propList: ['font', 'font-size', 'line-height'],
+               //忽略的选择器，保留px
+               selectorBlackList: ['letter-spacing', 'height', 'width', 'padding', 'border', 'margin'],
+               //替换包含rem的规则
+               replace: true,
+               //最小替换元素的大小
+               minPixelValue: 15
+           })
+       ]
+   })
+   //如果是在postcss.config.js中设置了之后，那么在webpack.config.js中只需要直接引入postcss-loader就可以了
+   //vue中的vue.config.js
+   css: {
+       loaderOptions: {
+           postcss: {
+               plugins: [
+                   require('autoprefixer'),
+                   require('postcss-pxtorem')({
+                       //根元素字体大小或根据input参数返回根元素字体大小。实际就是多少个px转换成1rem的匹配规则
+                       rootValue: 16,
+                       //REM单位增加的十进制数字
+                       unitPrecision: 5,
+                       //需要转换成rem单位的选择器
+                       propList: ['font', 'font-size', 'line-height'],
+                       //忽略的选择器，保留px
+                       selectorBlackList: ['letter-spacing', 'height', 'width', 'padding', 'border', 'margin'],
+                       //替换包含rem的规则
+                       replace: true,
+                       //最小替换元素的大小
+                       minPixelValue: 15
+                   })
+               ]
+           }
+       }
+   },
+   ```
+
+9. postcss插件整理说明
+
+   > 1. postcss-preset-env 预设-> 插件集合
+   >
+   > 2. 通过postcss-preset-env这个预设，就可以不弄在每一次添加一个插件的时候，还需要再去postcss-loader中进行配置，postcss-loader就回去读取预设中postcss-preset-env中的预设，一导入一个新的插件时，自动使用预设值
+   > 3. postcss-preset-env同样是作为插件放入postcss-loader中的
+
+   | 插件名                 | 插件作用                                                     | 插件参数                                                     |
+   | ---------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+   | autoprefixer           | 可以根据browserlist的设置来给css样式添加适合不同代码的前缀   | browserslist中的参数                                         |
+   | postcss-pxtorem        | 可以将指定的选择器的px单位转换成rem单位的一个插件            | [postcss-pxtorem官网](https://github.com/cuth/postcss-pxtorem) |
+   | **postcss-preset-env** | 很重要的一个插件，它是用来可以提起预设所有postcss内容插件的一个插件，有了这个插件就不要每一次再导入新的postcss插件的时候在去设置相关参数，它会自动提供一个预设参数。***不过如果对单一插件有自定义需求的时候，还是需要自己导入插件并设置其参数***，好像对postcss-pxtorem是无效的，还是需要自己导入并配置参数 | 暂无                                                         |
+
+   

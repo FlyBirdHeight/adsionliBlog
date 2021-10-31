@@ -23,6 +23,11 @@
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.3.11",
+    "postcss-cli": "^9.0.1",
+    "postcss-preset-env": "^6.7.0",
+    "postcss-pxtorem": "^6.0.0",
     "vue-template-compiler": "^2.6.11"
   },
   "browserslist": [

@@ -243,90 +243,114 @@ module: {
 | sass-loader    | 解析sass文件，需要配合使用node-sass                          |
 | postcss-loader | postcss的loader文件，避免手动去处理postcss，直接在webpack打包中集成进来 |
 
+配置示例：
+
+```js
+module: {
+    rules: [
+        {
+            test: /\.css$/,
+            use: [
+                'style-loader',
+                {
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 1,
+                        esModule: false
+                    }
+                },
+                'postcss-loader'
+            ]
+        }
+    ]
+}
+```
+
+
+
 2. css-loader说明
 
-   | 参数名        | 作用                                                         | 参数类型 |
-   | ------------- | ------------------------------------------------------------ | -------- |
-   | importLoaders | 在css-loader处理css文件中@import之后，再回到管道中的指定位置，在进行其他相应的处理 | Number   |
-   | esModule      | 是否将文件转换成esModule，如果false就不转换只返回文件路径，否则转换 | Boolean  |
-   |               |                                                              |          |
+| 参数名        | 作用                                                         | 参数类型 |
+| ------------- | ------------------------------------------------------------ | -------- |
+| importLoaders | 在css-loader处理css文件中@import之后，再回到管道中的指定位置，在进行其他相应的处理 | Number   |
+| esModule      | 是否将文件转换成esModule，如果false就不转换只返回文件路径，否则转换 | Boolean  |
+|               |                                                              |          |
 
-   配置示例：
+配置示例：
 
-   ```js
-   {
-       loader: 'css-loader',
-       options: {
-           importLoaders: 1,
-           esModule: false
-       }
-   }
-   ```
+```js
+{
+    loader: 'css-loader',
+    options: {
+        importLoaders: 1,
+        esModule: false
+    }
+}
+```
 
 3. file-loader说明
 
-   | 参数名     | 作用                                                         | 参数类型 |
-   | ---------- | ------------------------------------------------------------ | -------- |
-   | esModule   | 是否将文件转换成esModule，如果false就不转换只返回文件路径，否则转换 | Boolean  |
-   | name       | 输出文件的名称，其中包括几种占位符的使用，可以查看上面的内容 | String   |
-   | outputPath | 文件输出路径，可以将文件按照指定的路径进行输出               | String   |
+| 参数名     | 作用                                                         | 参数类型 |
+| ---------- | ------------------------------------------------------------ | -------- |
+| esModule   | 是否将文件转换成esModule，如果false就不转换只返回文件路径，否则转换 | Boolean  |
+| name       | 输出文件的名称，其中包括几种占位符的使用，可以查看上面的内容 | String   |
+| outputPath | 文件输出路径，可以将文件按照指定的路径进行输出               | String   |
 
-   配置示例：
+配置示例：
 
-   ```js
-   {
-       test: /\.(jpe?g|git|png|svg)$/,
-       use: [{
-           loader: 'file-loader',
-           /**
-           * 占位符的说明(就是一种命名规则)
-           * [ext]: 扩展名(文件后缀类型)
-           * [name]: 文件名
-           * [hash]: 文件名重复的时候，会使用md4算法将文件内容算成一个128位的内容来解决冲突文件
-           * [contentHash]: 结果与hash结果相同，在webpack中
-           * [path]: 文件路径，用得不多
-           * [hash:(length)] 可以规定hash的长度
-           */
-           options: {
-               name: '[name][hash:6].[ext]',
-               outputPath: 'img',
-               esModule: false
-           }
-       }]
-   }
-   ```
-
-   
+```js
+{
+    test: /\.(jpe?g|git|png|svg)$/,
+    use: [{
+        loader: 'file-loader',
+        /**
+        * 占位符的说明(就是一种命名规则)
+        * [ext]: 扩展名(文件后缀类型)
+        * [name]: 文件名
+        * [hash]: 文件名重复的时候，会使用md4算法将文件内容算成一个128位的内容来解决冲突文件
+        * [contentHash]: 结果与hash结果相同，在webpack中
+        * [path]: 文件路径，用得不多
+        * [hash:(length)] 可以规定hash的长度
+        */
+        options: {
+            name: '[name][hash:6].[ext]',
+            outputPath: 'img',
+            esModule: false
+        }
+    }]
+}
+```
 
 4. postcss-loader说明
 
-   > postcss中的参数就是其使用的各种插件
+> postcss中的参数就是其使用的各种插件
 
-   | 参数名       | 作用                                        | 参数类型 |
-   | ------------ | ------------------------------------------- | -------- |
-   | autoprefixer | 根据browserslist，添加各个不同平台的css规则 |          |
+| 参数名             | 作用                                                         | 参数类型     |
+| ------------------ | ------------------------------------------------------------ | ------------ |
+| autoprefixer       | 根据browserslist，添加各个不同平台的css规则                  | Broswerslist |
+| postcss-preset-env | postcss中一个预设了一些内容的插件，如果无需特别的定制化内容，可以直接使用这个preset-env的预设插件 | Object       |
+| postcss-pxtorem    | postcss中一款用于处理px转换成rem单位的插件                   | Object       |
 
-   配置示例：
+配置示例：
 
-   ```js
-   {
-       loader: 'postcss-loader',
-       options: {
-           postcssOptions: {
-               plugins: {
-                   require('autoprefixer'),
-                   require('postcss-pxtorem')({
-                       rootValue: 16,
-                       unitPrecision: 5,
-                       propList: ['font', 'font-size', 'line-height'],
-                       selectorBlackList: ['letter-spacing', 'height', 'width', 'padding', 'border', 'margin'],
-                       replace: true,
-                       minPixelValue: 15
-                   })
-               }
-           }
-       }
-   }
-   ```
+```js
+{
+    loader: 'postcss-loader',
+    options: {
+        postcssOptions: {
+            plugins: {
+                require('autoprefixer'),
+                require('postcss-pxtorem')({
+                    rootValue: 16,
+                    unitPrecision: 5,
+                    propList: ['font', 'font-size', 'line-height'],
+                    selectorBlackList: ['letter-spacing', 'height', 'width', 'padding', 'border', 'margin'],
+                    replace: true,
+                    minPixelValue: 15
+                })
+            }
+        }
+    }
+}
+```
 
-   

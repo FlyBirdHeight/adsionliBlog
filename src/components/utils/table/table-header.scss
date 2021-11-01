@@ -2,6 +2,8 @@ tr {
   vertical-align: inherit;
 }
 .theadTd {
+  background-color: #cfd5d5;
+  color: #ffffff;
   position: relative;
   word-break: break-all;
   @include paddingSet(12px 5px);

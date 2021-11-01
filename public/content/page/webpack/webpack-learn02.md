@@ -41,7 +41,7 @@ module: {
 
 > 注意，为什么这里设置的是1呢，这就和一阶段学习时所说的有关了，webpack处理loader的顺序是，从右到左，从下到上，所以1指的就是postcss-loader，这样就可以完成处理了
 
-### 2. `File-loader`处理图片
+### 2. File-loader处理图片
 
 > 使用`file-loader`处理相关文件，让webpack也可以将其当做一个模块进行打包
 >
@@ -211,25 +211,239 @@ module: {
  }
 ```
 
-### 4. Url-loader处理图片为外链形式
+### 4. url-loader处理图片为外链形式
 
+`url-loader`的优点：
 
+1. `url-loader`能够将文件处理成`base64uri`形式，这样就可以减少一个页面的请求次数。
+2. 生成的打包文件中不包含原文件
 
-### 5. asset处理图片
+`url-loader`的缺点：
 
+1. 影响请求数据的大小，如果数据过大，请求时间就会很长。虽然减少了请求次数，但是加大了请求页面的大小，拖累了加载的速度
 
+`url-loader`与`file-loader`之间的不同：
+
+1. `url-loader`是将文件转换成`base64uri`的形式，但是`file-loader`实际上就是将文件打包到指定的目录下，然后导入文件路径
+2. `url-loader`打包后生成的页面只有一次请求;`file-loader`引入文件后，在页面加载时是分多次请求的。
+
+**==`url-loader`内部是有`file-loader`的，这个时候就需要通过设置limit来限制文件的大小，当大于多少时就是用`file-loader`来处理，当小的时候就直接转成base64放在一个页面中处理即可==**。
+
+```js
+{
+    test: /\.(jpe?g|git|png|svg)$/,
+    use: [
+            // {
+            //     loader: 'file-loader',
+            //     options: {
+            //         name: '[name][hash:6].[ext]',
+            //         outputPath: 'img'
+            //     }
+            // }
+            {
+            loader: 'url-loader',
+            options: {
+                name: 'img/[name][hash:6].[ext]',
+                limit: 25 * 1024
+            }
+        }
+    ]
+}
+```
+
+> `limit`参数控制了当文件大于多少大小时，就是用`file-loader`进行处理，并可以设置`name`来放在指定的打包目录下。同时这里不需要导入`file-loader`,因为这是`url-loader`内部自带的。
+
+### 5. asset(webpack5专属的资源类型模块)处理图片
+
+> asset模块是webpack5中新增加的内容，有了asset模块之后，就不需要再去配置url-loader或者是file-loader了。
+>
+> asset模块的详情可见webpack官网: [asset Module模块详解](https://webpack.js.org/guides/asset-modules/)
+
+常见的配置选项如下:
+
+| 配置名称 | 作用                                                         | 使用例子 |
+| -------- | ------------------------------------------------------------ | -------- |
+| resource | 和file-loader的功能一样，将文件打包到指定路径下              |          |
+| line     | 和url-loader的功能一样，将文件转成base64uri行内处理          |          |
+| source   | 和row-loader功能一样，可以将文件作为字符串导入到js文件中，感觉类似比如将.txt文件或是.json文件通过`import ... from "raw-loader!./file.txt"`这种，有点类似css-loader在文件中直接使用的形式，但是用处不大 |          |
+| limit    | 和url-loader中的limit是一样的，可以动态调整resource和line的使用 |          |
+|          |                                                              |          |
+|          |                                                              |          |
+
+1. 使用asset模块
+
+```js
+//使用如下代码就可以替代file-loader,raw-loader,url-loader，这块内容依然是放在module-rules下的
+{
+    test: /\.(jpe?g|git|png|svg)$/,
+    type: 'asset/resource'
+}
+```
+
+2. 具体配置asset模块
+
+```js
+//可以在output中去配置全局的assetModuleFileName
+{
+    output: {
+        filename: 'main.js',
+        path: path.resolve(__dirname, 'dist'),
+        assetModuleFileName: "img/[name][hash:4].[ext]"
+    }
+}
+```
+
+> 不过上述的配置又不好的地方，如果说我们需要将不同的文件打包在不同路径下就无法做到了，所以这个时候还有一种配置方式,这是针对asset/resource来说的
+
+```js
+{
+    test: /\.(jpe?g|git|png|svg)$/,
+    type: 'asset/resource',
+    generator: {
+        filename: "img/[name][hash:4].[ext]"
+    }
+}
+```
+
+3. 同时使用asset/resource和asset/inline两块内容的使用方式
+
+```js
+{
+    test: /\.(jpe?g|git|png|svg)$/,
+    //如果同时需要输入多个模块内容，那这里的只需要指定asset就可以了
+    type: 'asset',
+    //这里用来设置asset/resource的输出路径
+    generator: {
+        filename: "img/[name][hash:4].[ext]"
+    },
+    parser: {
+        //设置数据转成line的条件
+        dataUrlCondition: {
+            maxSize: 30 * 1024
+        }
+    }
+}
+```
 
 ### 6. asset处理图标字体
 
+asset处理图标字体的处理流程总结：
 
+1. 首先我们需要知道图标字体文件基本会包含如下几个模块：
+
+   (1)    **iconfont.css** 
+
+   (2)    **iconfont.ttf**
+
+   (3)    **iconfont.woff**
+
+   (4)    **iconfont.woff2**
+
+2. 在iconfont.css中存在如下一段代码
+
+   ```css
+   @font-face {
+       font-family: "iconfont"; /* Project id 2838392 */
+       src: url('iconfont.woff2?t=1632727489161') format('woff2'),
+           url('iconfont.woff?t=1632727489161') format('woff'),
+           url('iconfont.ttf?t=1632727489161') format('truetype');
+   }
+   ```
+
+   上述代码中可以看出，在`iconfont.css`中会导入`iconfont`字体图标的三个文件，然后可以通过`css-loader`进行解析url来获取到，但是这里还需要**file-loader**的支持。但是在`webpack5`中，只需要通过**asset-module**(资源管理模块)就可以完成文件的导入。
+
+3. 配置字体图标asset模块的支持
+
+   ```js
+   {
+       test: /\.(ttf|woff|woff2)/,
+       type: 'asset/resource',
+       generator: {
+           filename: 'font/[name][hash:6].[ext]'
+       }
+   }
+   ```
+
+4. 配置好之后,npm run build，就可以完成啦！很简单的几步操作
 
 ### 7. webpack插件的使用
 
+> 在webpack打包中，webpack插件是必不可少的。比如说在每一次重新打包之后，我们需要手动删除上一次的打包内容，这样会显得很繁琐。那么可以通过插件，让其在每一次重新打包之后，都会完全覆盖掉上一次打包的内容，皆可以免去这一步操作。
+
+loader在webpack中主要实现的功能主要就是: 转换特定类型的文件或代码
+
+**plugin(插件)能在webpack中做一些什么:** 
+
+==更多的事情，在整个webpack打包过程中的任意一个阶段进行插入处理相关内容，贯穿webpack生成的整个周期==
+
+以css压缩的来举例：
+
+1. 当我们在index.js中使用import导入css文件的时候，这个时候css-loader会进行生效，解析css文件。
+2. 在css-loader解析完成之后，我们可以对css文件进行压缩，以减小代码打包后的大小，然后在使用style-loader去解析那些css的标签，如style, class, link等。
+3. 那么在本例中我们就可以发现，我们会把一个插件放在css-loader和style-loader处理的中间，这样就可以去实现一些目标。这就可以体现出插件的一些用途
 
 
-### 8. Html-webpack-plugin的使用
 
+这里在使用一个实际例子，在webpack打包前，清除上一次的打包记录的例子：
 
+1. 首先需要通过npm将clean-webpack-plugin导入到项目中来。
+
+   ```shell
+   npm install -D clean-webpack-plugin
+   ```
+
+2. 然后我们需要明确的就是，实际上这个webpack的每一个plugin其实都是一个类，所以我们需要把这个类导入到webpack中去
+
+3. 然后配置webpack.config.js
+
+   ```js
+   const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+   
+   export.modules = {
+       plugins: [
+           new CleanWebpackPlugin()
+       ]
+   }
+   ```
+
+4. 上述就可以完成一个webpack-plugin的配置，如果需要配置插件constructor就可以前往插件的官网查看需要输入的参数，来完成相关配置，在new的时候直接传入就可以了。
+
+### 8. html-webpack-plugin的使用
+
+> html-webpack-plugin可以在根目录下没有创建index.html的时候自动创建index.html在打包的时候。当然还会提供一些额外功能
+
+1. html-webpack-plugin插件自动在打包时，创建一个index.html文件，并且导入相关的js文件，这样就可以让webpack打包完成之后直接进行发布。在vue2.x的vue-cli4中，也是使用了html-webpack-plugin进行的打包
+
+2. 首先是导入html-webpack-plugin
+
+3. 其次在webpack.config.js中配置，同样和上面的操作一样，将plugin做为模块导入，然后再添加到plugins中去
+
+   ```js
+   const HtmlWebpackPlugin = require('html-webpack-plugin')
+   export.modules = {
+       plugins: [
+            new HtmlWebpackPlugin({
+               title: 'adsionli的webpack学习之路',
+               template: './public/index.html'
+           }),
+       ]
+   }
+   ```
+
+4. 这样就可以将模板文件导入进来打包到index.html文件中
+
+5. 如果模板文件中存在未定义变量，这个时候就需要到如webpack本身存在的一个plugin，叫做DefinePlugin,他可以设置全局的变量来进行使用，比如模板文件中的BASE_URL就可以设置在其中
+
+   ```js
+   const { DefinePlugin } = require('webpack')
+   export.modules = {
+   	plugins: [
+   		new DefinePlugin({
+               BASE_URL: '"./"'
+           })
+   	]
+   }
+   ```
 
 ##  总结
 
@@ -354,3 +568,6 @@ module: {
 }
 ```
 
+5. plugin说明：
+
+   插件对于webpack来说是非常重要的一个模块，它可以作用在webpack各个阶段来对打包时的文件进行处理，这样可以让打包出来的文件更加符合我们部署的要求，是一种十分有用且便利的一个工具。

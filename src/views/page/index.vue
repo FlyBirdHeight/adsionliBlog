@@ -78,7 +78,7 @@ export default {
   updated() {
     setTimeout(() => {
       getTitleHeight(this.pageRender.titleData)
-    }, 500)
+    }, 1000)
   },
   methods: {
     key() {
@@ -168,7 +168,7 @@ export default {
 }
 .page-change-enter-active,
 .page-change-leave-active {
-  transition: all 0.3s;
+  transition: all 0.5s;
 }
 .page-change-enter,
 .page-change-leave-to {

@@ -10,6 +10,9 @@
 import Navigation from '@/components/sidebar/navigation.vue'
 import Cover from '@/components/sidebar/cover.vue'
 export default {
+  beforeCreate(){
+    console.log('ready')
+  },
   data() {
     return {
       lastHeight: '',

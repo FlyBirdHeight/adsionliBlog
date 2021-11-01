@@ -23,6 +23,7 @@
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+    "clean-webpack-plugin": "^4.0.0",
     "postcss-loader": "^6.2.0",
     "postcss-preset-env": "^6.7.0",
     "postcss-pxtorem": "^5.1.1",

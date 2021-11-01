@@ -205,5 +205,64 @@ DynamicRoute.prototype.generateRoute = function () {
 
 1. 首页就是上面提到的那一点，redirect的处理，这里在2021年10月28日 会进行修改。
 
+## 完善redirect的功能
+
+1. 新增一个filterRouteData的方法
+
+   代码实现如下：
+
+```js
+/**
+ * @method filterRouteData 过滤路由数据，为没有组件的前置路由添加redirect
+ * @param {*} data
+ */
+DynamicRoute.prototype.filterRouteData = function(data){
+    let findRedirectPath = function(data, path){
+        let completePath = path;
+        if(data.length > 0){
+            for(let value of data){
+                if(typeof(value.component) != 'undefined'){
+                    return `${completePath}/${value.path}`;
+                }else if(value.children.length > 0){
+                    return findRedirectPath(value.children, `${completePath}/${value.path}`);
+                }
+            }
+        }
+    }
+    let setRedirectPath = function(data, path){
+        for(let value of data){
+            if(typeof(value.component) == 'undefined'){
+                value['redirect'] = path;
+            }else {
+                delete value.redirect;
+            }
+            if(value.children.length != 0){
+                setRedirectPath(value.children, path)
+            }
+        }
+    }
+
+    for(let value of data){
+        if(value.children.length != 0 && typeof(value.component) == 'undefined'){
+            let redirectPath = findRedirectPath(value.children, `/page/${value.path}`);
+            value['redirect'] = redirectPath;
+            setRedirectPath(value.children, redirectPath)
+        }else{
+            continue;
+        }
+    }
+}
+```
+
+> 代码说明:
+>
+> 1. 实际上在生成一个redirect的时候，我们就回去找当前所要处理的层级下，离他最近一个子路由的component是否为空。
+> 2. 如果不为空，那么我们就知道这个子路由下挂载的是包含着内容，那么这个时候就为其添加redirect。
+> 3. 然后一层一层去处理，直到处理完全部的内容后，就返回。
+> 4. 这里的一些判断依据就是component和children，通过这两个元素来判断是否路由包含内容或者是否存在子路由。
+> 5. 除了上述构建路由的redirect之外，还需要如果在之后读进来的数据是挂载了内容的，但是此时它的redirect是存在的，那么就需要处理这个redirect，对其进行删除，并且更新该节点上的父节点的redirect，让其父节点的redirect指向这个节点。
+
+
+
 
 

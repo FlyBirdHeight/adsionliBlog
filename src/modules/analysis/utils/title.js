@@ -72,8 +72,12 @@ class Title extends AnalysisIndex {
                 } else if (level < this.lastLevel && level > this.maxLevel) {
                     let selectRoot = undefined;
                     let value = this.titleValueList.get(this.root);
-                    while (value.level != level) {
+                    while (typeof(value) != 'undefined' || value.level != level) {
+                        if(typeof(value.root) == 'undefined'){
+                            break;
+                        }
                         selectRoot = value.root;
+                        
                         value = this.titleValueList.get(value.root);
                     }
                     this.joinTitleList({

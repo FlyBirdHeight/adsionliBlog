@@ -251,6 +251,9 @@
             "tags": [
                 {
                     "label": "npm"
+                },
+                {
+                    "label": "常用工具"
                 }
             ],
             "description": "学习Npm中的npx命令",
@@ -290,6 +293,44 @@
             "toTop": 1,
             "path": "/content/page/webpack/webpack-learn02.md",
             "recommend": true
+        },
+        {
+            "title": "nvm工具的使用",
+            "subTitle": "使用nvm实现node版本的管理",
+            "createTime": "Posted by adsionli on October 31, 2021",
+            "created_at": "2021-10-31",
+            "tags": [
+                {
+                    "label": "nvm"
+                },
+                {
+                    "label": "常用工具"
+                }
+            ],
+            "description": "学习安装并使用nvm进行node版本的管理",
+            "routeLink": "/page/utils/nvm",
+            "toTop": 0,
+            "path": "/content/page/utils/nvm.md",
+            "recommend": false
+        }, 
+        {
+            "title": "源码阅读-elementui中的image组件实现",
+            "subTitle": "学习elementui中的image组件实现",
+            "createTime": "Posted by adsionli on October 31, 2021",
+            "created_at": "2021-10-31",
+            "tags": [
+                {
+                    "label": "components"
+                },
+                {
+                    "label": "源码阅读"
+                }
+            ],
+            "description": "elementui中image组件实现了很棒的功能，所以去看了一下其实现的源码，进行一些总结",
+            "routeLink": "/page/vue/component/elementui-image",
+            "toTop": 0,
+            "path": "/content/page/vue/components/image.md",
+            "recommend": false
         }
     ]
 }

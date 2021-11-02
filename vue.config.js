@@ -1,5 +1,5 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const webpack = require('webpack')
+const { DefinePlugin } = require('webpack')
 const path = require('path')
 
 module.exports = {
@@ -21,6 +21,13 @@ module.exports = {
         // proxy: {
 
         // },
+    },
+    configureWebpack: {
+        plugins: [
+            new DefinePlugin({
+                BASE_URL: '"./image/dog/dog02.gif"'
+            })
+        ]
     },
     css: {
         loaderOptions: {

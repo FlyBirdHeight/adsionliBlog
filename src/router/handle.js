@@ -18,6 +18,7 @@ class RouteHandle {
      */
     beforeRouteSkip(to, from) {
         this.handleQuery('SET_COVER', to);
+        this.handleQuery('SET_TITLE', to);
         if (this.switchNone.indexOf(to.path) == -1) {
             this.handleQuery('SWITCH_PAGE', {
                 toPath: to.path
@@ -43,6 +44,9 @@ class RouteHandle {
                 break;
             case 'SWITCH_PAGE':
                 this.switchPageHandle(data.toPath);
+                break;
+            case 'SET_TITLE':
+                this.changeTitle(data);
                 break;
             default:
                 break;
@@ -101,6 +105,24 @@ class RouteHandle {
                 }
                 break;
             }
+        }
+    }
+
+    /**
+     * @method changeTitle 切换header中的title
+     * @param {*} to 路由地址
+     */
+    changeTitle(to) {
+        let pageList = this.store.getters.getPageList;
+        if (this.switchNone.indexOf(to.path) == -1) {
+            //entries方法能够创建一个可迭代的对象，【a, b, c】 => [1, a], [2, b], [3, c]
+            for (let [index, value] of pageList.entries()) {
+                if (to.path == value.routeLink) {
+                    document.title = value.title;
+                }
+            }
+        }else{
+            document.title = 'adsionliBlog'
         }
     }
 

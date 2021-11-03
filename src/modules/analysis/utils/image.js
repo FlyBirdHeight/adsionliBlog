@@ -3,6 +3,7 @@ class Image {
     constructor() {
         this.imageList = [];
         this.imageRegular = /\!(\[(?<alt>.+?)\])(\((?<url>.+?)\))/gi;
+        this.imageHtmlRegular = /<img(.+)?\/>/g;
         this.imageData = [];
         this.replaceSrc = Config.imagePreSrc;
     }
@@ -21,6 +22,14 @@ class Image {
                 image: value,
                 level
             });
+        } else if (this.imageHtmlRegular.test(value)) {
+            this.imageData.push({
+                startIndex: index,
+                endIndex: index,
+                image: value.replace(this.imageHtmlRegular, '$1'),
+                level,
+                type: 'html'
+            });
         }
     }
 
@@ -29,11 +38,25 @@ class Image {
      */
     handleData() {
         for (let value of this.imageData) {
-            this.imageRegular.lastIndex = 0;
-            let matchData = this.imageRegular.exec(value.image)
-            value['src'] = this.replaceSrc + matchData.groups.url.replace(/\.\.\//g, '');
-            value['alt'] = matchData.groups.alt;
-            this.imageList.push(value['src']);
+            if (value.type) {
+                let srcR = /src="(.*?)"/;
+                let altR = /alt="(.*?)"/;
+                let styleR = /style="(.*?)"/;
+                let src = this.replaceSrc + srcR.exec(value.image)[1].replace(/\.\.\//g, '');
+                let alt = altR.exec(value.image)[1];
+                let style = styleR.exec(value.image)[1];
+                console.log(src, alt, style)
+                value['src'] = src;
+                value['alt'] = alt;
+                value['style'] = style
+                this.imageList.push(src);
+            } else {
+                this.imageRegular.lastIndex = 0;
+                let matchData = this.imageRegular.exec(value.image)
+                value['src'] = this.replaceSrc + matchData.groups.url.replace(/\.\.\//g, '');
+                value['alt'] = matchData.groups.alt;
+                this.imageList.push(value['src']);
+            }
         }
 
         return this;
@@ -44,14 +67,21 @@ class Image {
      */
     handlePreview() {
         let previewList = "[";
-        for(let value of this.imageList){
+        for (let value of this.imageList) {
             previewList += `'${value}',`
         }
         previewList += "]"
         for (let value of this.imageData) {
-            value['returnHtml'] = `
-                <image-data fit="contain" src="${value.src}" alt="${value.alt}" :preview="true" :previewSrcList="${previewList}"></image-data>
-            `
+            if (value.type) {
+                value['returnHtml'] = `
+                    <image-data fit="contain" src="${value.src}" alt="${value.alt}" :preview="true" :previewSrcList="${previewList}" imageStyleData="${value.style}"></image-data>
+                `
+            } else {
+                value['returnHtml'] = `
+                    <image-data fit="contain" src="${value.src}" alt="${value.alt}" :preview="true" :previewSrcList="${previewList}"></image-data>
+                `
+            }
+
         }
 
         return this.imageData;

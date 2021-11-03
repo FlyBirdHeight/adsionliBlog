@@ -4,7 +4,8 @@
 | adsionli   | 2021-11-02 | elementui下的image组件学习 | 2021-11-02   |
 
 ## elementui-image组件的组成
-![image](../../image/dog01.gif)
+<img src="../../image/vue/component/dog01.gif" alt="image" style="zoom:33%" />
+
 ## elementui-image组件的功能实现
 
 ## elementui-image-preview中的功能实现

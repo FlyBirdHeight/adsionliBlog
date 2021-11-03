@@ -4,7 +4,7 @@
 | adsionli   | 2021-11-02 | elementui下的image组件学习 | 2021-11-02   |
 
 ## elementui-image组件的组成
-![image](./content/page/image/dog01.gif)
+![image](../../image/dog01.gif)
 ## elementui-image组件的功能实现
 
 ## elementui-image-preview中的功能实现

@@ -31,7 +31,7 @@ class Image {
         for (let value of this.imageData) {
             this.imageRegular.lastIndex = 0;
             let matchData = this.imageRegular.exec(value.image)
-            value['src'] = matchData.groups.url.replace(/\.\.\//g, this.replaceSrc);
+            value['src'] = this.replaceSrc + matchData.groups.url.replace(/\.\.\//g, '');
             value['alt'] = matchData.groups.alt;
             this.imageList.push(value['src']);
         }

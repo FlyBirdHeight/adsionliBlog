@@ -4,6 +4,7 @@ import Code from "./code.js"
 import Table from "./table.js"
 import OrderList from "./order_list.js"
 import Normal from "./normal.js"
+import Image from "./image.js"
 class Summary extends AnalysisIndex {
     constructor() {
         super();
@@ -12,6 +13,7 @@ class Summary extends AnalysisIndex {
         this.orderList = new OrderList();
         this.title = new Title();
         this.normal = new Normal();
+        this.image = new Image();
         /**
          * @property {*} summaryReg 正则匹配的规则
          * @property {Number} startSummaryIndex Summary开始位置

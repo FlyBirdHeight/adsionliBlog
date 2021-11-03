@@ -9,7 +9,7 @@ class AnalysisIndex {
             inlineCode: /(`{1,5})(.+?)\1/gi,
             deleteLine: /(~{2})(.+?)(\1)/gi,
             highlight: /(={2})(.+?)\1/gi,
-            hyperlinks: /(\[(.+?)\])(\((.+?)\))/gi
+            hyperlinks: /(?<!\!)(\[(.+?)\])(\((.+?)\))/gi,
         }
     }
     /**
@@ -52,7 +52,7 @@ class AnalysisIndex {
             case 'highlight':
                 return `<font class='highlight_char'>${value}</font>`
             case 'hyperlinks':
-                return `<a href='${url}' rel='noopener noreferrer' target='_blank'>${value}</a>`
+                return `<a href='${url}' rel='noopener noreferrer' target='_blank'>${value}</a>` 
             default:
                 break;
         }

@@ -5,6 +5,7 @@ import Table from "./table.js"
 import OrderList from "./order_list.js"
 import Summary from "./summary.js"
 import Normal from "./normal.js"
+import Image from "./image.js"
 /**
  * @class MatchPattern 模式匹配类
  */
@@ -19,6 +20,7 @@ class MatchPattern extends AnalysisIndex {
         this.normal = new Normal();
         this.htmlSpanList = [];
         this.returnCodeHtml = '';
+        this.image = new Image();
         /**
          * @property {Array} normalData 无符合大片段数据记录
          */
@@ -49,6 +51,7 @@ class MatchPattern extends AnalysisIndex {
             this.code.judgeHandle(data[i], i);
             this.table.judgeHandle(data[i], i, length);
             this.title.judgeTitle(data[i], i);
+            this.image.judgeImage(data[i], i)
         }
         //NOTE: 非普通数据的渲染标签替换
         this.replaceToSpan();
@@ -85,6 +88,10 @@ class MatchPattern extends AnalysisIndex {
         }
         if (this.summary.summaryHandleData.length != 0) {
             let returnData = this.summary.handleSummaryData();
+            this.htmlSpanList = this.htmlSpanList.concat(returnData);
+        }
+        if (this.image.imageData.length != 0) {
+            let returnData = this.image.handleData().handlePreview();
             this.htmlSpanList = this.htmlSpanList.concat(returnData);
         }
     }

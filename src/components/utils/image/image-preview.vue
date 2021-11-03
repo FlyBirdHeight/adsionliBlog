@@ -52,7 +52,8 @@
       <img
         @load="imageLoad"
         @error="imageLoadError"
-        :style="getMainBodyImageStyle()"
+        @mousedown="dragImagePosition"
+        :style="imageStyle"
         :src="currentImage"
         alt="imageList"
       />
@@ -107,10 +108,39 @@ export default {
   },
   computed: {
     imageStyle() {
-      return this.getMainBodyImageStyle();
+      const { scale, rotate, offsetX, offsetY, enableTransition } =
+        this.transform;
+      return {
+        "max-width": "100%",
+        "max-height": "100%",
+        marginLeft: `${offsetX}px`,
+        marginTop: `${offsetY}px`,
+        transform: `scale(${scale}) rotate(${rotate}deg)`,
+        transition: enableTransition ? "transform 0.3s ease 0s" : "",
+      };
     },
   },
   methods: {
+    /**
+     * @method dragImagePosition 鼠标按下事件，由于处理图片的拖动
+     */
+    dragImagePosition(e) {
+      const { offsetX, offsetY } = this.transform;
+      const startX = e.pageX;
+      const startY = e.pageY;
+      let dragHandler = rafThrottle((event) => {
+        this.transform.offsetX = offsetX + event.pageX - startX;
+        this.transform.offsetY = offsetY + event.pageY - startY;
+      });
+      on(this.$isServer)(document, "mousemove", dragHandler);
+      on(this.$isServer)(document, "mouseup", (ev) => {
+        off(this.$isServer)(document, "mousemove", dragHandler);
+      });
+      e.preventDefault();
+    },
+    /**
+     * @method supportInput 支持的操作
+     */
     supportInput() {
       this.keyDownEvent = (e) => {
         e.stopPropagation();
@@ -171,28 +201,12 @@ export default {
       e.target.alt = "加载失败";
     },
     /**
-     * @method getMainBodyImageStyle 获取展示图片的Style
-     */
-    getMainBodyImageStyle() {
-      let rotate = this.transform.rotate;
-      let scale = this.transform.scale;
-      return {
-        "max-width": "100%",
-        "max-height": "100%",
-        margin: 0,
-        transform: `scale(${scale}) rotate(${rotate}deg)`,
-        transition: this.transform.enableTransition
-          ? "transform 0.3s ease 0s"
-          : "",
-      };
-    },
-    /**
      * @method closePreview 关闭预览页面
      */
     closePreview() {
       off(this.$isServer)(document, "keydown", this.keyDownEvent);
       off(this.$isServer)(document, mouseWheel(), this.mouseWheelHandler);
-      document.body.style.overflow = ""
+      document.body.style.overflow = "";
       this.$emit("closePreview");
     },
     /**
@@ -226,9 +240,9 @@ export default {
       if (this.transform.scale < 0.3) {
         return;
       }
-      if(type){
+      if (type) {
         this.transform.enableTransition = true;
-      }else{
+      } else {
         this.scaleStep = 0.015;
       }
       this.transform.scale = parseFloat(
@@ -239,9 +253,9 @@ export default {
      * @method zoomIn 图片放大
      */
     zoomIn(type = true) {
-      if(type){
+      if (type) {
         this.transform.enableTransition = true;
-      }else{
+      } else {
         this.scaleStep = 0.015;
       }
       this.transform.scale = parseFloat(

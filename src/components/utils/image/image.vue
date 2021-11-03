@@ -69,22 +69,24 @@ export default {
   mounted() {
     this.loadImage();
     let imageStyleData = this.imageStyleData;
-    if (imageStyleData.match(/:/g).length == 1) {
-      imageStyleData = `${imageStyleData.replace(/;/g, "")}`.split(",");
-    } else if (imageStyleData.match(/:/g).length > 1) {
-      imageStyleData = `${imageStyleData.replace(/;/g, ",")}`.split(",");
-    } else {
-      imageStyleData = [];
-    }
     if (imageStyleData.length != 0) {
-      let imageStyleShowData = new Object();
-      for (let value of imageStyleData) {
-        let valueSplit = value.split(":");
-        let key = valueSplit[0];
-        let data = valueSplit[1];
-        imageStyleShowData[key] = data;
+      if (imageStyleData.match(/:/g).length == 1) {
+        imageStyleData = `${imageStyleData.replace(/;/g, "")}`.split(",");
+      } else if (imageStyleData.match(/:/g).length > 1) {
+        imageStyleData = `${imageStyleData.replace(/;/g, ",")}`.split(",");
+      } else {
+        imageStyleData = [];
       }
-      this.showImageStyle = imageStyleShowData;
+      if (imageStyleData.length != 0) {
+        let imageStyleShowData = new Object();
+        for (let value of imageStyleData) {
+          let valueSplit = value.split(":");
+          let key = valueSplit[0];
+          let data = valueSplit[1];
+          imageStyleShowData[key] = data;
+        }
+        this.showImageStyle = imageStyleShowData;
+      }
     }
   },
   data() {

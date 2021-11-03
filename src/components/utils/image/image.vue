@@ -18,6 +18,7 @@
         :srcList="previewSrcList"
         :zIndex="zIndex"
         v-if="showViewer"
+        :clickImageIndex="clickImageIndex"
       ></image-preview>
     </template>
   </div>
@@ -68,26 +69,7 @@ export default {
   },
   mounted() {
     this.loadImage();
-    let imageStyleData = this.imageStyleData;
-    if (imageStyleData.length != 0) {
-      if (imageStyleData.match(/:/g).length == 1) {
-        imageStyleData = `${imageStyleData.replace(/;/g, "")}`.split(",");
-      } else if (imageStyleData.match(/:/g).length > 1) {
-        imageStyleData = `${imageStyleData.replace(/;/g, ",")}`.split(",");
-      } else {
-        imageStyleData = [];
-      }
-      if (imageStyleData.length != 0) {
-        let imageStyleShowData = new Object();
-        for (let value of imageStyleData) {
-          let valueSplit = value.split(":");
-          let key = valueSplit[0];
-          let data = valueSplit[1];
-          imageStyleShowData[key] = data;
-        }
-        this.showImageStyle = imageStyleShowData;
-      }
-    }
+    this.handleSettingStyle();
   },
   data() {
     return {
@@ -98,9 +80,35 @@ export default {
       loading: true,
       show: true,
       showImageStyle: {},
+      clickImageIndex: 0
     };
   },
   methods: {
+    /**
+     * @method handleSettingStyle 处理外部传入的样式
+     */
+    handleSettingStyle() {
+      let imageStyleData = this.imageStyleData;
+      if (imageStyleData.length != 0) {
+        if (imageStyleData.match(/:/g).length == 1) {
+          imageStyleData = `${imageStyleData.replace(/;/g, "")}`.split(",");
+        } else if (imageStyleData.match(/:/g).length > 1) {
+          imageStyleData = `${imageStyleData.replace(/;/g, ",")}`.split(",");
+        } else {
+          imageStyleData = [];
+        }
+        if (imageStyleData.length != 0) {
+          let imageStyleShowData = new Object();
+          for (let value of imageStyleData) {
+            let valueSplit = value.split(":");
+            let key = valueSplit[0];
+            let data = valueSplit[1];
+            imageStyleShowData[key] = data;
+          }
+          this.showImageStyle = imageStyleShowData;
+        }
+      }
+    },
     //图片加载过程
     loadImage() {
       if (this.$isServer) return;
@@ -170,6 +178,7 @@ export default {
         return;
       }
       document.body.style.overflow = "hidden";
+      this.clickImageIndex = this.previewSrcList.indexOf(this.src);
       this.showViewer = true;
     },
   },

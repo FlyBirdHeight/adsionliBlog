@@ -82,6 +82,10 @@ export default {
       type: Number,
       default: 2000,
     },
+    clickImageIndex: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
@@ -103,7 +107,9 @@ export default {
     };
   },
   mounted() {
-    this.getImage();
+    // this.getImage();
+    this.currentImage = this.srcList[this.clickImageIndex];
+    this.lastShowIndex = this.clickImageIndex
     this.supportInput();
   },
   computed: {

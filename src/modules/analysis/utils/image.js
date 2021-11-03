@@ -2,8 +2,8 @@ import Config from "@/data/config.json"
 class Image {
     constructor() {
         this.imageList = [];
-        this.imageRegular = /\!(\[(?<alt>.+?)\])(\((?<url>.+?)\))/gi;
-        this.imageHtmlRegular = /<img(.+)?\/>/g;
+        this.imageRegular = new RegExp("\\!(\\[(.+?)\\])(\\((.+?)\\))", 'g');
+        this.imageHtmlRegular = new RegExp('<img(.+)?\/>', 'g');
         this.imageData = [];
         this.replaceSrc = Config.imagePreSrc;
     }
@@ -39,13 +39,12 @@ class Image {
     handleData() {
         for (let value of this.imageData) {
             if (value.type) {
-                let srcR = /src="(.*?)"/;
-                let altR = /alt="(.*?)"/;
-                let styleR = /style="(.*?)"/;
+                let srcR = new RegExp('src="(.*?)"', 'g');
+                let altR = new RegExp('alt="(.*?)"', 'g');
+                let styleR = new RegExp('style="(.*?)"', 'g');
                 let src = this.replaceSrc + srcR.exec(value.image)[1].replace(/\.\.\//g, '');
                 let alt = altR.exec(value.image)[1];
                 let style = styleR.exec(value.image)[1];
-                console.log(src, alt, style)
                 value['src'] = src;
                 value['alt'] = alt;
                 value['style'] = style
@@ -53,8 +52,8 @@ class Image {
             } else {
                 this.imageRegular.lastIndex = 0;
                 let matchData = this.imageRegular.exec(value.image)
-                value['src'] = this.replaceSrc + matchData.groups.url.replace(/\.\.\//g, '');
-                value['alt'] = matchData.groups.alt;
+                value['src'] = this.replaceSrc + matchData[4].replace(/\.\.\//g, '');
+                value['alt'] = matchData[2];
                 this.imageList.push(value['src']);
             }
         }

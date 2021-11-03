@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <el-divider>image组件测试</el-divider>
-    <image-data :preview="true" :previewSrcList="imageList" :fit="fit" id="imageData01" :src="src"> </image-data>
+    <!-- <image-data :preview="true" :previewSrcList="imageList" :fit="fit" id="imageData01" :src="src"> </image-data> -->
     <el-button @click="changeImage">切换图片</el-button>
   </div>
 </template>

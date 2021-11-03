@@ -9,7 +9,7 @@ class AnalysisIndex {
             inlineCode: /(`{1,5})(.+?)\1/gi,
             deleteLine: /(~{2})(.+?)(\1)/gi,
             highlight: /(={2})(.+?)\1/gi,
-            hyperlinks: /(?<!\!)(\[(.+?)\])(\((.+?)\))/gi,
+            hyperlinks: /(\[(.+?)\])(\((.+?)\))/gi,
         }
     }
     /**

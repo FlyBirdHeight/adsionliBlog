@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import RouteHandle from "./handle"
 import Page from "@/views/page/index.vue"
 import store from "@/store/index.js"
-var handle = new RouteHandle();
 Vue.use(VueRouter)
 
 const routes = [
@@ -125,9 +124,10 @@ const routes = [
 const router = new VueRouter({
   routes
 })
+router['handle'] = new RouteHandle();
 
 router.beforeEach((to, from, next) => {
-  handle.beforeRouteSkip(to, from)
+  router.handle.beforeRouteSkip(to, from)
   if(to.matched.length == 0){
     next('/error404');
   }

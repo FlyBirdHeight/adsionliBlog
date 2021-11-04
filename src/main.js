@@ -2,20 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
 /**
  * @description 预读取文章列表json文件，以及标签列表json文件
  */
-import PageList from './data/page_list.json'
 import TagList from "./data/tag_list.json"
-store.commit('SET_PAGE_LIST', PageList.page.sort((a, b) => {
-  if (a.toTop == b.toTop) {
-    let aDate = new Date(a.created_at)
-    let bDate = new Date(b.created_at)
-    return bDate.getTime() - aDate.getTime()
-  }
-  return b.toTop - a.toTop
-}))
 store.commit('SET_TAG_LIST', TagList.tag)
+
 Vue.config.productionTip = false
 
 import ElementUI from 'element-ui';
@@ -27,18 +20,31 @@ Vue.prototype.axios = axios
 
 import Highlight from './utils/highlight.js';
 Vue.use(Highlight);
-//动态添加路由
-import DynamicRoute from './router/dynamic_route.js';
-let dynamicRoute = new DynamicRoute(PageList.page, router);
-dynamicRoute.generateRoute();
 
 import Analysis from "@/modules/analysis/index.js";
 Vue.prototype.analysis = new Analysis();
-
 require('./componets_register.js')
+//动态添加路由
+import DynamicRoute from '@/router/dynamic_route.js';
+import HandlePageList from "./funcs/utils/page"
+let handlePageList = new HandlePageList;
+handlePageList.handlePagePath().then(res => {
+  res = res.sort((a, b) => {
+    if (a.toTop == b.toTop) {
+      let aDate = new Date(a.created_at)
+      let bDate = new Date(b.created_at)
+      return bDate.getTime() - aDate.getTime()
+    }
+    return b.toTop - a.toTop
+  });
+  store.commit('SET_PAGE_LIST', res)
+  let dynamicRoute = new DynamicRoute(res, router);
+  dynamicRoute.generateRoute();
+  router.handle.concatCoverData(res)
+  new Vue({
+    router,
+    store,
+    render: h => h(App)
+  }).$mount('#app')
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+});

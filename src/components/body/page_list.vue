@@ -44,7 +44,6 @@ export default {
     this.totalCount = this.pageListValue.length;
   },
   mounted() {
-    this.handlePage();
     this.resolvePage(this.pageSizes[0]);
     this.changePage();
   },
@@ -55,19 +54,6 @@ export default {
      */
     goToPageRoute(routerLinker) {
       this.$router.push({ path: routerLinker });
-    },
-    /**
-     * @method handlePage 处理一下文章的排序，按照置顶优先再按照时间进行排序
-     */
-    handlePage() {
-      this.pageListValue = this.pageListValue.sort((a, b) => {
-        if (a.toTop == b.toTop) {
-          let aDate = new Date(a.created_at);
-          let bDate = new Date(b.created_at);
-          return bDate.getTime() - aDate.getTime();
-        }
-        return b.toTop - a.toTop;
-      });
     },
     /**
      * @method resolvePage 按分页数量分解数组

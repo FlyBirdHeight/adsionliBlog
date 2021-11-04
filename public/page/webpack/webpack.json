@@ -1,0 +1,36 @@
+{
+    "page": [
+        {
+            "title": "Webpack的学习与使用-第二阶段",
+            "subTitle": "Webpack5的学习",
+            "createTime": "Posted by adsionli on October 30, 2021",
+            "created_at": "2021-10-30",
+            "tags": [
+                {
+                    "label": "webpack"
+                }
+            ],
+            "description": "学习使用Webpack5引入文件及webpack插件的使用",
+            "routeLink": "/page/webpack/learn02",
+            "toTop": 1,
+            "path": "/content/page/webpack/webpack-learn02.md",
+            "recommend": true
+        },
+        {
+            "title": "Webpack的学习与使用-第一阶段",
+            "subTitle": "Webpack5的学习",
+            "createTime": "Posted by adsionli on October 28, 2021",
+            "created_at": "2021-10-28",
+            "tags": [
+                {
+                    "label": "webpack"
+                }
+            ],
+            "description": "初始学习使用Webpack5，并学习相关指令等内容",
+            "routeLink": "/page/webpack/learn01",
+            "toTop": 1,
+            "path": "/content/page/webpack/webpack-learn01.md",
+            "recommend": true
+        }
+    ]
+}

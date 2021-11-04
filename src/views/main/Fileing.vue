@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import PageList from '@/data/page_list.json'
 import TagList from '@/data/tag_list.json'
 import TagCloud from '@/components/utils/tag_cloud'
 import { handleFileing } from '@/funcs/page/fileing.js'
@@ -39,7 +38,7 @@ export default {
   },
   data() {
     return {
-      pageList: PageList.page,
+      pageList: this.$store.getters.getPageList,
       tagList: TagList.tag,
       showList: undefined,
       jumpTagLabelId: '',

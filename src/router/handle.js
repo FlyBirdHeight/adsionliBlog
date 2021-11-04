@@ -1,13 +1,11 @@
 import store from "../store/index"
-import pageList from "../data/page_list.json";
 import coverList from "../data/cover.json";
 class RouteHandle {
     constructor() {
-        this.pageList = pageList.page;
+        this.pageList = store.getters.getPageList;
         this.coverList = coverList.cover;
         this.store = store;
         this.concatData = new Map();
-        this.concatCoverData();
         this.switchNone = ['/', '/mine', 'catalogue', 'fileing', '/test/total', '/test/regular_test', '/test/component_test']
     }
 
@@ -56,11 +54,11 @@ class RouteHandle {
     /**
      * @method concatCoverData 将cover数据与page数据合并，并处理成map
      */
-    concatCoverData() {
+    concatCoverData(res) {
         for (let key in this.coverList) {
             this.concatData.set(key, this.coverList[key]);
         }
-        for (let page of this.pageList) {
+        for (let page of res) {
             this.concatData.set(page.routeLink, page);
         }
     }

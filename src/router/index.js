@@ -26,7 +26,7 @@ const routes = [
     path: "/error404",
     name: "Error",
     component: () => import('@/views/main/error404.vue')
-  },{
+  }, {
     path: "/third",
     name: 'Third',
     redirect: '/third/structure-function',
@@ -111,6 +111,10 @@ const routes = [
         path: "component_test",
         name: 'ComponentTest',
         component: () => import('@/views/test/component_test.vue'),
+      }, {
+        path: "js_test",
+        name: 'JsTest',
+        component: () => import('@/views/test/js_test.vue'),
       }
     ]
   }, {
@@ -128,7 +132,7 @@ router['handle'] = new RouteHandle();
 
 router.beforeEach((to, from, next) => {
   router.handle.beforeRouteSkip(to, from)
-  if(to.matched.length == 0){
+  if (to.matched.length == 0) {
     next('/error404');
   }
   if (to.matched.length == 1 && to.matched[0].path == '/page') {

@@ -137,6 +137,7 @@ class Summary extends AnalysisIndex {
             this.code.judgeHandleSummary(judgeData, i, level);
             this.table.judgeHandleSummary(judgeData, i, length, level);
             this.title.judgeTitle(judgeData, i, level);
+            this.image.judgeImage(data[i], i, level);
         }
         let htmlSpanList = this.replaceToSpan();
         if (htmlSpanList.length != 0) {
@@ -170,6 +171,10 @@ class Summary extends AnalysisIndex {
         }
         if (this.title.titleList.length != 0) {
             returnData = returnData.concat(this.title.handleTitleLevel().generateTitleLevel());
+        }
+        if (this.image.imageData.length != 0) {
+            let imageData = this.image.handleData().handlePreview();
+            returnData = returnData.concat(imageData);
         }
 
         return returnData;

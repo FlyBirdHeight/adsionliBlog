@@ -46,3 +46,21 @@ console.log(add(1)(2)(3)(4)())
 
 
 ## 变量相关题目
+
+第一题： console中的输出输出是什么？
+```js
+function sayHi() {
+  console.log(name)
+  console.log(age)
+  var name = 'Lydia'
+  let age = 21
+}
+sayHi()
+```
+A: Lydia 和 undefined
+B: Lydia 和 ReferenceError
+C: ReferenceError 和 21
+D: undefined 和 ReferenceError
+
+答案：B
+原因：这里主要是涉及到变量提升，`var`定义的变量在未定义时使用时会执行变量提升，所以在一开始输出中会输出`Lydia`。但是let定义的变量则不会存在变量提升，const也不会，这是es6中提出的新的定义变量的方式，变得更加严谨，不会再存在变量提升的情况

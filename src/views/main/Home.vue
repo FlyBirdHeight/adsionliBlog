@@ -1,24 +1,14 @@
 <template>
   <div class="container">
     <el-row>
-      <el-col :xs="24" :sm="24" :md="{ span: 16, offset: 2 }" :lg="{ span: 16, offset: 2 }">
+      <el-col :xs="24" :sm="24" :md="{ span: 15, offset: 1 }" :lg="{ span: 15, offset: 1 }">
         <page-list />
       </el-col>
-      <el-col :xs="24" :sm="24" :md="6" :lg="6">
+      <el-col :xs="24" :sm="24" :md="{ span: 7, offset: 1 }" :lg="{ span: 7 }">
         <tag-list />
-        <time-line style="width: 300px; height: 600px; overflow-y: scroll">
-          <time-line-item
-            v-for="(value, index) in timelineList"
-            :key="index"
-            :size="value.size"
-            :timestamp="value.timestamp"
-            :icon="value.icon"
-            :color="value.color"
-            :hideTimestamp="value.hideTimestamp"
-          >
-            {{ value.content }}
-          </time-line-item>
-        </time-line>
+        <contact-information />
+        <friend-link />
+        <time-list />
       </el-col>
     </el-row>
   </div>
@@ -27,26 +17,17 @@
 <script>
 import PageList from '@/components/body/page_list.vue'
 import TagList from '@/components/body/tag.vue'
+import TimeList from '@/components/body/time_list.vue'
+import FriendLink from "@/components/body/friend_link.vue"
+import ContactInformation from "@/components/body/contact_information.vue"
 export default {
   name: 'Home',
-  mounted() {
-    this.axios
-      .get('./config/blog-timeline.json')
-      .then((res) => {
-        this.timelineList = res.data.timeline
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  },
-  data() {
-    return {
-      timelineList: [],
-    }
-  },
   components: {
     PageList,
     TagList,
+    TimeList,
+    FriendLink,
+    ContactInformation
   },
 }
 </script>

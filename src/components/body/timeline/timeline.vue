@@ -17,10 +17,12 @@ export default {
 <style lang="scss" scoped>
 .timeline {
   margin: auto;
-  padding: 10px 10px;
+  padding: 10px 5px 10px 10px;
   position: relative;
   .timeline_list {
     list-style-type: none;
+    padding: 0px;
+    margin: 0px;
   }
 }
 </style>

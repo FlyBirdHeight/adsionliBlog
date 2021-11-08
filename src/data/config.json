@@ -1,3 +1,28 @@
 {
-    "imagePreSrc": "./content/page/"
+    "imagePreSrc": "./content/page/",
+    "friendLink": [
+        {
+            "name": "小龙虾(师兄)",
+            "path": "https://blog.csdn.net/qq_39300235"
+        }
+    ],
+    "contact": [
+        {
+            "name": "QQ",
+            "data": "531020509",
+            "icon": "icon-QQ"
+        },{
+            "name": "Wechat",
+            "data": "adsionli",
+            "icon": "icon-wechat-fill"
+        },{
+            "name": "E-Mail",
+            "data": "adsionli@foxmail.com",
+            "icon": "icon-email-fill"
+        },{
+            "name": "Github",
+            "data": "https://github.com/FlyBirdHeight",
+            "icon": "icon-github-fill"
+        }
+    ]
 }

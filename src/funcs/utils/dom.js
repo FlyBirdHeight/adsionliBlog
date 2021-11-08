@@ -36,7 +36,7 @@ export const off = function (isServer) {
  * @returns 事件处理方法
  */
 export function rafThrottle(fn) {
-    //locked在此处的作用就是在同一个页面中至多只允许一个window.requestAnimationFrame的存在。
+    //locked在此处的作用就是在raf期间只被允许调用一次。
     let locked = false;
     //这里args的结构函数，实际就是触发事件之后回调的event对象
     return function (...args) {

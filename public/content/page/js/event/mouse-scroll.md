@@ -99,11 +99,193 @@ on(this.$isServer)(document, mouseWheel(), this.mouseWheelHandler);
 
 > 其实之前并没打算写这一章节的，后来发现在阅读源码组件的时候发现了图片懒加载就是基于滚动事件做的性能优化，所以这里新增滚动事件的性能优化这一章节来进行说明。但是这之前需要各位阅读本节的读者，最好先去看一下节流与防抖的知识，这样才可以更好的理解接下来的内容，同样我自己也整理了节流与防抖的知识，可以前往查看: [节流(throttle)与防抖(debounce)](/#/page/js/throttle-debounce)
 
+### 防抖实现滚轮优化
 
+> 这里会选择防抖来实现滚轮优化，实际上是因为我所使用的场景，所以我选择使用防抖来作为本次滚轮优化的一个例子。
+
+滚轮与trottle-debounce结合使用在我们开发的时候有很多很多的示例，所以这里就不进行一一的列举了，我们直接进入一段代码分析示例，结合代码来进行说明，使用场景为：基于滚轮的图片懒加载的实现。代码如下:
+
+```js
+/**
+* @method throttle 节流的实现
+* @description 这里使用第一次立即执行，最后一次执行，中间节流的写法，确保事件执行的准确
+* @param {Function} fn 待执行回调方法
+* @param {Number} time 执行时间
+* @param {Array|null} 传入参数.
+*/
+function throttle(fn, time, ...res){
+    let start = 0;
+    let timer = null;
+    return function(){
+        let now = +new Date();
+        if(now - start < time){
+           timer && clearTimeout(timer);
+           timer = new setTimeout({
+               fn.apply(this, res);
+               start = now;
+           }, time)
+        }else{
+            start = now;
+            fn.apply(this, res);
+        }
+    }
+}
+/**
+* @method 判断是否为html片段
+* @param {Object} node 待判断内容
+* @return {Boolean}
+*/
+function isHtmlElement(node) {
+    return node && node.nodeType === Node.ELEMENT_NODE;
+}
+/**
+* @method isScroll 判断是否是滚轮
+* @param {Object} el 本体的dom对象
+* @param {Boolean} vertical 是否只有垂直滚动条
+* @return {Boolean}
+*/
+function isScroll(el, vertical){
+    if (this.$isServer) return;
+
+    const determinedDirection = vertical !== null && vertical !== undefined;
+    const overflow = determinedDirection
+    ? vertical
+    ? getStyle(el, 'overflow-y')
+    : getStyle(el, 'overflow-x')
+    : getStyle(el, 'overflow');
+
+    return overflow.match(/(scroll|auto|overlay)/);
+};
+/**
+* @method getScrollContainer 获取Scroll容器
+* @param {Object} el 本体的dom对象
+* @param {Boolean} vertical 是否只有垂直滚动条
+* @return {Object} scroll容器
+*/
+function getScrollContainer(el, vertical){
+    if (this.$isServer) return;
+
+    let parent = el;
+    while (parent) {
+        if ([window, document, document.documentElement].includes(parent)) {
+            return window;
+        }
+        if (isScroll(parent, vertical)) {
+            return parent;
+        }
+        parent = parent.parentNode;
+    }
+
+    return parent;
+}
+/**
+* @method handleLazyLoad 处理懒加载
+*/
+function handleLazyLoad() {
+    if (isInContainer(this.$el, this._scrollContainer)) {
+        this.show = true;
+        this.removeLazyLoadListener();
+    }
+}
+/**
+* @method addLazyLoadListener 添加懒加载监听器
+*/
+function addLazyLoadListener() {
+    //判断是否为服务端渲染
+    if (this.$isServer) return;
+
+    const { scrollContainer } = this;
+    let _scrollContainer = null;
+    //NOTE scrollContainer父组件传入的一个scroll容器，不传过来就自己去找，传过来可以是id,name或者直接一个dom元素也可以
+    if (isHtmlElement(scrollContainer)) {
+        _scrollContainer = scrollContainer;
+    } else if (isString(scrollContainer)) {
+        _scrollContainer = document.querySelector(scrollContainer);
+    } else {
+        _scrollContainer = getScrollContainer(this.$el);
+    }
+
+    if (_scrollContainer) {
+        this._scrollContainer = _scrollContainer;
+        this._lazyLoadHandler = throttle(this.handleLazyLoad, 200);
+        on(_scrollContainer, 'scroll', this._lazyLoadHandler);
+        this.handleLazyLoad();
+    }
+}
+
+addLazyLoadListener();
+```
+
+上段代码看起来很多，实际上的实现不是特别难，主要需要处理的就是找到当前组件所在的`scroll`容器的位置，然后再添加对应容器的`scroll`的监听事件，最后在使用`throttle`(节流)进行处理，减少响应次数，增强用户体验。同时本例子是基于vue进行实现的，所以这里只需控制图片的显示就可以了，不过这里的显示不是用`v-show`来控制的，而是使用`v-if`来使用的，它在一开始是不被渲染得，所以需要使用`v-if`来控制图片的渲染，这样才能实现图片的懒加载。
+
+所以，`throttle`与`scroll`事件的结合，可以提高浏览器的性能，减少事件频繁响应导致`scroll`事件卡顿的影响。
+
+不过上面还是`scroll`的滚动事件，不是鼠标等设备的滚轮事件，但是依然也是滚动事件的一种即滚轮控制滚动条的事件。
 
 ### raf(window.requestAnimationFrame)触发滚轮事件
 
+> window.requestAnimationFrame() 这个方法是用来在页面重绘之前，通知浏览器调用一个指定的函数。这个方法接受一个函数为参，该函数会在重绘前调用。
+>
+> rAF 常用于 web 动画的制作，用于准确控制页面的帧刷新渲染，让动画效果更加流畅，当然它的作用不仅仅局限于动画制作，我们可以利用它的特性将它视为一个定时器。（当然它不是定时器）
+>
+> 通常来说，rAF 被调用的频率是每秒 60 次，也就是 1000/60 ，触发频率大概是 16.7ms 。(当执行复杂操作时，当它发现无法维持 60fps 的频率时，它会把频率降低到 30fps 来保持帧数的稳定。)
+>
+> 其实这就有点像==使用时间戳版本的throttle的实现==，但是`raf`的渲染评率会更加的准确，因为这是重新渲染的回调。
 
+代码示例如下:
+
+```js
+//获取鼠标滚轮事件
+const mouseWheel = () =>
+    "onwheel" in document.createElement("div")
+    ? "wheel" // 各个厂商的高版本浏览器都支持"wheel"
+    : document.onmousewheel !== undefined
+    ? "mousewheel" // Webkit 和 IE一定支持"mousewheel"
+    : "DOMMouseScroll"; // 低版本firefox
+
+/**
+* @method rafThrottle raf的实现
+* @param {Function} fn 回调方法
+* @return {Function}
+*/
+function rafThrottle(fn){
+    let locked = false;
+    return function(...res){
+        if(locked){
+           return;
+        }
+        locked = true;
+        window.requestAnimationFrame(_ => {
+            fn.apply(this, res);
+        	locked = false;
+        })
+    }
+}
+
+mouseWheelHandler = rafThrottle((e) => {
+    /**
+    * NOTE: wheelDelta和detail都是用来判断滚轮是上滑还是下滑，但是在不同浏览器的平台中的判断条件不同，所以需要两个都叫判断
+    * NOTE: 当使用window.requestAnimationFrame的时候，是可以不使用transition的
+    */
+    const delta = e.wheelDelta ? e.wheelDelta : -e.detail;
+    if (delta > 0) {
+        this.transform.enableTransition = false;
+        this.zoomIn(false);
+    } else {
+        this.transform.enableTransition = false;
+        this.zoomOut(false);
+    }
+});
+
+on(this.$isServer)(document, mouseWheel(), this.mouseWheelHandler);
+```
+
+上面这段代码示例就是在图片预览时，可以通过鼠标滚轮的事件去改变图片的scale的值，实现图片的缩放。
+
+这里就是用了rafThrottle方法，来对图片缩放时进行性能优化，让他的缩放速度和浏览器重新渲染速度保持一致，保证整个过程的流畅性，从而不出现影响用户使用的卡顿。
+
+> 代码内容不是太难，这里就详细展开描述了，上面也有相应的注释进行了解释
 
 # 使用总结
 
+滚轮事件在相应事件中比较复杂的一个事件了，想要搞懂这个事件还是有点困难的，只有通过自己的实际上手写代码才能有比较深刻的理解，加上其还拥有性能优化的地方，比如结合节流防抖以及raf来提高性能。所以需要真正掌握这一块知识，需要具备很多前置知识，这也就很好的将这些知识串联在了一起。比如说实现一个基于节流的scroll事件监听，就需要具备**throttle,currying,scrollEvent**这三个方面的知识了。==知识不应该只停留在为了应付面试的八股文之上，知识应该被使用在需要使用的地方。==作为一名好的前端开发，需要考虑更多！加油💪🏻！。

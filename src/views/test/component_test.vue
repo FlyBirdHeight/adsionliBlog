@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <el-divider>时间轴组件测试</el-divider>
-    <time-line>
+    <time-line style="width: 300px; height: 600px; overflow-y: scroll">
       <time-line-item
         v-for="(value, index) in timelineList"
         :key="index"
@@ -22,8 +22,6 @@
 
 <script>
 import ImageData from '@/components/utils/image/image.vue'
-import TimeLine from '@/components/body/timeline/timeline.vue'
-import TimeLineItem from '@/components/body/timeline/timeline-item.vue'
 export default {
   data() {
     return {
@@ -42,15 +40,15 @@ export default {
     }
   },
   mounted() {
-    ;(this.src = this.imageList[this.imageIndex]),
-      this.axios
-        .get('./config/blog-timeline.json')
-        .then((res) => {
-          this.timelineList = res.data.timeline
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+    this.src = this.imageList[this.imageIndex]
+    this.axios
+      .get('./config/blog-timeline.json')
+      .then((res) => {
+        this.timelineList = res.data.timeline
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   },
   methods: {
     changeImage() {
@@ -67,8 +65,6 @@ export default {
   },
   components: {
     ImageData,
-    TimeLine,
-    TimeLineItem,
   },
 }
 </script>

@@ -164,6 +164,9 @@ class Table extends AnalysisIndex {
         }
         for (let value of this.tableParameter.allTableData) {
             let valueCode = value.codeData;
+            if(typeof(valueCode) == 'undefined'){
+                continue;
+            }
             let header = valueCode[0].replace(/\s/g, '');
             let rule = valueCode[1].replace(/\s/g, '');
             let headerList = header.split('|').filter(filterArray);

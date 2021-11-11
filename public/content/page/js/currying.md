@@ -180,18 +180,18 @@ var on = function(isSupport, element, event, handler) {
 
 ```js
 const curry = function(fn) {
-  const _args = []
-  return function cb(...rest) {
-    if (rest.length === 0) {
-      return fn.apply(this, _args)
+    const _args = []
+    return function cb(...rest) {
+        if (rest.length === 0) {
+            return fn.apply(this, _args)
+        }
+        _args.push(...rest)
+        return cb
     }
-    _args.push(...rest)
-    return cb
-  }
 }
 
 const curryAdd = curry((...T) => 
-  T.reduce((sum, single) => sum += single)
+     T.reduce((sum, single) => sum += single)
 )
 curryAdd(1)
 curryAdd(2)

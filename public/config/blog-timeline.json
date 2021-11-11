@@ -233,6 +233,14 @@
             "hideTimestamp": false
         },
         {
+            "timestamp": "2021年11月05-06日",
+            "content": "完成时间轴、联系方式、友链的内容添加",
+            "icon": "icon-system",
+            "color": "#67C23A",
+            "size": "large",
+            "hideTimestamp": false
+        },
+        {
             "timestamp": "......",
             "content": "未完待续......",
             "icon": "",

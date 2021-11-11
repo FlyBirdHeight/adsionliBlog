@@ -47,6 +47,22 @@
             "toTop": 0,
             "path": "/content/page/webpack/webpack-learn03.md",
             "recommend": true
+        },
+        {
+            "title": "Webpack的学习与使用-第四阶段",
+            "subTitle": "Webpack5的学习",
+            "createTime": "Posted by adsionli on November 11, 2021",
+            "created_at": "2021-11-11",
+            "tags": [
+                {
+                    "label": "webpack"
+                }
+            ],
+            "description": "webpack学习第四阶段-webpack内置参数配置",
+            "routeLink": "/page/webpack/learn04",
+            "toTop": 0,
+            "path": "/content/page/webpack/webpack-learn04.md",
+            "recommend": true
         }
     ]
 }

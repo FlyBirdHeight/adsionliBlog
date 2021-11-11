@@ -1,8 +1,9 @@
 # webpack学习第三阶段
 
-| 文档创建人 | 创建日期   | 文档内容                                       | 更新时间   |
-| ---------- | ---------- | ---------------------------------------------- | ---------- |
-| adsionli   | 2021-11-09 | webpack学习第三阶段-babel与webpack配置内容学习 | 2021-11-09 |
+| 文档创建人 | 创建日期   | 文档内容                                           | 更新时间   |
+| ---------- | ---------- | -------------------------------------------------- | ---------- |
+| adsionli   | 2021-11-09 | webpack学习第三阶段-babel与webpack热更新配置学习   | 2021-11-09 |
+| adsionli   | 2021-11-09 | webpack学习第三阶段内容补充-vue与react的热更新模块 | 2021-11-10 |
 
 ## babel的使用与babel-loader在webpack中的使用
 
@@ -447,7 +448,7 @@ babel是一个转译器，感觉相对于编译器compiler，叫转译器transpi
 
    > 这时候还不会生效webpack的HMR，因为我们的mode设置的是development(生产模式)，所以这个时候是和我们的HMR会产生冲突，这个时候就还需要一个参数的设置才可以。
 
-   ```js
+   ```javascript
    //修改后的代码
    module.exports = {
        mode: "development",
@@ -463,7 +464,7 @@ babel是一个转译器，感觉相对于编译器compiler，叫转译器transpi
 
 2. 设置热更新配置
 
-   ```js
+   ```javascript
    if(module.hot){
    	module.hot.accept(['./js/title.js'], function(){
            console.log('HMR执行完成')
@@ -477,7 +478,7 @@ babel是一个转译器，感觉相对于编译器compiler，叫转译器transpi
 
 3. 支持通过webpack-dev-middleware与express-server来完成热更新（这里还需要导入webpack-hot-middleware才可以）
 
-   ```js
+   ```javascript
    //在webpack.config.js中导入插件,这里有一个坑，NamedModulesPlugin已经被废弃了，但是官网文档没有更新，这里需要配置新的参数
    const path = require('path')
    const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -576,7 +577,7 @@ babel是一个转译器，感觉相对于编译器compiler，叫转译器transpi
 
    上面是webpack.config.js中的配置，下面是serve.js中的配置
 
-   ```js
+   ```javascript
    const express = require('express');
    const webpack = require('webpack');
    const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -597,10 +598,113 @@ babel是一个转译器，感觉相对于编译器compiler，叫转译器transpi
    app.listen(3000, '127.0.0.1', function(){
        console.log('listen http://127.0.0.1:3000!')
    })
-   
    ```
 
-   ## 总结
+## Vue组件热更新
 
-   到了这里，webpack越来越复杂了，但是逻辑实际很清楚，所以还是需要好好捋一捋其中的关系。
+1. 如果需要在webpack生成的项目中导入vue的话，首先我们需要先导入一下内容
 
+```shell
+npm install --save-dev vue@2.6.14 vue-template-compiler@2.6.14
+```
+
+2. 还需在导入`vue-loader`，来对webpack进行配置
+
+> 注意这里导入的`vue-loader`的版本，最新的`vue-loader@16`版本是对`vue3`的支持，这里我们使用的是`vue2`，所以导入的`vue-loader`版本不能大于15。
+>
+> ==但是vue-loader@14与vue-loader@15之间也存在一些区别，vue-loader@15还需要自己手动导入一个VuePlugin才可以。==
+
+`vue-loader@14`的安装与导入
+
+```shell
+npm install -D vue-loader@14
+```
+
+```javascript
+module.exports = {
+    module: {
+        rules: [
+            {
+                test: /\.vue$/,
+                use: ['vue-loader']
+            }
+        ]
+    }
+}
+```
+
+这样就完成了`vue-loader@14`的导入与配置。然后在index.js中进行配置，并创建一个App.vue。
+
+```js
+//index.js
+import "./js/title"
+import App from "./view/App.vue"
+import Vue from "vue"
+console.log(module.hot)
+if(module.hot){
+    module.hot.accept(['./js/title.js'], () => {
+        console.log('HMR执行完成')
+    });
+}
+
+new Vue({
+    render: h => h(App)
+}).$mount('#root');
+//App.vue
+export default {
+    name: "App",
+    functional: true,
+    data() {
+        return {
+            titleMessage: "Hello Vue By Webpack HMR"
+        }
+    },
+    render(createElement, context) {
+        return createElement('h1', {
+            style: {
+                color: 'orange'
+            }
+        }, this.titleMessage);
+    }
+}
+```
+
+完成上述配置之后，我们就可以启动服务，在服务启动后，修改文件查看是否完成HMR。
+
+```shell
+npm run serve
+```
+
+![vue-webpack-comman-HMR](../image/webpack/03/vue-webpack-comman-HMR.png)
+
+上面是在修改了App.vue中`style`之后，其自动完成了热更新，然后去浏览器的控制台中看一下是否完成了热更新。
+
+ ![vue-webpack-console](../image/webpack/03/vue-webpack-console.png)
+
+通过上图我们可以发现更新执行完成，所以对于`vue-loader@14`的配置还十分简单的。
+
+如果我们使用的`vue-loader@15`的话，我们还需要导入一个`plugin`在`webpack.config.js`中，然后在放入`plugins`中
+
+```js
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
+module.exports = {
+    module: {
+        rules: [
+            {
+                test: /\.vue$/,
+                use: ['vue-loader']
+            }
+        ]
+    },
+    plugins: [
+        new VueLoaderPlugin
+    ]
+}
+```
+
+完成上述配置后，也就可以在`vue-loader@15`中实现vue组件的热更新了。
+
+# 总结
+
+第三阶段主要就是学了webpack下的HMR以及Babel的使用。这两者在我们实际生产开发中都是必须要用到的东西。所以对于这两块内容的学习不能仅仅限制在这篇文章中的使用，还需要自己前往两者的官网，再好好吃透其中的知识才可以，还望大家继续加油呀💪🏻！

@@ -63,6 +63,22 @@
             "toTop": 0,
             "path": "/content/page/webpack/webpack-learn04.md",
             "recommend": true
+        },
+        {
+            "title": "Webpack的学习与使用-终章",
+            "subTitle": "Webpack5的学习",
+            "createTime": "Posted by adsionli on November 12, 2021",
+            "created_at": "2021-11-12",
+            "tags": [
+                {
+                    "label": "webpack"
+                }
+            ],
+            "description": "webpack学习终章-关于ts在webpack中配置及webpack中的开发生产模式的讲解及切换",
+            "routeLink": "/page/webpack/learn05",
+            "toTop": 0,
+            "path": "/content/page/webpack/webpack-learn05.md",
+            "recommend": true
         }
     ]
 }

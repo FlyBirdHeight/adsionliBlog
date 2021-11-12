@@ -1,6 +1,6 @@
 {
-  "name": "prepare_face",
-  "version": "0.1.0",
+  "name": "adsionli-blog",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,12 +10,14 @@
     "axios": "^0.21.4",
     "core-js": "^3.6.5",
     "element-ui": "^2.15.6",
+    "express": "^4.17.1",
     "highlight.js": "^11.3.1",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.0",
     "style-loader": "^3.3.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vue-server-renderer": "^2.6.11",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
@@ -27,6 +29,7 @@
     "postcss-loader": "^6.2.0",
     "postcss-preset-env": "^6.7.0",
     "postcss-pxtorem": "^5.1.1",
+    "prerender-spa-plugin": "^3.4.0",
     "vue-template-compiler": "^2.6.11"
   }
 }

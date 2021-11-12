@@ -370,15 +370,169 @@ module.exports = {
 
 ## resolve模块解析规则
 
+> webpack在启动后会从配置的入口模块触发找出所有依赖的模块，**Resolve配置webpack如何寻找模块对应的文件。**webpack内置JavaScript模块化语法解析功能，默认会采用模块化标准里约定好的规则去寻找，但你可以根据自己的需要修改默认的规则。
 
+文件导入的路径主要分为三种路径：相对路径，绝对路径，模块名称
 
-## source-map作用
+1. 相对路径
 
+   ```js
+   import './title.js'
+   ```
 
+   上面👆🏻这种就是一种相对路径，那么在打包的过程中，webpack会通过文件的上下文目录来找到这个相对路径的具体位置。
+
+2. 绝对路径
+
+   ```js
+   import "/Users/adsionli/code/prepare_face/src/modules/analysis/index.js"
+   ```
+
+   上面👆🏻这种就是一种绝对路径，完全把路径补充完整，那么在打包的过程，webpack可以直接的找到对应的文件。
+
+3. 模块名称
+
+   ```js
+   import axios from "axios"
+   ```
+
+   上面👆🏻这种就是模块名称引入文件，那么在打包过程中,webpack就回去node_modules下面去查找对应模块名称的文件引入路径。
+
+```js
+module.exports = {
+    resolve: {
+        mainFiles: ['index', 'main'],
+        extensions: ['.json', '.js', '.vue', '.scss', '.css'],
+        modules: ['node_modules', 'src/modules'],
+        alias: {
+            '@': path.resolve(__dirname, 'src')
+        }
+    }
+}
+```
+
+> 上面是一个resolve模块的配置，下面会介绍每一个参数的作用。
+
+路径问题解决之后，就回去判断最后的内容究竟是一个文件还是文件夹。如果是文件的话，而且这个文件带有后缀名，那么就可以直接导入完成。如果这个文件不带有后缀名，那么webpack就会从resolve模块解析的`extentions`这个默认配置参数中去找，`['.json', '.js']`这个是默认配置的参数，如果都没有找到，就会报错了。
+
+同样的，如果前面的路径确认了，但是后面的文件没有给出，那么webpack在解析这个路径的时候，会根据resolve模块中配置的`mainFiles`参数，来查找对应的文件，`mainFiles`参数的默认为`'index'`,当然这里可以自定义。
+
+对于模块名称的路径也是可以通过resolve模块进行配置的，resolve模块的`modules`参数就可以设置模块的位置，可以配置多个位置，找到后就会停止并返回相应的绝对路径。
+
+`alias`参数可以设置文件路径的别名，比如在上述配置中，我将`src`目录设置了一个别名，使用`@`来取代了`src`这个路径，那么在项目中，我们也可以使用`@`来替代之前`src`的路径了。
+
+> 更多的参数说明及使用方法可以参见：[resolve模块配置官方说明](https://webpack.docschina.org/configuration/resolve)
+
+## source-map
+
+再说source-map之前，我们需要对mode这个属性有一些基本的认识
+
+mode在webpack中代表了模式，在我们没有设置mode的时候，其默认的参数为`production`,同时它还提供了另外两个可选参数为：`development`与`none`。我们可以通过配置来修改mode的参数。
+
+```js
+module.exports = {
+	mode: 'development'
+}
+```
+
+这样我们就可以将模式改为`development`(开发模式)了。
+
+当我们设置了不同的模式之后，webpack会根据设置的不同的模式，处理之后各种不同的操作，下面这张列表中给出了相应的处理。
+
+| 选项          | 描述                                                         |
+| :------------ | :----------------------------------------------------------- |
+| `development` | 会将 `DefinePlugin` 中 `process.env.NODE_ENV` 的值设置为 `development`. 为模块和 chunk 启用有效的名。 |
+| `production`  | 会将 `DefinePlugin` 中 `process.env.NODE_ENV` 的值设置为 `production`。为模块和 chunk 启用确定性的混淆名称，`FlagDependencyUsagePlugin`，`FlagIncludedChunksPlugin`，`ModuleConcatenationPlugin`，`NoEmitOnErrorsPlugin` 和 `TerserPlugin` 。 |
+| `none`        | 不使用任何默认优化选项                                       |
+
+好了，现在就可以再来说一下source-map是什么，为什么会使用到source-map，source-map在webpack打包中怎么配置与使用？
+
+1. source-map是什么？
+
+   source-map就是一个信息文件，里面储存着位置信息。也就是说，转换后的代码的每一个位置，所对应的转换前的位置。
+
+   有了它，出错的时候，除错工具将直接显示原始代码，而不是转换后的代码。
+
+   > source-map就是一种映射的技术
+
+2. 为什么会使用到source-map?
+
+   常见的源码转换，主要是以下三种情况：
+
+   (1) 压缩，减小体积。比如jQuery 1.9的源码，压缩前是252KB，压缩后是32KB。
+
+   (2) 多个文件合并，减少HTTP请求数。
+
+   (3) 其他语言编译成JavaScript。最常见的例子就是CoffeeScript。
+
+   这三种情况，都使得实际运行的代码不同于开发代码，除错（debug）变得困难重重。
+
+   那么source-map就是基于这种情况被提出并开发用于解决上述问题的东西。
+
+3. source-map在webpack打包中怎么配置与使用？
+
+   首先需要在webpack.config.js中配置一下
+
+   ```js
+   module.exports = {
+       entry: "./src/main.js"
+       mode: 'development',
+       devtool: 'source-map'
+   }
+   ```
+
+   按照上述的配置后，我们在进行build的时候就会发现它会生成一个**main.js.map**的文件，这个文件中会记录下每一个地址映射的内容。这样在去运行`npm run server`的时候，如果某一个模块发生错误的时候，**浏览器就可以通过source-map文件，映射到我们发生错误的模块，而不是都在main.js打包后的文件中了**。
+
+   
+
+<img src="../image/webpack/04/source-map-file.png" alt="source-map-file" style="zoom: 33%;" />
+
+上图👆🏻就是一个source-map生成的map定位文件。
 
 ## devtool配置
+
+devtool控制是否生成，以及如何生成 source map。
+
+>  使用 [`SourceMapDevToolPlugin`](https://webpack.docschina.org/plugins/source-map-dev-tool-plugin) 进行更细粒度的配置。查看 [`source-map-loader`](https://webpack.docschina.org/loaders/source-map-loader) 来处理已有的 source map。
+
+现在devtool常用的配置source-map来进行一些说明
+
+1. `source-map`
+
+   这个`source-map`就是最全的`source-map`，会专门生成`source-map`对应的文件且在打包后文件中引入。vue-cli工具使用的就是这种`source-map`配置，精确到哪一行哪一列的错误信息报错。
+
+2. `cheap-source-map`
+
+   `cheap-source-map`就是打包后精简化的`source-map`，它不会像`source-map`那样生成很详细的行列错误，它只会指出哪一行出现了问题。而且指向的代码也是经过处理后的代码，和源代码的样式也不太一样。
+
+3. `cheap-module-source-map`
+
+   `cheap-module-source-map`的主要作用就是保证了源代码的完整性，不会像`cheap-source-map`那样是处理之后的代码，同时它也只是指出哪一行出现了问题。
+
+4. `hidden-source-map`
+
+   `hidden-source-map`只会指出哪一个文件的哪一行出现了错误，如果从浏览器控制台中点进去的话，会发现无法跳转到出现错误的文件，即无法定位文件。
+
+5. `inline-source-map`
+
+   将`source-map`转换成base64格式的数据，然后放入到main.js文件中，不会再成生成main.js.map文件了，减少一次对map文件的请求。
+
+   > 但是这也存在一些问题，如果原文件的内容很多，生成baser64文件就会很大，加载main.js文件的时间就会变成，造成效率上的缺失。
+
+6. `eval-source-map`
+
+   与`inline-source-map`相同，也是将map文件转换成base64格式的数据，放在`eval`中，不会生成map文件，减少一次对map文件的请求。它存在的问题也和`inline-source-map`的是一样的。
+
+devtool属性的source-map的组合方式如下:
+
+`[inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map`
+
+
+
+官方给出的配置信息列表：[devtool配置source-map配置列表](https://webpack.docschina.org/configuration/devtool/)
 
 
 
 # 总结
 
+webpack中的很多配置项都可以为我们的开发环境以及生产环境提供了非常多的便利，我们可以根据自己的需要对webpack进行定制化配置，使其打包后结果是我们最理想的内容。当然这还需要更加多的去了解webpack中的设置。ヾ(◍°∇°◍)ﾉﾞ

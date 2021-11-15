@@ -30,6 +30,10 @@
             "label": "npm"
         },{
             "label": "webpack"
+        },{
+            "label": "leetCode"
+        },{
+            "label": "algorithm"
         }
     ]
 }

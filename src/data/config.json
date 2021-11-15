@@ -2,12 +2,16 @@
     "imagePreSrc": "./content/page/",
     "friendLink": [
         {
-            "name": "小龙虾(师兄)",
+            "name": "小龙虾(师兄-图形学)",
             "path": "https://blog.csdn.net/qq_39300235"
         },
         {
-            "name": "醒然自然醒(亲爱的室友)",
+            "name": "醒然自然醒(亲爱的室友-后端)",
             "path": "https://blog.csdn.net/qq_40662405?spm=1000.2115.3001.5343"
+        },
+        {
+            "name": "cj1561435010(师兄-后端)",
+            "path": "https://blog.csdn.net/cj1561435010"
         }
     ],
     "contact": [

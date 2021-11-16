@@ -212,7 +212,7 @@ var longestPalindrome = function (s) {
 ```
 
 ## hard题目
-1. 寻找两个正序数组的中位数
+### 1. 寻找两个正序数组的中位数
 
 > [原题链接](https://leetcode-cn.com/problems/median-of-two-sorted-arrays/)
 

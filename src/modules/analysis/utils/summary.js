@@ -175,6 +175,8 @@ class Summary extends AnalysisIndex {
         if (this.image.imageData.length != 0) {
             let imageData = this.image.handleData().handlePreview();
             returnData = returnData.concat(imageData);
+            this.image.resetData();
+            this.image.imageData = [];
         }
 
         return returnData;

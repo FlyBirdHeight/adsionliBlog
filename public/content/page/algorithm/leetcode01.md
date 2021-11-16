@@ -4,7 +4,7 @@
 | ---------- | ---------- | ------------------ | ---------- |
 | adsionli   | 2021-11-15 | leetCode刷题1-3 | 2021-11-15 |
 
-> 记录一下leetCode刷题，每天三道，坚持到校招开始，每篇博文30题
+> 记录一下leetCode刷题，每天三道(如果有hard题，就一道hard，一道normal)，坚持到校招开始，每篇博文30题
 
 ## simple题目
 
@@ -169,6 +169,86 @@ var lengthOfLongestSubstring = function(s) {
     }
 
     return max;
+};
+```
+
+### 3. 最长回文子串
+
+> [原题链接](https://leetcode-cn.com/problems/longest-palindromic-substring/)
+
+这道题目就是求一个字符串，倒过来和正过来是一样的，这就是回文子串，这道题目可以直接进行暴力破解或者使用中心拓展法，因为在之前做过这道题目，所以直接用了中心拓展，来ac掉题目，没有测试暴力是否可以ac
+
+```js
+//这里其实很简单，就是看从当前这个位置的左右两端是否完全一致。不过这里需要注意的就是可能存在奇数个和偶数个的情况，所以采样点需要去两个，确保不会少。
+var aroundCenter = function (s, start, end) {
+    let l = start, r = end;
+    while (l >= 0 && r < s.length && s[r] == s[l]) {
+        l--;
+        r++;
+    }
+    return r - l - 1;
+}
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var longestPalindrome = function (s) {
+    let sl = s.length;
+    if (sl == 0 || sl == 1) {
+        return s;
+    }
+    let start = 0, end = 0, mLen = 0;
+    for (let i = 0; i < s.length; i++) {
+        let len1 = aroundCenter(s, i, i);
+        let len2 = aroundCenter(s, i, i + 1);
+        mLen = Math.max(Math.max(len1, len2), mLen);
+        if (mLen > end - start + 1) {
+            start = i - parseInt((mLen - 1) / 2);
+            end = i + parseInt(mLen / 2);
+        }
+    }
+    return s.substr(start, mLen);
+};
+```
+
+## hard题目
+1. 寻找两个正序数组的中位数
+
+> [原题链接](https://leetcode-cn.com/problems/median-of-two-sorted-arrays/)
+
+这道题目一开始想的太简单了，主要看到这玩意，一下就想到了归并，直接暴力了，但是直接to了，所以看了一下解析里面的分析，发现二分的思想处理这道题目非常的好，虽然还有一个切割处理的，但是个人感觉这样的处理方式不适用大部分场景，所以还是选择使用二分的方法ac了这道题目。这里就不解析这道题目了，直接看题解会比较好。
+
+```js
+var getKth = function(nums1, s1, e1, nums2, s2, e2, k){
+    var n = e1 - s1 + 1;
+    var m = e2 - s2 + 1;
+    if(n > m){
+        return getKth(nums2, s2, e2, nums1, s1, e1, k)
+    }
+    if(n == 0){
+        return nums2[s2 + k - 1];
+    }
+
+    if(k == 1){
+        return Math.min(nums1[s1], nums2[s2])
+    }
+    //这里就是取出nums1与nums2中k折半之后的数据下标，同时判断当前k / 2的大小是否大于了数组的长度，如果大于数组长度，直接去数组的最后一位进行比较
+    let i = s1 + Math.min(n, Math.floor(k / 2)) - 1;
+    let j = s2 + Math.min(m, Math.floor(k / 2)) - 1;
+    if(nums1[i] > nums2[j]){
+        return getKth(nums1, s1, e1, nums2, j + 1, e2, Math.floor(k  - (j - s2 + 1)));
+    }else{
+        return getKth(nums1, i + 1, e1, nums2, s2, e2, Math.floor(k - (i - s1 + 1)));
+    }
+}
+
+var findMedianSortedArrays = function (nums1, nums2) {
+    let n = nums1.length;
+    let m = nums2.length;
+    let len = n + m;
+    let left = (len + 1) / 2;
+    let right = (len + 2) / 2;
+    return (getKth(nums1, 0, n - 1, nums2, 0, m - 1, Math.floor(left)) + getKth(nums1, 0, n - 1, nums2, 0, m - 1, Math.floor(right))) * 0.5;
 };
 ```
 

@@ -1,6 +1,22 @@
 {
     "page": [
         {
+            "title": "apply,bind,call用法与区别",
+            "subTitle": "几种可以绑定this作用域的方法总结",
+            "createTime": "Posted by adsionli on November 15, 2021",
+            "created_at": "2021-11-15",
+            "tags": [
+                {
+                    "label": "javascript"
+                }
+            ],
+            "description": "在写代码或者阅读源码的过程经常性会遇到需要绑定不同this作用域的内容，现在就来梳理一下这三种方法的具体使用与区别。",
+            "routeLink": "/page/js/bind",
+            "toTop": 1,
+            "path": "/content/page/js/bind.md",
+            "recommend": true
+        },
+        {
             "title": "鼠标滚轮事件的学习与总结",
             "subTitle": "scroll事件中一些内容的记录",
             "createTime": "Posted by adsionli on November 03, 2021",
@@ -26,10 +42,7 @@
             "created_at": "2021-11-04",
             "tags": [
                 {
-                    "label": "components"
-                },
-                {
-                    "label": "源码阅读"
+                    "label": "javascript"
                 }
             ],
             "description": "在阅读一些源码的时候，会发现很多交互的操作都会有节流和防抖的使用，那这里就对这个知识做一些总结",
@@ -45,10 +58,7 @@
             "created_at": "2021-11-05",
             "tags": [
                 {
-                    "label": "components"
-                },
-                {
-                    "label": "源码阅读"
+                    "label": "javascript"
                 }
             ],
             "description": "在很多地方都看到使用了柯里化的形式进行代码的书写，所以在这里对柯里化进行一次知识学习总结，方便理顺代码编写思路",

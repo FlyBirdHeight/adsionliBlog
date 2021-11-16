@@ -15,7 +15,7 @@
         "description": "leetCode刷题整理，每一阶段30题，一阶段10天的题目，当前为第一阶段",
         "routeLink": "/page/algorithm/leetCode01",
         "toTop": 0,
-        "path": "/content/page/algorithm/leetCode01.md",
+        "path": "/content/page/algorithm/leetcode01.md",
         "recommend": true
     }]
 }

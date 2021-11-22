@@ -1,7 +1,9 @@
 <template>
   <div class="page">
-    <el-divider>时间轴组件测试</el-divider>
-    <time-line style="width: 300px; height: 600px; overflow-y: scroll">
+    <el-divider>date-picker组件测试</el-divider>
+    <date-picker></date-picker>
+    <el-divider style="margin-top;100px">时间轴组件测试</el-divider>
+    <!-- <time-line style="width: 300px; height: 600px; overflow-y: scroll">
       <time-line-item
         v-for="(value, index) in timelineList"
         :key="index"
@@ -13,15 +15,16 @@
       >
         {{ value.content }}
       </time-line-item>
-    </time-line>
+    </time-line> -->
     <el-divider style="margin-top;100px">image组件测试</el-divider>
-    <image-data :preview="true" :previewSrcList="imageList" :fit="fit" id="imageData01" :src="src"> </image-data>
-    <el-button @click="changeImage">切换图片</el-button>
+    <!-- <image-data :preview="true" :previewSrcList="imageList" :fit="fit" id="imageData01" :src="src"> </image-data>
+    <el-button @click="changeImage">切换图片</el-button> -->
   </div>
 </template>
 
 <script>
 import ImageData from '@/components/utils/image/image.vue'
+import DatePicker from '@/components/utils/form/date_picker/date_picker.vue'
 export default {
   data() {
     return {
@@ -65,6 +68,7 @@ export default {
   },
   components: {
     ImageData,
+    DatePicker,
   },
 }
 </script>

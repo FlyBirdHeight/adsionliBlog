@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-
+require('@/utils/utils')
 /**
  * @description 预读取文章列表json文件，以及标签列表json文件
  */

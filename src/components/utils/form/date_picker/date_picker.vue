@@ -1,10 +1,9 @@
 <template>
   <div class="date_picker">
-    <div class="date_picker-warpper">
+    <div class="date_picker-warpper" @mouseenter.stop="setReset" @mouseleave="showReset = false">
       <input
         @keyup="inputDate"
         @focus="openDateWindows"
-        @blur="closeDateWindows"
         :placeholder="placeholder"
         type="text"
         class="input-date"
@@ -12,10 +11,18 @@
         v-model="dateValue"
       />
       <span class="input-date-icon"><i class="el-icon-date"></i></span>
-      <span class="clear-input-date-icon" @click="dateValue = ''"><i class="el-icon-circle-close"></i></span>
+      <span class="clear-input-date-icon" v-show="showReset" @click="handleClose"
+        ><i class="el-icon-circle-close"></i
+      ></span>
     </div>
     <template>
-      <date-list :showDate="showDatePickerList"></date-list>
+      <date-list
+        :showDate="showDatePickerList"
+        :format="format"
+        :date="dateValue"
+        :pickerOptions="pickerOptions"
+        @dateChange="changeData"
+      ></date-list>
     </template>
   </div>
 </template>
@@ -33,23 +40,51 @@ export default {
       type: String,
       default: 'yyyy-MM-dd',
     },
+    pickerOptions: {
+      type: Object,
+      default: () => {},
+    },
+    defaultDate: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
       dateValue: new Date().format(this.format),
-      showDatePickerList: true,
+      showDatePickerList: false,
+      showReset: false,
     }
   },
-  mounted() {},
+  mounted() {
+    if (this.defaultDate != '') {
+      this.dateValue = new Date(
+        Number(this.defaultDate.substr(0, 4)),
+        Number(this.defaultDate.substr(4, 2)) - 1,
+        Number(this.defaultDate.substr(6, 2))
+      ).format(this.format)
+    }
+  },
   methods: {
     openDateWindows() {
-      // this.showDatePickerList = true
+      this.showDatePickerList = true
     },
-    closeDateWindows() {
-      // this.showDatePickerList = false
+    setReset(e) {
+      if (this.dateValue) {
+        this.showReset = true
+      } else {
+        this.showReset = false
+      }
+    },
+    handleClose() {
+      this.dateValue = ''
+      this.showDatePickerList = false
     },
     inputDate(e) {
       console.log(e)
+    },
+    changeData(value) {
+      this.dateValue = value
     },
   },
   components: {

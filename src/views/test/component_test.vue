@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <el-divider>date-picker组件测试</el-divider>
-    <date-picker></date-picker>
+    <date-picker :picker-options="getPickOptions" :default-date="timeList[0]"></date-picker>
     <el-divider style="margin-top;100px">时间轴组件测试</el-divider>
     <!-- <time-line style="width: 300px; height: 600px; overflow-y: scroll">
       <time-line-item
@@ -40,7 +40,30 @@ export default {
       fitList: ['cover', 'contain', 'none', 'fill', 'scale-down', 'cover'],
       fit: 'cover',
       timelineList: [],
+      timeList: ['20190808', '20210918'],
+      getPickOptions: {
+        disabledDate(time) {
+          let flag = false
+          let checkedList = this.dateRange
+          for (let value of checkedList) {
+            let date = new Date(
+              Number(value.substr(0, 4)),
+              Number(value.substr(4, 2)) - 1,
+              Number(value.substr(6, 2))
+            )
+            if (time.getTime() == date.getTime()) {
+              flag = true
+              break
+            }
+          }
+          return flag
+        },
+        dateRange: [],
+      },
     }
+  },
+  created() {
+    this.getPickOptions.dateRange = this.timeList
   },
   mounted() {
     this.src = this.imageList[this.imageIndex]

@@ -1,0 +1,20 @@
+{
+    "page": [
+        {
+            "title": "关于日常生活的一些规划",
+            "subTitle": "每日计划规划表",
+            "createTime": "Posted by adsionli on December 13, 2021",
+            "created_at": "2021-12-13",
+            "tags": [
+                {
+                    "label": "life"
+                }
+            ],
+            "description": "规划一下自己的每日作息，保证学习与生活的兼顾",
+            "routeLink": "/page/life/plan",
+            "toTop": 0,
+            "path": "/content/page/life/plan.md",
+            "recommend": false
+        }
+    ]
+}

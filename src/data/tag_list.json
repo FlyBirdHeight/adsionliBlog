@@ -14,28 +14,45 @@
         },
         {
             "label": "面试题"
-        },{
+        },
+        {
             "label": "相关测试"
-        },{
+        },
+        {
             "label": "markdown"
-        },{
+        },
+        {
             "label": "代码review"
-        },{
+        },
+        {
             "label": "components"
-        },{
+        },
+        {
             "label": "vue"
-        },{
+        },
+        {
             "label": "vue-router"
-        },{
+        },
+        {
             "label": "npm"
-        },{
+        },
+        {
             "label": "webpack"
-        },{
+        },
+        {
             "label": "leetCode"
-        },{
+        },
+        {
             "label": "algorithm"
-        },{
+        },
+        {
             "label": "javascript"
+        },
+        {
+            "label": "项目"
+        },
+        {
+            "label": "life"
         }
     ]
 }

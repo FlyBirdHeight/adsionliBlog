@@ -1,0 +1,20 @@
+{
+    "page": [
+        {
+            "title": "危险预警项目部署总结与自我反思",
+            "subTitle": "记录一下危险预警项目部署过程中遇到的问题",
+            "createTime": "Posted by adsionli on December 13, 2021",
+            "created_at": "2021-12-13",
+            "tags": [
+                {
+                    "label": "项目"
+                }
+            ],
+            "description": "记录一下危险预警项目部署过程中遇到的问题以及对自身问题的一些总结",
+            "routeLink": "/page/project/warning_deployment",
+            "toTop": 0,
+            "path": "/content/page/project/warning_deployment.md",
+            "recommend": false
+        }
+    ]
+}

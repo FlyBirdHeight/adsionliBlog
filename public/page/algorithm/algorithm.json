@@ -37,6 +37,38 @@
             "toTop": 0,
             "path": "/content/page/algorithm/daliy202112.md",
             "recommend": false
+        },
+        {
+            "title": "优先队列",
+            "subTitle": "优先队列的知识总结",
+            "createTime": "Posted by adsionli on December 14, 2021",
+            "created_at": "2021-12-14",
+            "tags": [
+                {
+                    "label": "algorithm"
+                }
+            ],
+            "description": "优先队列的知识总结与梳理",
+            "routeLink": "/page/algorithm/structure/priority_queue",
+            "toTop": 0,
+            "path": "/content/page/algorithm/structure/priority_queue.md",
+            "recommend": true
+        },
+        {
+            "title": "快速幂",
+            "subTitle": "快速幂的知识总结",
+            "createTime": "Posted by adsionli on December 14, 2021",
+            "created_at": "2021-12-14",
+            "tags": [
+                {
+                    "label": "algorithm"
+                }
+            ],
+            "description": "快速幂的知识总结与梳理",
+            "routeLink": "/page/algorithm/structure/quick_pow",
+            "toTop": 0,
+            "path": "/content/page/algorithm/structure/quick_pow.md",
+            "recommend": true
         }
     ]
 }

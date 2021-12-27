@@ -69,6 +69,22 @@
             "toTop": 0,
             "path": "/content/page/algorithm/structure/quick_pow.md",
             "recommend": true
+        },
+        {
+            "title": "leetcode-2021.12.23-最长重复字串题目分析",
+            "subTitle": "leetcode-2021.12.23-最长重复字串题目分析",
+            "createTime": "Posted by adsionli on December 23, 2021",
+            "created_at": "2021-12-23",
+            "tags": [
+                {
+                    "label": "algorithm"
+                }
+            ],
+            "description": "最长重复字串困难题目的分析",
+            "routeLink": "/page/algorithm/structure/longest_duplicate_substring",
+            "toTop": 0,
+            "path": "/content/page/algorithm/structure/longest_duplicate_substring_1044.md",
+            "recommend": true
         }
     ]
 }

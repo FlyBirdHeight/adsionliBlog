@@ -111,7 +111,7 @@ console.log(people02);
 
 ### 复制
 
-对于原始类型的数据进行复制的操作可以见代码和下图所示：
+1. 对于原始类型的数据进行复制的操作可以见代码和下图所示：
 
 ```js
 let str = "adsionliBlog";
@@ -119,12 +119,14 @@ let blogName = str;
 console.log(blogName)
 ```
 
-![copy_normal_type_data]()
+<img src="../../../image/js/basic/value/value_type/copy_normal_type_data.jpg" alt="copy_normal_type_data" style="zoom:50%;" />
 
-对于引用类型的数据进行复制的操作可以见代码和下图所示：
+通过上图我们可以很清楚的看到，当我们复制一个原始类型的数据时候，它就会创建一个新的内存空间并压入到栈内存中。所以这个内容是一个很简单的过程，不是很复杂，比较容易理解的。
+
+2. 对于引用类型的数据进行复制的操作可以见代码和下图所示：
 
 ```js
-let obj01 = {
+let obj1 = {
     name: "blog",
     author: "adsionli"
 }
@@ -132,11 +134,88 @@ let obj2 = obj1;
 console.log(obj2);
 ```
 
-![copy_quote_type_data]()
+<img src="../../../image/js/basic/value/value_type/copy_quote_type_data.jpg" alt="copy_quote_type_data" style="zoom:50%;" />
+
+通过上面的代码和图片，我们可以发现复制引用类型和复制原始类型的过程是不一样的，原始数据类型是复制原来的数据并开辟一个新的空间进行压入栈空间。而引用类型是复制一个相同的地址压入到栈内存中，然后复制的变量也是通过地址来在堆内存中找到对应的数据，这就完成了引用类型的复制。
+
+通过对复制的解析，我们发现无论是原始类型还是引用类型都是对栈内存进行操作，**但是引用类型不同就是通过复制地址来指向同一个堆地址，而不是在复制一个堆数据来进行复制，这样就大大的节省了堆内存的开销。**但是这也造成了如下的问题
+
+==当我们修改引用类型的变量内容的时候，另外的其他指向相同堆地址的内容也会发生改变，造成影响。==
+
+> 这就引出了之后的深拷贝与浅拷贝问题啦，这里先预留一个空的链接，之后来补上[深拷贝与浅拷贝]()
 
 ### 比较
 
+对于原始类型的之间比较和引用类型的比较也是存在一些不同的。
 
+可以参考下面的代码与图片：
+
+```js
+var obj2 = {
+    name:'adsionli'
+};
+var obj = {
+    name:'adsionli'
+};
+console.log(obj === obj2); // false
+var name2 = 'blog';
+var name = 'blog';
+console.log(name === name2); // true
+```
+
+<img src="../../../image/js/basic/value/value_type/compare_normal_data_quote_data.jpg" alt="compare_normal_data_quote_data" style="zoom:50%;" />
+
+对于原始类型，比较时会直接比较它们的值，如果值相等，即返回`true`。
+
+对于引用类型，比较时会比较它们的引用地址，虽然两个变量在堆中存储的对象具有的属性值都是相等的，但是它们被存储在了不同的存储空间，因此比较值为`false`。
 
 ### 值传递与引用传递
+
+借助下面的例子，我们先来看一看什么是值传递，什么是引用传递：
+
+```js
+let name = 'adsionli';
+function changeValue(name){
+  name = 'adsionliBlog';
+}
+changeValue(name);
+console.log(name);
+```
+
+执行上面的代码，如果最终打印出来的`name`是`'adsionli'`，没有改变，说明函数参数传递的是变量的值，即值传递。如果最终打印的是`'adsionliBlog'`，函数内部的操作可以改变传入的变量，那么说明函数参数传递的是引用，即引用传递。
+
+很明显，上面的执行结果是`'adsionli'`，即**函数参数仅仅是被传入变量复制给了的一个局部变量，改变这个局部变量不会对外部变量产生影响。**
+
+```js
+let obj = {
+    name:'adsionli'
+};
+function changeValue(obj){
+  obj.name = 'adsionliBlog';
+}
+changeValue(obj);
+console.log(obj.name); // adsionliBlog
+```
+
+上面的代码可能让你产生疑惑，是不是参数是引用类型就是引用传递呢？
+
+首先明确一点，`ECMAScript`中所有的函数的参数都是按值传递的。
+
+同样的，当函数参数是引用类型时，我们同样将参数复制了一个副本到局部变量，只不过复制的这个副本是指向堆内存中的地址而已，我们在函数内部对对象的属性进行操作，实际上和外部变量指向堆内存中的值相同，但是这并不代表着引用传递，下面我们再按一个例子：
+
+```js
+let obj = {};
+function changeValue(obj){
+  obj.name = 'adsionli';
+  obj = {
+      name:'adsionliBlog'
+  };
+}
+changeValue(obj);
+console.log(obj.name); // adsionli
+```
+
+可见，函数参数传递的并不是变量的`引用`，而是变量拷贝的副本，当变量是原始类型时，这个副本就是值本身，当变量是引用类型时，这个副本是指向堆内存的地址。所以，再次记住：
+
+> `ECMAScript`中所有的函数的参数都是按值传递的。
 

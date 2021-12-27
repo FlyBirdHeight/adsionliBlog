@@ -135,6 +135,25 @@
             "routeLink": "/seventh/second",
             "toTop": 0,
             "recommend": false
+        },
+        {
+            "title": "变量与类型",
+            "subTitle": "对变量与类型内容的总结",
+            "createTime": "Posted by adsionli on December 16, 2021",
+            "created_at": "2021-12-16",
+            "tags": [
+                {
+                    "label": "javascript"
+                },
+                {
+                    "label": "数据类型"
+                }
+            ],
+            "description": "梳理一下Js中的关于变量与类型的基础知识，建立一下知识体系架构",
+            "routeLink": "/page/js/basic/value/value_type",
+            "path": "/content/page/js/basic/value/value_type.md",
+            "toTop": 1,
+            "recommend": true
         }
     ]
 }

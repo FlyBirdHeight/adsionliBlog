@@ -176,7 +176,7 @@ console.log(name === name2); // true
 ```js
 let name = 'adsionli';
 function changeValue(name){
-  name = 'adsionliBlog';
+    name = 'adsionliBlog';
 }
 changeValue(name);
 console.log(name);
@@ -191,7 +191,7 @@ let obj = {
     name:'adsionli'
 };
 function changeValue(obj){
-  obj.name = 'adsionliBlog';
+    obj.name = 'adsionliBlog';
 }
 changeValue(obj);
 console.log(obj.name); // adsionliBlog
@@ -206,10 +206,10 @@ console.log(obj.name); // adsionliBlog
 ```js
 let obj = {};
 function changeValue(obj){
-  obj.name = 'adsionli';
-  obj = {
-      name:'adsionliBlog'
-  };
+    obj.name = 'adsionli';
+    obj = {
+        name:'adsionliBlog'
+    };
 }
 changeValue(obj);
 console.log(obj.name); // adsionli
@@ -218,4 +218,10 @@ console.log(obj.name); // adsionli
 可见，函数参数传递的并不是变量的`引用`，而是变量拷贝的副本，当变量是原始类型时，这个副本就是值本身，当变量是引用类型时，这个副本是指向堆内存的地址。所以，再次记住：
 
 > `ECMAScript`中所有的函数的参数都是按值传递的。
+
+
+
+# 总结
+
+看着简单的类型和变量，在实际理解其原理的时候才会发现在前辈们在开发JS语法的时候所做出的细节上的处理，所以对一个问题最好需要深究，这样在自己写代码的时候脑子就会很清楚地知道他的运行状态是什么，加油加油ヾ(◍°∇°◍)ﾉﾞ
 

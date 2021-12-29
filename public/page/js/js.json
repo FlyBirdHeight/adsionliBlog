@@ -154,6 +154,25 @@
             "path": "/content/page/js/basic/value/value_type.md",
             "toTop": 1,
             "recommend": true
+        },
+        {
+            "title": "Symbol",
+            "subTitle": "对ES6新增的基本类型Symbol的一下知识整理",
+            "createTime": "Posted by adsionli on December 17, 2021",
+            "created_at": "2021-12-17",
+            "tags": [
+                {
+                    "label": "javascript"
+                },
+                {
+                    "label": "数据类型"
+                }
+            ],
+            "description": "ES6中新增了Symbol这个原始数据类型，没怎么用过，在看书的时候学习一下，整理出来方便以后查阅",
+            "routeLink": "/page/js/basic/value/symbol",
+            "path": "/content/page/js/basic/value/symbol.md",
+            "toTop": 1,
+            "recommend": true
         }
     ]
 }

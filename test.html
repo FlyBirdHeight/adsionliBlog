@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let sym01 = Symbol('foo');
+        let obj = {
+            getData(){
+                return 'adsionli'
+            },
+            toString(){
+                return 'adsionli'
+            }
+        }    
+        let sym02 = Symbol(obj);
+        console.log(sym01)
+        console.log(sym02)
+        console.log(Boolean(sym01))
+    </script>
+    <script>
+        const COLOR_RED = Symbol('red')
+        const COLOR_GREEN = Symbol('green');
+        console.log(COLOR_RED == COLOR_GREEN)
+        function getComplement(color){
+            switch (color) {
+                case COLOR_RED:
+                    return COLOR_GREEN
+                case COLOR_GREEN:
+                    return COLOR_RED
+                default:
+                    return "error"
+            }
+        }
+        console.log(getComplement(COLOR_RED));
+    </script>
+</body>
+</html>

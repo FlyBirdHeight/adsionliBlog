@@ -17,7 +17,7 @@
                 return 'adsionli'
             }
         }    
-        let sym02 = Symbol(obj);
+        let sym02 = Symbol(obj);   
         console.log(sym01)
         console.log(sym02)
         console.log(Boolean(sym01))
@@ -37,6 +37,18 @@
             }
         }
         console.log(getComplement(COLOR_RED));
+    </script>
+    <script>
+        var a = Symbol('a');
+        var b = Symbol('b');
+        var objS = {
+            name: "adsionli love shirley"
+        };
+        objS[a] = 'adsionli';
+        objS[b] = 'blod';
+        console.log(Object.getOwnPropertySymbols(objS));
+        console.log(Reflect.ownKeys(objS));
+        console.log(objS[a], objS[b])
     </script>
 </body>
 </html>

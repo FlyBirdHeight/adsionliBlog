@@ -4,7 +4,9 @@
 | ---------- | ---------- | -------------------------- | ---------- |
 | adsionli   | 2021-12-17 | Js中的Symbol类型的知识总结 | 2021-12-17 |
 
-# Symbol简介
+> 本篇文章主要学习的书籍是阮一峰老师的ES6标准入门一书。
+
+# Symbol
 
 `Symbol`类型是在ES6标准中推出的一种原始数据类型，但是在平时开发中使用的次数不是很多，所以不是很会使用`Symbol`类型的数据，现在出一篇博文来记录一下这个不同寻常的`Symbol`类型。
 
@@ -219,3 +221,164 @@ console.log(sym01 == sym02);
 
 ## 内置Symbol值
 
+在ES6中一共提供了11中内置的Symbol值，用于指向不同类型的内部使用方法
+
+> 这里说一些可能会经常使用到的，不常使用的就放在后面的汇总表格中。
+
+### 1. Symbol.hasInstance 
+
+本属性指向对象类型中的一个内部方法，当对象使用instanceof运算符时会调用本属性指向的方法，判断该对象是否是某个构造函数的实例。
+
+下面给出一段代码与运行结果图展示具体的使用方式：
+
+```js
+class JudgeEven {
+    //这里就将对象的instanceof改成了传入对象是否是偶数
+    static [Symbol.hasIntance](obj) {
+        return Number(obj) % 2 === 0;
+    }
+}
+//使用上面的判断
+console.log("judge even:", 1 instanceof JudgeEven);
+console.log("judge even:", 2 instanceof JudgeEven);
+console.log("judge even:", 2468 instanceof JudgeEven);
+```
+
+<img src="../../../image/js/basic/value/symbol/symbol_inside_has_instance.png" alt="symbol_inside_has_instance" style="zoom: 33%;" />
+
+通过上面演示，我们可以知道Symbol这个内置值的作用就是可以改变对象默认的instanceof运算符调用的方法，当然如果我们自己不做定义的时候，也会有一个默认的方法被执行的。
+
+### 2. Symbol.isConcatSpreadable
+
+本属性是一个Boolean类型的值，表示该对象在使用Array.prototype.concat()时是否可以展开，如果是true|undefined的话就是展开，如果是false的话就是不展开合并。
+
+下面给出一段代码与运行结果图展示具体的使用方式：
+
+```js
+//第一种是普通的数组对象的设置这个默认内置属性
+let arr = ['c', 'd'];
+console.log('Symbol.isConcatSpreadable true:',['a', 'b'].concat(arr, 'e'));
+arr[Symbol.isConcatSpreadable] = false;
+console.log('Symbol.isConcatSpreadable true:', ['a', 'b'].concat(arr, 'e'));
+//第二种是在对象中使用本属性，这个就需要写成是实例中的一个属性
+class A01 extends Array {
+    constructor(args){
+        super(args);
+        this[Symbol.isConcatSpreadable] = true;
+    }
+}
+class A02 extends Array {
+    constructor(args){
+        super(args);
+        this[Symbol.isConcatSpreadable] = false;
+    }
+}
+let a1 = new A01();
+for(let i = 1; i <= 5; i++){
+    a1[i] = i;
+}
+let a2 = new A02();
+for(let i = 1; i <= 5; i++){
+    a2[i] = i * 2;
+}
+console.log('a01 Symbol.isConcatSpreadable is true', a2.concat(a1));
+console.log('a02 Symbol.isConcatSpreadable is false', a1.concat(a2));
+//第三种是类数组对象的使用，也是可以赊着Symbol.isConcatSpreadable属性的
+let obj = {
+    length: 2,
+    0: 'adsionli',
+    1: 'blog'
+}
+obj[Symbol.isConcatSpreadable] = true;
+let arr001 = ['shirley', 'wife'];
+console.log('obj Symbol.isConcatSpreadable true', arr001.concat(obj));
+obj[Symbol.isConcatSpreadable] = false;
+console.log('obj Symbol.isConcatSpreadable false', arr001.concat(obj));
+```
+
+<img src="../../../image/js/basic/value/symbol/symbol_inside_isconcatspreadable_setting.png" alt="symbol_inside_isconcatspreadable_setting" style="zoom: 33%;" />
+
+上面的示例我们可以看出Symbol.isConcatSpreadable的功能就是控制Array或者类Array对象在concat操作的时候是否展开，如果设置为true就会将其展开，做一个结构操作，如果是false就不会展开，直接放入数组中。这个还挺有用的，有的时候我们想要将数组合并，但是又不想展开的时候我们就可以设置这个属性来控制其是否展开。
+
+### 3. Symbol.species
+
+对象的Symbol.species属性指向当前对象的构造函数。创建实例是默认会调用这个方法，就是使用这个属性返回的函数当作构造函数来创造新的实例对象，它会改变原型链的指向。
+
+下面给出一段代码与运行结果图展示具体的使用方式：
+
+```js
+class AS01 extends Array {
+    constructor(args){
+        super(args);
+        this[Symbol.isConcatSpreadable] = false;
+    }
+    
+    static get [Symbol.species](){
+        return Array;
+    }
+}
+let as = new AS01(1,2,3,4,5,6,7,8,9);
+let mapping = as.map(x => x * x);
+console.log('as instanceof AS01:', as instanceof AS01);
+console.log('as instanceof Array:', as instanceof Array);
+console.log('mapping instanceof AS01:', mapping instanceof AS01);
+console.log('mapping instanceof Array:', mapping instanceof Array);
+```
+
+<img src="../../../image/js/basic/value/symbol/symbol_inside_species.png" alt="symbol_inside_species" style="zoom:33%;" />
+
+根据运行结果图我们可以发现，在声明`as`的时候，因为走的是`new AS01`，所以这个时候其构造方法走的依然是`AS01`本身的构造方法，但是当调用了`map`方法返回的值，如果说我们将代码中的`get [Symbol.species]`的返回值设置为`return this`的话，那么`mapping`也是`instanceof AS01` 是`true`的，但是现在就是`false`了，因为我们设置了他的构造函数返回是`Array`，所以在实例化的时候就改变其构造函数的指向了。
+
+> 当然这里需要弄清楚的就是如果是new的话，其构造函数执行的依然是new的这个对象的构造函数，而如果是对对象进行处理时，返回的对象值就变成了get中设置的了，一定要注意其中的区别。
+
+### 4. Symbol.toPrimitive
+
+本属性指向的是一个对象的方法，对象被转为原始类型的值的时候会调用这个方法，返回该对象对应的原始类型值。
+
+一共可以被分为三种类型：Number，String，Default
+
+下面给出一段代码与运行结果图展示具体的使用方式：
+
+```js
+let obj = {
+    [Symbol.toPrimitive](hint) {
+        console.log('type:', hint)
+        switch(hint){
+            case 'number':
+                return 123;
+            case 'string':
+                return "str";
+            case 'default':
+                return 'default';
+            default:
+                throw new Error('no this type:' + hint);
+        }
+    }
+}
+console.log("number:",2 * obj);
+console.log("default:",3 + obj);
+console.log("default:",obj == 'default');
+console.log("string:",String(obj));
+```
+
+<img src="../../../image/js/basic/value/symbol/symbol_inside_toPrimitive.png" alt="symbol_inside_toPrimitive" style="zoom:33%;" />
+
+> 这个内置属性可以让我们自己控制当前对象转变成不同原始类型的返回值，针对不同的场景。还算有点作用😂
+
+### 5.剩余内置值汇总
+
+| 内置值               | 作用                                                         | 作用类型     |
+| -------------------- | ------------------------------------------------------------ | ------------ |
+| `Symbol.match`       | 指向一个函数，实际就是正则匹配函数，可以通过改变`Symbol.match`方法来自定义匹配对象 | `regexp`正则 |
+| `Symbol.replace`     | 指向一个方法，当对象被`String.prototype.replace`方法调用的时候会返回该方法的返回值 | `String`类型 |
+| `Symbol.search`      | 指向一个方法，当对象被`String.prototype.search`方法调用的时候会返回该方法的返回值 | `String`类型 |
+| `Symbol.split`       | 指向 一个正则表达式的索引处分割字符串的方法。 这个方法通过 `String.prototype.split()` 调用。 | `String`类型 |
+| `Symbol.toStringTag` | `Symbol.toStringTag` 是一个内置 `symbol`，它通常作为对象的属性键使用，对应的属性值应该为字符串类型，这个字符串用来表示该对象的自定义类型标签，通常只有内置的 `Object.prototype.toString()` 方法会去读取这个标签并把它包含在自己的返回值里。也是写在对象的默认`get`中的。 | `Object`类型 |
+| `Symbol.iterator`    | `Symbol.iterator` 为每一个对象定义了默认的迭代器。该迭代器可以被 `for...of` 循环使用。 | `Object`类型 |
+| `Symbol.unscopables` | `Symbol.unscopables`指用于指定对象值，其对象自身和继承的从关联对象的 with 环境绑定中排除的属性名称。 | `Object`类型 |
+
+
+
+# 总结
+
+看着只是一个新增的类型Symbol，但是通过学习我发现这个类型可以作为很多原来js中所没有的特性来进行代替，真的可以使用在非常多的场景，之后在自己开发的时候，就可以将这原始类型用于合适的开发位置，来更好的构建代码。加油加油，努力学习，ヾ(◍°∇°◍)ﾉﾞ！

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
-    <script>
+    <!-- <script>
         let sym01 = Symbol('foo');
         let obj = {
             getData(){
@@ -37,6 +39,100 @@
             }
         }
         console.log(getComplement(COLOR_RED));
+    </script> -->
+    <script>
+        // Array.prototype[Symbol.unscopables]
+        // console.log(Object.keys(Array.prototype[Symbol.unscopables]))
+        // class a1 extends Array {
+        //     constructor(args) {
+        //         super(args);
+        //         this[Symbol.isConcatSpreadable] = false;
+        //     }
+        // }
+        // let a = ['adsionli', 'shirley'];
+        // let aa = new a1();
+        // aa[0] = 'blog';
+        // aa[1] = 'adsionli';
+        // console.log(aa.concat(a))
+    </script>
+    <script>
+        // let obj = {
+        //     toString() {
+        //         return "obj"
+        //     }
+        // }
+        // let s1 = Symbol(obj);
+        // console.log(s1);
+
+        // let s1 = Symbol();
+        // let s2 = Symbol();
+        // console.log('no string param:', s1 == s2);
+        // let s3 = Symbol('str');
+        // let s4 = Symbol('str');
+        // console.log('has string param:', s3 == s4);
+        // let s5 = Symbol.for('for');
+        // let s6 = Symbol.for('for');
+        // console.log('Symbol for:', s5 == s6);
+
+        // var sym = Symbol();
+        // var a = {
+        //     [sym]: 'welcome to adisonli blog!'
+        // }
+        // //这里的输出就是'welcome to adisonli blog!'
+        // console.log(a[sym]);
+    </script>
+    <script>
+        // let sym = Symbol('symbol');
+        // let a = {
+        //     sym: 'adsionli blog'
+        // }
+        // a[sym] = 'adsionli'
+        // console.log('point:',a.sym);
+        // console.log('sym Symbol:',a[sym].toString(), sym.toString());
+        // console.log('iterator get:',a['sym']);
+        // console.log('point == iterator:',a.sym == a['sym']);
+
+        // let obj = {};
+        // let a = Symbol('a');
+        // let b = Symbol('b');
+
+        // obj.name = "shirley";
+        // obj.age = 25;
+        // obj[a] = 'adsionli';
+        // obj[b] = 'blog';
+        // console.log(obj)
+        // let s = Object.getOwnPropertyNames(obj);
+        // console.log('string attributes:', ...s);
+        // let ssym = Object.getOwnPropertySymbols(obj);
+        // console.log('symbol attributes:', ...ssym);
+        // for (let key in obj) {
+        //     console.log("for...in...:", key);
+        // }
+
+        var size = Symbol('size');
+        class Collection {
+            constructor() {
+                this[size] = 0;
+            }
+
+            add(item) {
+                //这里可以通过获取this[size]的大小作为键名
+                this[this[size]] = item;
+                this[size]++;
+            }
+
+            static sizeOf(obj) {
+                return obj[size];
+            }
+        }
+
+        let x = new Collection();
+        console.log('x size:', Collection.sizeOf(x));
+        x.add('adisonli');
+        x.add('blog');
+        console.log('x size:', Collection.sizeOf(x));
+        console.log('x attributes:', Object.getOwnPropertyNames(x));
+        console.log('x all attributes:', Reflect.ownKeys(x));
     </script>
     <script>
         var a = Symbol('a');
@@ -51,4 +147,5 @@
         console.log(objS[a], objS[b])
     </script>
 </body>
+
 </html>

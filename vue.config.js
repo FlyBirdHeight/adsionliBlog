@@ -6,7 +6,7 @@ module.exports = {
     //是否使用包含运行时编译器的 Vue 构建版本。设置为 true 后你就可以在 Vue 组件中使用 template 选项了
     runtimeCompiler: true,
     // 基本路径  3.6之前的版本时 baseUrl
-    publicPath: "./",
+    publicPath: "/",
     // 输出文件目录
     outputDir: "adsionli",
     // eslint-loader 是否在保存的时候检查
@@ -19,6 +19,7 @@ module.exports = {
         port: 8080,
         https: false,
         hotOnly: true,
+        historyApiFallback: true
         // proxy: {
 
         // },

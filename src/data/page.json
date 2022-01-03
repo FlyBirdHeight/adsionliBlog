@@ -1,14 +1,14 @@
 {
     "pageFile": {
-        "js": "./page/js/js.json",
-        "webpack": "./page/webpack/webpack.json",
-        "utils": "./page/utils/utils.json",
-        "vue": "./page/vue/vue.json",
-        "face": "./page/face/face.json",
-        "algorithm": "./page/algorithm/algorithm.json",
-        "markdown": "./page/markdown/markdown.json",
-        "build": "./page/build/build.json",
-        "project": "./page/project/project.json"
+        "js": "/page/js/js.json",
+        "webpack": "/page/webpack/webpack.json",
+        "utils": "/page/utils/utils.json",
+        "vue": "/page/vue/vue.json",
+        "face": "/page/face/face.json",
+        "algorithm": "/page/algorithm/algorithm.json",
+        "markdown": "/page/markdown/markdown.json",
+        "build": "/page/build/build.json",
+        "project": "/page/project/project.json"
     },
     "life": {
 

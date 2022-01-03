@@ -11,7 +11,7 @@ module.exports = {
     outputDir: "adsionli",
     // eslint-loader 是否在保存的时候检查
     lintOnSave: false,
-    productionSourceMap: false,
+    productionSourceMap: true,
     // webpack-dev-server 相关配置
     devServer: {
         open: process.platform === "darwin",
@@ -26,7 +26,7 @@ module.exports = {
     configureWebpack: {
         plugins: [
             new DefinePlugin({
-                BASE_URL: '"./image/dog/dog02.gif"'
+                BASE_URL: '"/image/dog/dog02.gif"'
             })
         ]
     },
@@ -36,8 +36,8 @@ module.exports = {
                 // 全局sass变量	
                 //sass-loader 新版本
                 prependData: `
-                    @import "@/assets/scss/variable.scss";
-                    @import "@/assets/scss/mixin.scss";
+                    @import "./public/scss/variable.scss";
+                    @import "./public/scss/mixin.scss";
                 `
             }
         }

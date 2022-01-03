@@ -13,7 +13,7 @@
             "description": "Promise在js中是真的重要，异步的知识必须要学会并且熟练掌握，整理一下关于Promise知识加强记忆",
             "routeLink": "/page/js/advanced/promise",
             "toTop": 1,
-            "path": "/content/page/js/advanced/promise_advanced.md",
+            "path": "/content/page/js/advanced/promise.md",
             "recommend": true
         },
         {

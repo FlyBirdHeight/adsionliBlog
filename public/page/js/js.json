@@ -1,6 +1,22 @@
 {
     "page": [
         {
+            "title": "Promise内容详解",
+            "subTitle": "关于Promise的知识梳理及实现原理",
+            "createTime": "Posted by adsionli on January 02, 2022",
+            "created_at": "2022-01-02",
+            "tags": [
+                {
+                    "label": "javascript"
+                }
+            ],
+            "description": "Promise在js中是真的重要，异步的知识必须要学会并且熟练掌握，整理一下关于Promise知识加强记忆",
+            "routeLink": "/page/js/advanced/promise",
+            "toTop": 1,
+            "path": "/content/page/js/advanced/promise_advanced.md",
+            "recommend": true
+        },
+        {
             "title": "apply,bind,call用法与区别",
             "subTitle": "几种可以绑定this作用域的方法总结",
             "createTime": "Posted by adsionli on November 15, 2021",
@@ -31,7 +47,7 @@
             ],
             "description": "在阅读elementui源码时，看到的鼠标滚轮事件，学习并记录一下鼠标滚轮事件的内容",
             "routeLink": "/page/js/event/mouse-scroll",
-            "toTop": 1,
+            "toTop": 0,
             "path": "/content/page/js/event/mouse-scroll.md",
             "recommend": true
         },
@@ -47,7 +63,7 @@
             ],
             "description": "在阅读一些源码的时候，会发现很多交互的操作都会有节流和防抖的使用，那这里就对这个知识做一些总结",
             "routeLink": "/page/js/throttle-debounce",
-            "toTop": 1,
+            "toTop": 0,
             "path": "/content/page/js/throttle-debounce.md",
             "recommend": true
         },
@@ -63,7 +79,7 @@
             ],
             "description": "在很多地方都看到使用了柯里化的形式进行代码的书写，所以在这里对柯里化进行一次知识学习总结，方便理顺代码编写思路",
             "routeLink": "/page/js/currying",
-            "toTop": 1,
+            "toTop": 0,
             "path": "/content/page/js/currying.md",
             "recommend": true
         },

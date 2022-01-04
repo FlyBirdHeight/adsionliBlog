@@ -1,6 +1,22 @@
 {
     "page": [
         {
+            "title": "Promise源码剖析",
+            "subTitle": "Promise的知识的延伸",
+            "createTime": "Posted by adsionli on January 04, 2022",
+            "created_at": "2022-01-04",
+            "tags": [
+                {
+                    "label": "javascript"
+                }
+            ],
+            "description": "Promise的知识的延伸，剖析Promise的具体代码实现",
+            "routeLink": "/page/js/advanced/read_promise",
+            "toTop": 1,
+            "path": "/content/page/js/advanced/promise_read.md",
+            "recommend": true
+        },
+        {
             "title": "Promise内容详解",
             "subTitle": "关于Promise的知识梳理及实现原理",
             "createTime": "Posted by adsionli on January 02, 2022",

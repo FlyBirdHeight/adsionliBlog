@@ -26,11 +26,11 @@ class Promise {
     }
     
     resolve(value){
-    	return value;    
+        return value；
     }
     
     reject(value){
-     	return value;   
+        return value；
     }
 }
 ```
@@ -41,25 +41,43 @@ class Promise {
 
 ```js
 class Promise {
-    constructor(executor){
-        executor(this.resolve.bind(this), this.reject.bind(this))；
+    constructor(fn){
+        //使用callbacks数组来模拟链式调用时的队列,callbacks中存放的是then中回调函数参数
+        this.callbacks = [];
+        fn(this.resolve.bind(this), this.reject.bind(this))；
     }
     
     then(onFulfilled){
-        
+        //then的参数是回调函数，这里先只执行成功的回调
+        this.callbacks.push(onFulfilled)
+        //因为then方法可以链式调用，所以这里需要返回
+        return this;
     }
     
     resolve(value){
-    	return value;    
+       	this.callbacks.forEach(fn => fn(value))
     }
     
     reject(value){
-     	return value;   
+        return value；
     }
 }
 ```
 
+> 关于上段代码的一个解释(一个最基础实现):
+>
+> <img src="../../image/js/advanced/promise_read/promise_basic_basic_achieve.jpg" alt="promise_basic_basic_achieve" style="zoom:33%;" />
+>
+> 通过这张图我们就可以理解上述代码了：
+>
+> 1. 我们会把每一次then中的回调函数加入到callbacks中，也就是注册回调函数，这样就可以进行链式调用，然后不断地先进先出。
+>
+> 2. 创建 Promise 实例时传入的函数会被赋予一个函数类型的参数，即 resolve，它接收一个参数 value，代表异步操作返回的结果，当异步操作执行成功后，会调用resolve方法，这时候其实真正执行的操作是将 callbacks 队列中的回调一一执行
 
+但是上一个版本存在一些问题，就是我们会发现在resolve方法执行的时候，实际上callbacks中还没有任何的回调函数放入，因为resolve在then方法之前被执行了，所以这里就不太正确，还需要继续处理，于是有了下面这个版本：
+
+```js
+```
 
 
 

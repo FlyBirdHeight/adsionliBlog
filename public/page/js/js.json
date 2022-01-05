@@ -1,7 +1,7 @@
 {
     "page": [
         {
-            "title": "Promise源码剖析",
+            "title": "Promise源码实现(二)",
             "subTitle": "Promise的知识的延伸",
             "createTime": "Posted by adsionli on January 04, 2022",
             "created_at": "2022-01-04",
@@ -11,9 +11,25 @@
                 }
             ],
             "description": "Promise的知识的延伸，剖析Promise的具体代码实现",
-            "routeLink": "/page/js/advanced/read_promise",
+            "routeLink": "/page/js/advanced/read_promise_02",
             "toTop": 1,
-            "path": "/content/page/js/advanced/promise_read.md",
+            "path": "/content/page/js/advanced/promise_read_02.md",
+            "recommend": true
+        },
+        {
+            "title": "Promise源码实现(一)",
+            "subTitle": "Promise的知识的延伸",
+            "createTime": "Posted by adsionli on January 04, 2022",
+            "created_at": "2022-01-04",
+            "tags": [
+                {
+                    "label": "javascript"
+                }
+            ],
+            "description": "Promise的知识的延伸，剖析Promise的具体代码实现",
+            "routeLink": "/page/js/advanced/read_promise_01",
+            "toTop": 1,
+            "path": "/content/page/js/advanced/promise_read_01.md",
             "recommend": true
         },
         {

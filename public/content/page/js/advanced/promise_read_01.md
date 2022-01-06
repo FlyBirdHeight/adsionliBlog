@@ -26,20 +26,20 @@ class Promise {
     constructor(fn){
         //resolve与reject方法不是在创建的时候就触发的，是在主动执行的时候才触发，所以使用bind绑定一下this上下文
         //因为Promise的特性是创建的时候就执行，所以传入的回调函数直接执行。
-        fn(this.resolve.bind(this), this.reject.bind(this))；
+        fn(this._resolve.bind(this), this._reject.bind(this))；
     }
     
-    resolve(value){
+    _resolve(value){
         return value；
     }
     
-    reject(value){
+    _reject(value){
         return value；
     }
 }
 ```
 
-然后再来分析一下Promise中的链式调用，因为Promise是支持链式调用的，所以这就说明了then方法的返回一定是一个Promise对象，这样才可以支持链式调用，这在之前的Promise学习中提到过。
+然后再来分析一下Promise中的链式调用，因为Promise是支持链式调用的，所以这就说明了`then`方法的返回一定是一个Promise对象，这样才可以支持链式调用，这在之前的Promise学习中提到过。
 
 > 先不考虑返回错误的情况，then中先只接收一个参数，用于处理Fulfilled状态
 
@@ -49,7 +49,7 @@ class Promise {
         //使用callbacks数组来模拟链式调用时的队列,callbacks中存放的是then中回调函数参数
         this.callbacks = [];
         //因为Promise的特性是创建的时候就执行，所以传入的回调函数直接执行
-        fn(this.resolve.bind(this), this.reject.bind(this))；
+        fn(this._resolve.bind(this), this._reject.bind(this))；
     }
     
     then(onFulfilled, onRejected = null){
@@ -61,12 +61,12 @@ class Promise {
         return this;
     }
     
-    resolve(value){
+    _resolve(value){
         //将返回的数据作为参数传递给callbacks中的回调方法中。
        	this.callbacks.forEach(fn => fn(value))
     }
     
-    reject(value){
+    _reject(value){
         
     }
 }
@@ -82,7 +82,7 @@ class Promise {
 >
 > 2. 创建 Promise 实例时传入的函数会被赋予一个函数类型的参数，即 `resolve`，它接收一个参数 `value`，代表异步操作返回的结果，当异步操作执行成功后，会调用`resolve`方法，这时候其实真正执行的操作是将 `callbacks` 队列中的回调一一执行
 
-但是上一个版本存在一些问题，就是我们会发现在`resolve`方法执行的时候，实际上`callbacks`中还没有任何的回调函数放入，因为`resolve`在then`方法`之前被执行了，所以这里就不太正确，还需要继续处理。如下图所示：
+但是上一个版本存在一些问题，就是我们会发现在`resolve`方法执行的时候，实际上`callbacks`中还没有任何的回调函数放入，因为`_resolve`在then`方法`之前被执行了，所以这里就不太正确，还需要继续处理。如下图所示：
 
 <img src="../../image/js/advanced/promise_read/promise_basic_basic_error.png" alt="promise_basic_basic_error" style="zoom: 33%;" />
 
@@ -94,7 +94,7 @@ class Promise {
 class Promise {
     constructor(fn) {
         this.callbacks = [];
-        fn(this.resolve.bind(this), this.reject.bind(this));
+        fn(this._resolve.bind(this), this._reject.bind(this));
     }
 
     then(onFulfilled, onRejected = null) {
@@ -104,19 +104,19 @@ class Promise {
         return this;
     }
 
-    resolve(value) {
+    _resolve(value) {
         setTimeout(() => {
             this.callbacks.forEach(fn => fn(value))
         })
     }
 
-    reject(value) {
+    _reject(value) {
 
     }
 }
 ```
 
-这里我们加入了`setTimeout`方法，借助`setTimeout`的机制来将`resolve`的处理放在`then`之后，这样在进行`resolve`的时候，`callbacks`中内容就不为空了。
+这里我们加入了`setTimeout`方法，借助`setTimeout`的机制来将`_resolve`的处理放在`then`之后，这样在进行`_resolve`的时候，`callbacks`中内容就不为空了。
 
 > 当我们不设置`setTimeout`的时间的时候或设置为0的时候，实际上我们是让`setTimeout`中的内容在大于0秒才执行，这样我们就可以利用其特性，改变任务的执行顺序，将`setTimeout`内的回调函数放在普通的任务队列执行后，再去执行`setTimeout`队列中的积累的任务。
 
@@ -145,7 +145,7 @@ setTimeout(() => {
 
 ### 基于状态的Promise实现
 
-既然如此，该怎么办呢，这里就可以引入状态啦。通过Promise/A+规范中的描述，我们可以确定下来一共有三种状态：Pending，Fulfilled，Rejected。在引入状态之后呢，我们还需要对`resolve`中的返回数据进行记录，这样才可以传递给不是在链式调用中传入的回调函数进行使用。经过这样修改之后的代码如下:
+既然如此，该怎么办呢，这里就可以引入状态啦。通过Promise/A+规范中的描述，我们可以确定下来一共有三种状态：Pending，Fulfilled，Rejected。在引入状态之后呢，我们还需要对`_resolve`中的返回数据进行记录，这样才可以传递给不是在链式调用中传入的回调函数进行使用。经过这样修改之后的代码如下:
 
 > 这里关于状态就不多说啦，之前的Promise详解中都已经介绍过了，大家可以去翻翻。
 
@@ -155,7 +155,7 @@ class Promise {
         this.callbacks = [];
         this.status = 'Pending';
         this.value = null;
-        fn(this.resolve.bind(this), this.reject.bind(this));
+        fn(this._resolve.bind(this), this._reject.bind(this));
     }
 
     then(onFulfilled, onRejected = null) {
@@ -167,26 +167,26 @@ class Promise {
         return this;
     }
 
-    resolve(value) {
+    _resolve(value) {
         //在resolve的时候进行状态修改，之前的文章中也有说过
         this.status = 'Fulfilled';
         this.value = value;
         this.callbacks.forEach(fn => fn(value))
     }
 
-    reject(value) {
+    _reject(value) {
 
     }
 }
 ```
 
-上面的代码中，我们把`resolve`中的`setTimeout`函数移除掉了，因为我们现在可以通过状态来控制了，同时我们会将`resolve`方法传入的`value`参数进行记录，这样我们就可以在`then`中访问到`resolve`的`value`值，就不再需要`setTimeout`了，同时我们会在`resolve`中改变状态，变为`Fulfilled`状态。
+上面的代码中，我们把`_resolve`中的`setTimeout`函数移除掉了，因为我们现在可以通过状态来控制了，同时我们会将`_resolve`方法传入的`value`参数进行记录，这样我们就可以在`then`中访问到`_resolve`的`value`值，就不再需要`setTimeout`了，同时我们会在`_resolve`中改变状态，变为`Fulfilled`状态。
 
 这时候我们再来试一下调用，查看一下输出情况：
 
 <img src="../../image/js/advanced/promise_read/promise_basic_basic_change.png" alt="promise_basic_basic_change" style="zoom: 33%;" />
 
-到这里一个最简单的Promise类就差不多完成了，然后我们再来完善一下对错误的捕获，其实和`resolve`的书写是不差多的，大差不差。
+到这里一个最简单的Promise类就差不多完成了，然后我们再来完善一下对错误的捕获，其实和`_resolve`的书写是不差多的，大差不差。
 
 ```js
 class Promise {
@@ -196,7 +196,7 @@ class Promise {
         this.value = null;
         this.reason = null;
         try{
-            fn(this.resolve.bind(this), this.reject.bind(this));
+            fn(this._resolve.bind(this), this._reject.bind(this));
         }catch(error) {
             //如果传入函数出现错误，直接调用reject，将状态直接转变为Rejected
             this.reject(error);
@@ -221,7 +221,7 @@ class Promise {
         return this.then(null, onRejected);
     }
     
-    resolve(value) {
+    _resolve(value) {
         if(this.status === 'Pending'){
             //在resolve的时候进行状态修改，之前的文章中也有说过
             this.status = 'Fulfilled';
@@ -230,7 +230,7 @@ class Promise {
         }
     }
 
-    reject(value) {
+    _reject(value) {
         //必须是在status等于Pending的时候才可以改变状态，这是基于Promise的特性,只可以改变一次状态
         if(this.status === 'Pending'){
             //修改Promise的状态为Rejected，且这个时候Promise的状态已定型(Resolved)
@@ -304,8 +304,8 @@ handle(callback){
     let data = cb(value);
     rcb(data);
 }
-//同时还需要对resolve与reject进行处理，因为此时的callbacks中的回调函数发生了改变
-resolve(value) {
+//同时还需要对_resolve与_reject进行处理，因为此时的callbacks中的回调函数发生了改变
+_resolve(value) {
     if (this.status === 'Pending') {
         this.status = 'Fulfilled';
         this.value = value;
@@ -314,7 +314,7 @@ resolve(value) {
     }
 }
 
-reject(value) {
+_reject(value) {
     if (this.status === 'Pending') {
         this.status = 'Rejected';
         this.reason = value;
@@ -342,12 +342,12 @@ reject(value) {
 > 实际上这里的调整就不多了，只需要调整resolve函数就可以
 
 ```js
-resolve(value){
+_resolve(value){
     if(value && (typeof(value) === 'object' || typeof(value) === 'function') && (value instanceof Promise)){
         //因为这个时候传入的value是Promise对象，所以可以获取到then，基于传入的Promise的then
         let then = value.then;
         //这里传入的onFulfilled是最外层的那个Promise的resolve方法，也就是说内层的Promise在执行完成后，才会改变内层的Promise状态，也就是内层决定外层状态
-        then.call(value, this.resolve.bind(this));
+        then.call(value, this._resolve.bind(this));
         return ;
     }
 }
@@ -365,7 +365,7 @@ class Promise {
         this.value = null;
         this.reason = null;
         try {
-            fn(this.resolve, this.reject);
+            fn(this._resolve, this._reject);
         }catch(error){
             this.reject(error)
         }
@@ -383,7 +383,7 @@ class Promise {
     }
     
     catch(err){
-        this.then(null, err)
+        return this.then(null, err)
     }
     
     handle(callback){
@@ -402,7 +402,7 @@ class Promise {
         rcb(data);
     }
     
-    resolve(value){
+    _resolve(value){
         if(this.status === 'Pending'){
             if(value && (typeof(value) === 'object' || typeof(value) === 'function') && (value instanceof Promise)){
                 let then = value.then;
@@ -416,7 +416,7 @@ class Promise {
         }
     }
     
-    reject(value){
+    _reject(value){
         if(this.status === 'Pending'){
             this.status = 'Rejected';
             this.reason = reason;

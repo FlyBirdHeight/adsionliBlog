@@ -1,6 +1,38 @@
 {
     "page": [
         {
+            "title": "作用域",
+            "subTitle": "js中作用域的知识",
+            "createTime": "Posted by adsionli on February 02, 2022",
+            "created_at": "2022-02-02",
+            "tags": [
+                {
+                    "label": "javascript"
+                }
+            ],
+            "description": "js中作用域的知识——全局、函数、块作用域详解",
+            "routeLink": "/page/js/basic/scope",
+            "toTop": 1,
+            "path": "/content/page/js/basic/scope.md",
+            "recommend": false
+        },
+        {
+            "title": "闭包",
+            "subTitle": "js中闭包相关的知识",
+            "createTime": "Posted by adsionli on February 02, 2022",
+            "created_at": "2022-02-02",
+            "tags": [
+                {
+                    "label": "javascript"
+                }
+            ],
+            "description": "js中闭包相关的知识详解",
+            "routeLink": "/page/js/basic/closure",
+            "toTop": 1,
+            "path": "/content/page/js/basic/closure.md",
+            "recommend": false
+        },
+        {
             "title": "Promise源码实现(二)",
             "subTitle": "Promise的知识的延伸",
             "createTime": "Posted by adsionli on January 05, 2022",
@@ -60,7 +92,7 @@
             ],
             "description": "在写代码或者阅读源码的过程经常性会遇到需要绑定不同this作用域的内容，现在就来梳理一下这三种方法的具体使用与区别。",
             "routeLink": "/page/js/bind",
-            "toTop": 1,
+            "toTop": 0,
             "path": "/content/page/js/bind.md",
             "recommend": true
         },
@@ -219,7 +251,7 @@
             "description": "ES6中新增了Symbol这个原始数据类型，没怎么用过，在看书的时候学习一下，整理出来方便以后查阅",
             "routeLink": "/page/js/basic/value/symbol",
             "path": "/content/page/js/basic/value/symbol.md",
-            "toTop": 1,
+            "toTop": 0,
             "recommend": true
         }
     ]

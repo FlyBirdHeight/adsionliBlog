@@ -8,7 +8,8 @@
         "algorithm": "/page/algorithm/algorithm.json",
         "markdown": "/page/markdown/markdown.json",
         "build": "/page/build/build.json",
-        "project": "/page/project/project.json"
+        "project": "/page/project/project.json",
+        "design": "/page/design/design.json"
     },
     "life": {
 

@@ -17,7 +17,7 @@
             "routeLink": "/page/algorithm/leetCode01",
             "toTop": 0,
             "path": "/content/page/algorithm/leetcode01.md",
-            "recommend": true
+            "recommend": false
         },
         {
             "title": "leetCode2021年12月每日一题",
@@ -52,7 +52,7 @@
             "routeLink": "/page/algorithm/structure/priority_queue",
             "toTop": 0,
             "path": "/content/page/algorithm/structure/priority_queue.md",
-            "recommend": true
+            "recommend": false
         },
         {
             "title": "快速幂",
@@ -68,7 +68,7 @@
             "routeLink": "/page/algorithm/structure/quick_pow",
             "toTop": 0,
             "path": "/content/page/algorithm/structure/quick_pow.md",
-            "recommend": true
+            "recommend": false
         },
         {
             "title": "leetcode-2021.12.23-最长重复字串题目分析",
@@ -84,7 +84,7 @@
             "routeLink": "/page/algorithm/structure/longest_duplicate_substring",
             "toTop": 0,
             "path": "/content/page/algorithm/structure/longest_duplicate_substring_1044.md",
-            "recommend": true
+            "recommend": false
         },
         {
             "title": "二分查找",
@@ -98,7 +98,7 @@
             ],
             "description": "二分查找真的细节是魔鬼，这里就最近的一些题目以及相关知识进行梳理",
             "routeLink": "/page/algorithm/structure/binary_search",
-            "toTop": 1,
+            "toTop": 0,
             "path": "/content/page/algorithm/structure/binary_search.md",
             "recommend": true
         }

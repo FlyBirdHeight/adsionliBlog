@@ -1,6 +1,22 @@
 {
     "page": [
         {
+            "title": "Proxy",
+            "subTitle": "Proxy代理对象知识梳理",
+            "createTime": "Posted by adsionli on January 20, 2022",
+            "created_at": "2022-01-20",
+            "tags": [
+                {
+                    "label": "javascript"
+                }
+            ],
+            "description": "es6中新增Proxy内容学习",
+            "routeLink": "/page/js/es6/proxy",
+            "toTop": 1,
+            "path": "/content/page/js/es6/proxy.md",
+            "recommend": true
+        },
+        {
             "title": "作用域",
             "subTitle": "js中作用域的知识",
             "createTime": "Posted by adsionli on February 02, 2022",

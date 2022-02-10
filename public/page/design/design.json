@@ -31,6 +31,22 @@
             "toTop": 1,
             "path": "/content/page/design_mode/decorator.md",
             "recommend": true
+        },
+        {
+            "title": "观察者模式",
+            "subTitle": "js中使用观察者模式的知识",
+            "createTime": "Posted by adsionli on February 07, 2022",
+            "created_at": "2022-02-07",
+            "tags": [
+                {
+                    "label": "javascript"
+                }
+            ],
+            "description": "设计模式之观察者模式(js)",
+            "routeLink": "/page/design_mode/observer",
+            "toTop": 1,
+            "path": "/content/page/design_mode/observer.md",
+            "recommend": true
         }
     ]
 }

@@ -1,6 +1,22 @@
 {
     "page": [
         {
+            "title": "原型与原型链",
+            "subTitle": "原型与原型链知识学习",
+            "createTime": "Posted by adsionli on December 27, 2021",
+            "created_at": "2021-12-27",
+            "tags": [
+                {
+                    "label": "javascript"
+                }
+            ],
+            "description": "js基础学习-原型与原型链知识学习",
+            "routeLink": "/page/js/basic/object_link",
+            "toTop": 1,
+            "path": "/content/page/js/basic/object_link.md",
+            "recommend": true
+        },
+        {
             "title": "Reflect",
             "subTitle": "Reflect对象知识梳理",
             "createTime": "Posted by adsionli on February 09, 2022",

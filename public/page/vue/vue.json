@@ -1,6 +1,25 @@
 {
     "page": [
         {
+            "title": "vue3学习-01",
+            "subTitle": "vue3的学习之路-第一篇",
+            "createTime": "Posted by adsionli on February 24, 2022",
+            "created_at": "2022-02-24",
+            "tags": [
+                {
+                    "label": "vue"
+                },
+                {
+                    "label": "vue3"
+                }
+            ],
+            "description": "用了很久的vue2了，现在开始正式学习vue3啦，这是第一篇学习记录",
+            "routeLink": "/page/vue/vue3-01",
+            "toTop": 1,
+            "path": "/content/page/vue/vue3-01.md",
+            "recommend": true
+        },
+        {
             "title": "vue-router之动态路由匹配开发",
             "subTitle": "基于本博客的动态路由开发",
             "createTime": "Posted by adsionli on October 27, 2021",

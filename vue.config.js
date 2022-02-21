@@ -20,9 +20,6 @@ module.exports = {
         https: false,
         hotOnly: true,
         historyApiFallback: true
-        // proxy: {
-
-        // },
     },
     configureWebpack: {
         plugins: [

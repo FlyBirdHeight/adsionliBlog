@@ -77,7 +77,7 @@
             "description": "es6中新增Reflect内容学习",
             "routeLink": "/page/js/es6/reflect",
             "toTop": 1,
-            "path": "/content/page/js/es6/reflect.md",
+            "path": "/content/page/js/es6/Reflect.md",
             "recommend": true
         },
         {
@@ -93,7 +93,7 @@
             "description": "es6中新增Proxy内容学习",
             "routeLink": "/page/js/es6/proxy",
             "toTop": 1,
-            "path": "/content/page/js/es6/proxy.md",
+            "path": "/content/page/js/es6/Proxy.md",
             "recommend": true
         },
         {

@@ -112,7 +112,7 @@ Reflect对象是在es6中新增的一个对象，它主要作用使用来替代�
 
 `Reflect.has`方法对应`name in obj`里面的`in`运算符。
 
-```javascript
+```js
 var myObject = {
   foo: 1,
 };
@@ -130,7 +130,7 @@ Reflect.has(myObject, 'foo') // true
 
 `Reflect.deleteProperty`方法等同于`delete obj[name]`，用于删除对象的属性。
 
-```javascript
+```js
 const myObj = { foo: 'bar' };
 
 // 旧写法

@@ -28,7 +28,7 @@
             ],
             "description": "js基础学习-js中的深浅拷贝的知识及实现",
             "routeLink": "/page/js/basic/copy",
-            "toTop": 1,
+            "toTop": 0,
             "path": "/content/page/js/basic/copy.md",
             "recommend": true
         },

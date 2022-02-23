@@ -12,7 +12,7 @@
             ],
             "description": "设计模式之单例模式(js)",
             "routeLink": "/page/design_mode/singleton",
-            "toTop": 1,
+            "toTop": 0,
             "path": "/content/page/design_mode/singleton.md",
             "recommend": true
         },
@@ -28,7 +28,7 @@
             ],
             "description": "设计模式之装饰器模式(js)",
             "routeLink": "/page/design_mode/decorator",
-            "toTop": 1,
+            "toTop": 0,
             "path": "/content/page/design_mode/decorator.md",
             "recommend": true
         }

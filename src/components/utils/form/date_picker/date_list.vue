@@ -56,10 +56,10 @@ export default {
   mounted() {
     this.settingPosition(this.$parent.$el.getBoundingClientRect())
     this.$nextTick(() => {
-      [this.year, this.month, this.day] = this.date.split('-')
-      this.checked.year = this.year;
-      this.checked.month = this.month;
-      this.checked.day = this.day;
+      ;[this.year, this.month, this.day] = this.date.split('-')
+      this.checked.year = this.year
+      this.checked.month = this.month
+      this.checked.day = this.day
       this.getMonthDate()
     })
   },
@@ -165,23 +165,23 @@ export default {
         switch (type) {
           case 'pre':
             if (index > 0) {
-              index--;
-              let date = this.pickerOptions.dateRange[index];
-              this.year = Number(date.substr(0, 4));
-              this.month = Number(date.substr(4, 2));
-              this.day = Number(date.substr(6, 2));
-              this.dateList = [];
+              index--
+              let date = this.pickerOptions.dateRange[index]
+              this.year = Number(date.substr(0, 4))
+              this.month = Number(date.substr(4, 2))
+              this.day = Number(date.substr(6, 2))
+              this.dateList = []
               this.getMonthDate()
             }
             break
           case 'next':
             if (index < len - 1) {
-              index++;
-              let date = this.pickerOptions.dateRange[index];
-              this.year = Number(date.substr(0, 4));
-              this.month = Number(date.substr(4, 2));
-              this.day = Number(date.substr(6, 2));
-              this.dateList = [];
+              index++
+              let date = this.pickerOptions.dateRange[index]
+              this.year = Number(date.substr(0, 4))
+              this.month = Number(date.substr(4, 2))
+              this.day = Number(date.substr(6, 2))
+              this.dateList = []
               this.getMonthDate()
             }
             break

@@ -9,7 +9,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/views/main/Home.vue')
+    component: () => import('@/views/main/Home.vue'),
   }, {
     path: '/fileing',
     name: 'Fileing',
@@ -92,10 +92,15 @@ const routes = [
       }
     ]
   }, {
+    path: '/page',
+    name: 'Page',
+    component: Page,
+    children: []
+  }, {
     path: "/test",
     name: "Test",
     redirect: '/test/total',
-    component: () => import('@/views/test/index.vue'),
+    component: {render: (e) => e("router-view")},
     children: [
       {
         path: "total",
@@ -117,12 +122,7 @@ const routes = [
         component: () => import('@/views/test/js_test.vue'),
       }
     ]
-  }, {
-    path: '/page',
-    name: 'Page',
-    component: Page,
-    children: []
-  },
+  }
 ]
 
 const router = new VueRouter({

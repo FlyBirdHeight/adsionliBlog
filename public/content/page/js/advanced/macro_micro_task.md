@@ -21,7 +21,7 @@
 3. 更新 render
 4. 主线程重复执行上述步骤
 
-<img src="../../image/js/advanced/marco_micro/master.png" alt="marco_micro_task" style="zoom: 60%">
+<img src="../../image/js/advanced/marco_micro/master.png" alt="marco_micro_task" style="zoom: 60%;" />
 
 如上图所示，一个简单的js任务执行结构，主要分为主线程、微任务队列与宏任务队列。
 
@@ -62,7 +62,7 @@
 微任务队列总是在宏任务执行完毕后才会继续执行，是在当前 task 执行结束后立即执行的任务。也就是说，在当前task任务后，下一个task之前，在渲染之前。
 所以它的响应速度相比setTimeout（setTimeout是task）会更快，因为无需等渲染。也就是说，在某一个macrotask执行完后，就会将在它执行期间产生的所有microtask都执行完毕（在渲染前）。
 下面这张图可以看出其渲染流程
-<img src="../../image/js/advanced/marco_micro/eventloop.png" alt="eventloop" style="zoom: 60%">
+<img src="../../image/js/advanced/marco_micro/eventloop.png" alt="eventloop" style="zoom: 60%;" />
 ### 宏任务与微任务的区别
 一个任务就是指计划由标准机制来执行的任何 JavaScript，如程序的初始化、事件触发的回调等。 除了使用事件，你还可以使用 `setTimeout()` 或者 `setInterval()` 来添加任务。
 
@@ -92,14 +92,14 @@ new Promise((resolve, reject) => {
 })
 ```
 1. 首先一定是先读取同步任务的内容，那么一定会先输出**hello world!**，之后遇到了`setTimeout`则会被放入到任务队列中，然后Promise中，resolve回调中也是属于同步任务，所以也会输出**master task**，这样我们就明确了首先得输出
-<img src="../../image/js/advanced/marco_micro/print01.png" alt="print01" style="zoom: 60%">
+<img src="../../image/js/advanced/marco_micro/print01.png" alt="print01" style="zoom: 60%;" />
 2. 当同步任务执行完成之后，就会去找任务队列中存在的任务，这时候任务队列中存在`setTimeout`，那么就会把它放入到timers中，等待其他任务处理完成后，再一次循环中处理。
 3. 这时候，任务队列处理完成，来处理微任务队列，那么就会执行Promise.then回调方法了，这时候就会输出**micro task**。
-<img src="../../image/js/advanced/marco_micro/print02.png" alt="print02" style="zoom: 60%">
+<img src="../../image/js/advanced/marco_micro/print02.png" alt="print02" style="zoom: 60%;" />
 4. 进入下一次EventLoop，这时候没有同步任务了，且任务队列只剩下了`setTimeout`，这时候就执行`setTimeout`。setTimeout内部函数方法也是遵循任务执行流程的。这时候就会先执行同步任务，输出**marco setTimeout!**，然后再输出Promise中的同步任务**timers master task**。
-<img src="../../image/js/advanced/marco_micro/print03.png" alt="print03" style="zoom: 60%">
+<img src="../../image/js/advanced/marco_micro/print03.png" alt="print03" style="zoom: 60%;" />
 5. 最后在执行setTimeout内部的微任务，也就是Promise.then内的回调函数，输出**timers micro task**，执行流程结束
-<img src="../../image/js/advanced/marco_micro/print04.png" alt="print04" style="zoom: 60%">
+<img src="../../image/js/advanced/marco_micro/print04.png" alt="print04" style="zoom: 60%;" />
 
 有没有发现，当你弄懂了之后，这些东西还是比较简单的，当然面试题目里面也会出现一些比较变态的内容，比如疯狂的Promise.then的嵌套，这时候就需要明确直到Promise.then也是返回的是一个Promise对象，其也是一个同步任务，然后再一步一步分析下去，这样就不会混乱了。同样需要记得上面提到的：
 

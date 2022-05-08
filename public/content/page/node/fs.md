@@ -6,13 +6,11 @@
 
 最近一直在写图床项目，里面涉及到很多文件移动，创建，软链接的操作，所以需要用到node.js中的fs模块来进行文件系统的搭建，之前虽然也有简单的使用过，但是还是有很多的内部方法和属性还是不熟悉，所以这里记录与学习一下相关的内容。
 
-
-
 ## fs模块常用方法
 
 > 在fs模块中，每一个方法都被分成了同步调用以及异步调用，所以会看到有些方法后面会有xxxSync，其实使用是一样的，所以大家在学习和使用的时候不要混乱了
 
-#### fs.Stats类
+### fs.Stats类
 
 > fs.Stats类主要是提供文件的相关信息的类
 
@@ -55,7 +53,7 @@ fs.Stats类的方法:
 
 上面有一些内容都需要去了解文件系统设计才能知道。。。我这里就偷懒不去了解了，就学习了一下自己必须要用的，就是`isFile`,`isDirectory`,`isSymbolicLink`,特别是最后一个，因为为了避免频繁的移动对系统的负担，所以选择了使用符号链接（软链接的形式）去设计文件的移动，因为这样快很多。
 
-#### stat,lstat,fstat的区别
+stat,lstat,fstat的区别
 
 `stat,lstat,fstat`的区别实际也就是文件系统的三种读取方式
 
@@ -90,7 +88,7 @@ let stat = fs.fstat(fd);
 
 这里需要注意的点就是，基本调用的都是同步方法，不太会使用异步方法，因为这些操作最好是在一次请求中等待完成的，或者是放入消息队列中去完成！
 
-#### fs.mkdirSync
+**fs.mkdirSync**
 
 `fs.mkdirSync`是同步创建一个文件夹目录，在项目设计中是十分重要的，虽然用的是软链接，但是还是要把真实目录创建出来的，但是文件不需要一定挪移到相关目录下。
 
@@ -102,7 +100,7 @@ let stat = fs.fstat(fd);
 
 > 这里需要说明一点小坑的地方，使用mkdirSync或mkdir创建文件目录的时候，**必须要一级一级进行创建，如果跨级创建，会报错的！**
 
-#### fs.accessSync
+**fs.accessSync**
 
 测试指定path路径下的文件或者目录的用户权限，这样说有点难以理解，其实就是可以用判断当前这个指定的路径内容能不能被查看、读取、写入、执行等功能的调用，所以可以用来让我们判断文件是否存在。
 
@@ -132,7 +130,7 @@ let stat = fs.fstat(fd);
 >
 > 不建议在调用 `fs.open()` 、 `fs.readFile()` 或 `fs.writeFile()` 之前使用 `fs.access()` 检查一个文件的可访问性。 如此处理会造成紊乱情况，因为其他进程可能在两个调用之间改变该文件的状态。 作为替代，用户代码应该直接打开/读取/写入文件，当文件无法访问时再处理错误。
 
-#### fs.appendFileSync
+**fs.appendFileSync**
 
 追加数据到一个文件，如果文件不存在则创建文件。
 
@@ -144,17 +142,17 @@ let stat = fs.fstat(fd);
 
 | 参数名  | 参数类型                          | 参数说明                   |
 | ------- | --------------------------------- | -------------------------- |
-| file    | string \| Buffer \| URL \| number | 文件名或文件描述符         |
-| data    | string \| Buffer                  | 写入的数据                 |
-| options | Object \| string                  | 额外附加参数，具体下面给出 |
+| file    | string 、 Buffer 、 URL 、 number | 文件名或文件描述符         |
+| data    | string 、 Buffer                  | 写入的数据                 |
+| options | Object 、 string                  | 额外附加参数，具体下面给出 |
 
 额外参数options内容说明:
 
 | 参数名   | 参数类型       | 参数说明                               |
 | -------- | -------------- | -------------------------------------- |
-| encoding | string \| null | 数据编码方式，默认是'utf8'             |
+| encoding | string 、 null | 数据编码方式，默认是`utf8`             |
 | mode     | integer        | 文件权限设置，默认是0666               |
-| flag     | string         | 默认值为'a',指定附加到文件时使用的标志 |
+| flag     | string         | 默认值为`a`,指定附加到文件时使用的标志 |
 
 使用示例
 
@@ -168,7 +166,7 @@ let fd = fs.openSync('/usr/adsionli/README.md', 'w');
 fs.appendFileSync(fd, "adsionli永远爱老婆shirley", "utf8");
 ```
 
-#### fs.openSync
+**fs.openSync**
 
 非常重要的一个方法，用来打开一个文件，并且可以设置文件打开的flag，说明对文件的操作。
 
@@ -212,15 +210,15 @@ fs.appendFileSync(fd, "adsionli永远爱老婆shirley", "utf8");
 
 | 参数名 | 参数类型                | 参数说明                 |
 | ------ | ----------------------- | ------------------------ |
-| path   | string \| Buffer \| URL | 文件路径                 |
-| flags  | string \| number        | 文件打开的标志           |
+| path   | string 、 Buffer 、 URL | 文件路径                 |
+| flags  | string 、 number        | 文件打开的标志           |
 | mode   | integer                 | 文件权限设置，默认是0666 |
 
 特殊说明：
 
 1. `fs.open()` 某些标志的行为是与平台相关的：在macOs和Linux下用 `'a+'` 标志打开一个目录（见下面的例子），会返回一个错误。所以尽量不要对目录打开使用追加的flag打开；如果是在在 Windows 和 FreeBSD，则会返回一个文件描述符。
 
-#### fs.symlinkSync
+**fs.symlinkSync**
 
 全体起立！图床系统中最关键的一个内容，创建软链接(符号链接)
 
@@ -232,8 +230,8 @@ fs.appendFileSync(fd, "adsionli永远爱老婆shirley", "utf8");
 
 | 参数名 | 参数类型                | 参数说明                                                  |
 | ------ | ----------------------- | --------------------------------------------------------- |
-| target | string \| Buffer \| URL | 源文件，也就是需要创建软链接的文件                        |
-| path   | string \| Buffer \| URL | 目标地址，软链接过去的地址                                |
+| target | string 、 Buffer 、 URL | 源文件，也就是需要创建软链接的文件                        |
+| path   | string 、 Buffer 、 URL | 目标地址，软链接过去的地址                                |
 | type   | string                  | 没啥用，主要是在windows系统上使用，用来说明文件是什么类型 |
 
 使用例子：
@@ -245,7 +243,7 @@ fs.symlinkSync("/usr/adsionli/README.md", "/code/adsionli_back/");
 
 > 使用还是很简单的，但是如果要用好，就得自己在设计的时候仔细设置了，加油加油
 
-#### fs.unlinkSync 
+**fs.unlinkSync** 
 
 也是核心使用函数之一，用来删除文件，也可以用来删除软链接，如果文件名称或者内容发生了变更的时候，就需要重新设置软链接了。
 
@@ -253,7 +251,7 @@ fs.symlinkSync("/usr/adsionli/README.md", "/code/adsionli_back/");
 
 | 参数名 | 参数类型                | 参数说明                             |
 | ------ | ----------------------- | ------------------------------------ |
-| path   | string \| Buffer \| URL | 等待删除的文件，可以是符号链接的文件 |
+| path   | string 、 Buffer 、 URL | 等待删除的文件，可以是符号链接的文件 |
 
 使用例子：
 
@@ -272,7 +270,7 @@ fs.symlinkSync("/usr/adsionli/hello.md", "/usr/adsionli_back/hello.md");
 
 上面这个例子基本算是一个完整的对文件进行rename的过程了，所以这里还需大家根据自己的需求进行调整，而且这个过程可能会有点慢的，可以考虑放到消息队列中处理。
 
-#### fs.renameSync
+**fs.renameSync**
 
 核心使用函数之一，在自己的图床项目中，用来控制文件的重命名操作。
 
@@ -280,8 +278,8 @@ fs.symlinkSync("/usr/adsionli/hello.md", "/usr/adsionli_back/hello.md");
 
 | 参数名  | 参数类型                | 参数说明 |
 | ------- | ----------------------- | -------- |
-| oldPath | string \| Buffer \| URL | 旧的路径 |
-| newPath | string \| Buffer \| URL | 新的路径 |
+| oldPath | string 、 Buffer 、 URL | 旧的路径 |
+| newPath | string 、 Buffer 、 URL | 新的路径 |
 
 使用例子：
 
@@ -296,7 +294,7 @@ try {
 }
 ```
 
-#### fs.writeSync
+**fs.writeSync**
 
 也是一个比较重要的使用模块，用来写入文件，同时是同步写入
 
@@ -305,7 +303,7 @@ try {
 | 参数名   | 参数类型             | 参数说明                             |
 | -------- | -------------------- | ------------------------------------ |
 | fd       | integar              | 文件描述符，可以用open打开文件来获取 |
-| buffer   | Buffer \| Uint8Array | 写入文件的二进制Buffer数据           |
+| buffer   | Buffer 、 Uint8Array | 写入文件的二进制Buffer数据           |
 | offset   | integar              | 写入Buffer的偏移量                   |
 | length   | integar              | 写入Buffer的长度                     |
 | position | integar              | 偏移量，就是写入文件的位置           |
@@ -315,7 +313,7 @@ try {
 | 参数名       | 参数类型             | 参数说明                       |
 | ------------ | -------------------- | ------------------------------ |
 | bytesWritten | integar              | 写入了的Buffer的数量(字节数量) |
-| buffer       | Buffer \| Uint8Array | 写入的Buffer数据               |
+| buffer       | Buffer 、 Uint8Array | 写入的Buffer数据               |
 
 具体使用的话，可以等待项目中使用了我再回来补充。
 

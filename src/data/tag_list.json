@@ -1,6 +1,5 @@
 {
-    "tag": [
-        {
+    "tag": [{
             "label": "regular"
         },
         {
@@ -62,6 +61,12 @@
         },
         {
             "label": "vue3"
+        },
+        {
+            "label": "project"
+        },
+        {
+            "label": "nodejs"
         }
     ]
 }

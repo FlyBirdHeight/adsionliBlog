@@ -9,7 +9,8 @@
         "markdown": "/page/markdown/markdown.json",
         "build": "/page/build/build.json",
         "project": "/page/project/project.json",
-        "design": "/page/design/design.json"
+        "design": "/page/design/design.json",
+        "node": "/page/node/node.json"
     },
     "life": {
 

@@ -37,6 +37,28 @@
             "toTop": 1,
             "path": "/content/page/node/图床内容可视化/DrawingBed_part1.md",
             "recommend": true
+        },
+        {
+            "title": "文件系统管理开发-Part2",
+            "subTitle": "使用Node与Vue3开发文件系统管理可视化模块内容系列-02",
+            "createTime": "Posted by adsionli on May 09, 2022",
+            "created_at": "2022-05-09",
+            "tags": [
+                {
+                    "label": "project"
+                },
+                {
+                    "label": "ElementPlus"
+                },
+                {
+                    "label": "vue3"
+                }
+            ],
+            "description": "文件系统可视化及文件系统管理模块开发的开发日志记录-第二块-文件上传的实现",
+            "routeLink": "/page/node/drawingBedPart02",
+            "toTop": 1,
+            "path": "/content/page/node/图床内容可视化/DrawingBed_part2.md",
+            "recommend": true
         }
     ]
 }

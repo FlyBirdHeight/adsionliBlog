@@ -6,7 +6,7 @@
 
 **文章系列:**
 
-1. [文件系统管理与可视化模块开发-Part1](https://adsionli.xslease.com/page/node/drawingBedPart02)
+1. [文件系统管理与可视化模块开发-Part1](https://adsionli.xslease.com/page/node/drawingBedPart01)
 2. [文件系统管理与可视化模块开发-Part2](https://adsionli.xslease.com/page/node/drawingBedPart02)
 
 这一章的内容主要就是梳理一下关于自己实现文件上传这一前端模块内容的具体流程和一些关键代码的书写。

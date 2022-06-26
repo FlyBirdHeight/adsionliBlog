@@ -274,7 +274,7 @@ export default ({ x, y, scaleX, scaleY, width, height, angle, startX, startY, of
 
 4. 记录一下当前点的位置，用于给返回的回调函数进行使用，这里用了一个闭包的形式。
 
-   > `currentPoint: {x: domAttribute.x, y: domAttribute.y, scaleX: domScale.x, scaleY: domScale.y}`
+   > `currentPoint: {x: domOffset, y: domOffset, scaleX: domScale.x, scaleY: domScale.y}`
 
 5. 返回的回调函数(关键内容)
 

@@ -1,15 +1,8 @@
-# 文件系统管理与可视化模块开发-Part7
+# 文件系统管理与可视化模块开发-Part6
 
 | 文档创建人 | 创建日期   | 文档内容                                                   | 更新时间   |
 | ---------- | ---------- | ---------------------------------------------------------- | ---------- |
 | adsionli   | 2022-06-25 | 文件系统管理与可视化模块开发-`cascade-panel`讲解及数据处理 | 2022-06-25 |
-
-1. [文件系统管理与可视化模块开发-Part1](https://juejin.cn/post/7112050624220364813)
-2. [文件系统管理与可视化模块开发-Part2](https://juejin.cn/post/7112052145301487623)
-3. [文件系统管理与可视化模块开发-Part3](https://juejin.cn/post/7112284530567823367/)
-4. [文件系统管理与可视化模块开发-Part4](https://juejin.cn/post/7112307948604358692)
-5. [文件系统管理与可视化模块开发-Part5](https://juejin.cn/post/7112663237694341156)
-6. [文件系统管理与可视化模块开发-Part6](https://juejin.cn/post/7112713036778962975)
 
 通过上一篇文章的分析，我们已经明确了自己需要实现的内容。然后在使用`cascade-panel`进行分栏展示中，我们需要区分出`directory`与`file`，因为`directory`是可以展开的，而`file`是作为叶子节点的，是可以最终被选中的。除了数据构造之外，我们还需要维护需要展示的节点，因为在删除，新建，移动等功能时，展开节点下内容会需要更新。这些都是我们需要在`cascade-panel`中去完成的，所以现在需要好好分析一下该如何利用**element-plus**的`cascade-panel`去完成这些。
 
@@ -206,7 +199,7 @@ interface MenuItem {
     relative_path?: string,
     path?: string,
     file_type?: number,
-    children?: Map<string, MenuDataList>,
+    children?: any,
     getChildren?: boolean,
     level?: number,
     show?: boolean
@@ -219,7 +212,7 @@ interface MenuItem {
 
 <img src="../../image/node/file_bed/part7/cascade-panel-node-index.png" alt="cascade-panel-node-index" style="zoom:50%;" />
 
-就如图中框出的部分，我把是`directory`的使用`d-<id>`的形式进行组合，而是`file`的则使用`f-<id>`的形式进行组合，这就可以让我们在对目录进行操作的时候，很容易的通过index的组合形式，来找到对应的数据了。
+就如图中框出的部分，我把是`directory`的使用`d-id`的形式进行组合，而是`file`的则使用`f-id`的形式进行组合，这就可以让我们在对目录进行操作的时候，很容易的通过index的组合形式，来找到对应的数据了。
 
 接着一步步说说数据处理
 
@@ -234,7 +227,7 @@ interface MenuItem {
 const getMenuData = async (parent: MenuItem, first: boolean = false) => {
     try {
         if (!first && Reflect.has(parent, 'getChildren') && parent.getChildren) {
-            return returnMenuData(parent.children || new Map<string, MenuDataList>());
+            return returnMenuData(parent.children || new any());
         }
 
         let fileList: any = await getFileList({
@@ -246,7 +239,7 @@ const getMenuData = async (parent: MenuItem, first: boolean = false) => {
             parent.children = data?.get(parent.index)?.children;
             Reflect.set(parent, 'getChildren', true);
 
-            return returnMenuData(parent.children || new Map<string, MenuDataList>());
+            return returnMenuData(parent.children || new any());
         } else {
             let children = handleFileData(parent, [...fileList[0].directories, ...fileList[0].files], true);
 
@@ -294,9 +287,9 @@ const handleFileData = (parentList: MenuItem, fileList: Directory[] | any, first
  * @param {string} pre_index 前置index
  * @param {boolean} isChild 是否是子节点
  */
-const handleMenuList = (fileList: Directory[] | any, preOpt: { index: string, id: number } = { index: '', id: 1 }, isChild: boolean = false): Map<string, MenuItem> => {
-    let returnData: Map<string, MenuItem> = new Map<string, MenuItem>();
-    let children = new Map<string, MenuItem>();
+const handleMenuList = (fileList: Directory[] | any, preOpt: { index: string, id: number } = { index: '', id: 1 }, isChild: boolean = false): any => {
+    let returnData: any = new any();
+    let children = new any();
     for (let value of fileList) {
         //README: 这里的url是否存在只在第一次时会被触发，因为根目录下也会存在文件
         if (Reflect.has(value, 'url')) {
@@ -341,7 +334,7 @@ const handleMenuList = (fileList: Directory[] | any, preOpt: { index: string, id
 }
 ```
 
-这里也是使用了简单的递归，因为我们当前的数据下可能存在子级，所以我们需要为子级也附上其`index`值，这里会根据传入的`fileList`中的每一项是否具有`url`来判断是文件还是文件目录，只有文件才具有`url`，所以可以这样进行处理。然后就是按照上面的那种`d-<id>`或是`f-<id>`的形式进行赋值index。
+这里也是使用了简单的递归，因为我们当前的数据下可能存在子级，所以我们需要为子级也附上其`index`值，这里会根据传入的`fileList`中的每一项是否具有`url`来判断是文件还是文件目录，只有文件才具有`url`，所以可以这样进行处理。然后就是按照上面的那种`d-id`或是`f-id`的形式进行赋值index。
 
 然后再根据是文件还是文件目录进行不同的处理，也就是分别调用了`changeFileInfoToMenuData`与`changeDirectoryInfoToMenuData`
 
@@ -389,7 +382,7 @@ const changeDirectoryInfoToMenuData = (directory: Directory, isChild: boolean = 
         size: directory.directory_size,
         parent_id: directory.parent_id,
         getChildren: false,
-        children: new Map<string, MenuDataList>(),
+        children: new any(),
         level: directory.level,
         index: '',
         show: true

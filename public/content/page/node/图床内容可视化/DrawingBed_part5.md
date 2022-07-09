@@ -1,13 +1,8 @@
-# 文件系统管理与可视化模块开发-Part5
+# 文件系统管理与可视化模块开发-Part4
 
 | 文档创建人 | 创建日期   | 文档内容                                          | 更新时间   |
 | ---------- | ---------- | ------------------------------------------------- | ---------- |
 | adsionli   | 2022-06-24 | 文件系统管理与可视化模块开发-后端接口及数据库设计 | 2022-06-24 |
-
-1. [文件系统管理与可视化模块开发-Part1](https://juejin.cn/post/7112050624220364813)
-2. [文件系统管理与可视化模块开发-Part2](https://juejin.cn/post/7112052145301487623)
-3. [文件系统管理与可视化模块开发-Part3](https://juejin.cn/post/7112284530567823367/)
-4. [文件系统管理与可视化模块开发-Part4](https://juejin.cn/post/7112307948604358692)
 
 之前几章内容已经将文件上传及文件管理说明的差不多了，现在这一章就是说一下后端接口设计及数据库内容设计。因为主要是个人使用，所以设计的不会很复杂，而且一直没有什么工作经历，所以不会有太多的考虑，还望各位多多包涵😂，只是分享一下自己的实现。
 
@@ -136,7 +131,9 @@ create table files
 
 ### 文件目录接口
 
-#### 获取文件目录
+主要分为目录接口与文件接口
+
+**获取文件目录**
 
 获取文件目录前端主要需要传递的参数只有一个，就是请求目录的`id`，后端通过取得目录`id`来获取到当前目录下的所有内容，包括其下的`directories`与`files`。
 
@@ -183,7 +180,7 @@ getInfoWithFileAndDirectory(id, first = false) {
 
 好了，这样就完成啦，然后再在对应的`Service`中，去调用`Model`的方法就可以进行返回咯。
 
-#### 移动文件目录
+**移动文件目录**
 
 文件目录移动是一个比较麻烦的事情，因为我们需要把其下所有的子目录以及所有的文件都进行路径更新，这还包括子目录中的子目录和文件，如果用程序中去处理的话，实在是麻烦，所以就按照上面的sql来直接处理了，当然可能会遇到问题，所以加了唯一性标识来确保不会出现问题😂，当然会不会出现问题，暂时还没遇到......
 
@@ -192,7 +189,7 @@ getInfoWithFileAndDirectory(id, first = false) {
 ```js
 /**
 * @method changePath 修改目录路径
-* @param {{id: number, directory_id: number, relative_path: string, oldPath: string}} options 修改内容
+* @param {id: number, directory_id: number, relative_path: string, oldPath: string} options 修改内容
 */
 async changePath(options) {
     let findData = await this.directoryModel.findById(options.directory_id);
@@ -246,7 +243,7 @@ async changePath(options) {
 /**
 * @method updateDirectoryPath 更新目录路径,本身与子集
 * @param {Directories} directory 源路径
-* @param {{name: string, oldName: string}} options 修改信息
+* @param {name: string, oldName: string} options 修改信息
 * @param {boolean} returnSql 是否返回sql且不执行
 */
 updateDirectoryPath(directory, options, returnSql = true) {
@@ -273,7 +270,7 @@ updateDirectoryPath(directory, options, returnSql = true) {
 /**
 * @method updateFileUrlAndPath 更新文件url与path，基于目录路径被修改
 * @param {Directories} directory 源路径
-* @param {{name: string, oldName: string}} options 修改信息
+* @param {name: string, oldName: string} options 修改信息
 * @param {boolean} returnSql 是否返回sql且不执行
 */
 updateFileUrlAndPath(directory, options, returnSql = true) {
@@ -301,14 +298,14 @@ updateFileUrlAndPath(directory, options, returnSql = true) {
 
 好啦，这样就完成了文件目录的移动，以及其子目录和文件的修改，上面的一些语法也是自己写的orm中的规则，大家可以等我以后把这个坑填上😂
 
-#### 删除文件目录
+**删除文件目录**
 
 删除文件目录的难点主要就是在还需要删除其下软连接文件对应的真实文件，但是这一块内容的话，在[part4](https://juejin.cn/post/7112307948604358692)中已经解决啦，所以我们在Service中也只是需要去把事务开启，等待文件目录与真实文件删除后，在处理数据表中数据即可，具体实现如下，就不解释啦，大家自己看看
 
 ```js
 /**
 * @method deleteDirectory 删除目录文件
-* @param {{id: number}} options 待删除数据
+* @param {id: number} options 待删除数据
 */
 async deleteDirectory(options) {
     //NOTE: 开启事务进行删除，为了保证不会发生错误

@@ -16,7 +16,7 @@
 
 从这两个函数的起始对象我们可以发现，一个是在`document`对象下的，还有一个是在我们节点对象`element`下的，这就让我们可以将任意的指定的节点全屏化，当然这里的`element`包括了其下的全部子节点全屏化。
 
-#### element.requestFullscreen()
+**element.requestFullscreen()**
 
 MDN的解释：请求浏览器（user agent）将特定元素（甚至延伸到它的后代元素）置为全屏模式，隐去屏幕上的浏览器所有 UI 元素，以及其它应用返回一个 `Promise`，并会在全屏模式被激活的时候变成 `resolved` 状态。
 
@@ -24,7 +24,7 @@ MDN的解释：请求浏览器（user agent）将特定元素（甚至延伸到�
 
 如果可以使用，那么我们在调用`element.requestFullscreen()`函数的时候就会返回一个`Promise`对象，这个`Promise`对象是完成切换全屏模式后，返回的一个`resolved`之后的`Promise`对象，他没有携带回传的值。
 
-#### document.exitFullscreen()
+**document.exitFullscreen()**
 
 MDN的解释：法用于让当前文档退出全屏模式。调用这个方法会让文档回退到上一个调用`Element.requestFullscreen()`方法进入全屏模式之前的状态。
 

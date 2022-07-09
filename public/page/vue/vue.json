@@ -94,6 +94,47 @@
             "toTop": 0,
             "path": "/content/page/vue/components/image.md",
             "recommend": false
+        },
+        {
+            "title": "基于WEB的可视化PPT制作扩展篇-学习并实现FullScreen",
+            "subTitle": "学习并实现FullScreen",
+            "createTime": "Posted by adsionli on July 06, 2022",
+            "created_at": "2022-07-06",
+            "tags": [
+                {
+                    "label": "components"
+                },
+                {
+                    "label": "vue3"
+                }
+            ],
+            "description": "在开发可视化PPT时，想做一个`FullScreen`的全屏操作的功能，这样就可以屏蔽掉其他内容，可以更好的进行内容的设置。",
+            "routeLink": "/page/vue/component/presentation/utils/full_screen",
+            "toTop": 1,
+            "path": "/content/page/vue/components/presentation/utils/full_screen.md",
+            "recommend": true
+        },
+        {
+            "title": "基于WEB的可视化PPT制作Part1-项目描述及实现内容",
+            "subTitle": "基于Web的可视化简易PPT制作",
+            "createTime": "Posted by adsionli on July 07, 2022",
+            "created_at": "2022-07-07",
+            "tags": [
+                {
+                    "label": "components"
+                },
+                {
+                    "label": "project"
+                },
+                {
+                    "label": "vue3"
+                }
+            ],
+            "description": "本次开发的内容主要是一个基于Web的可视化**简易**PPT制作的一个项目",
+            "routeLink": "/page/vue/component/presentation/description",
+            "toTop": 1,
+            "path": "/content/page/vue/components/presentation/description.md",
+            "recommend": true
         }
     ]
 }

@@ -12,7 +12,7 @@
             ],
             "description": "在做文件系统可视化及文件系统管理时，使用到nodejs中文件系统模块的学习与使用",
             "routeLink": "/page/node/fs",
-            "toTop": 1,
+            "toTop": 0,
             "path": "/content/page/node/fs.md",
             "recommend": true
         },
@@ -76,7 +76,64 @@
             "description": "文件系统可视化及文件系统管理模块开发的开发日志记录-第二块-文件系统管理的实现",
             "routeLink": "/page/node/drawingBedPart03",
             "toTop": 1,
-            "path": "/content/page/node/图床内容可视化/DrawingBed_part3.md",
+            "path": "/content/page/node/图床内容可视化/DrawingBed_part4.md",
+            "recommend": true
+        },
+        {
+            "title": "文件系统管理开发-Part4",
+            "subTitle": "使用Node与Vue3开发文件系统管理可视化模块内容系列-04",
+            "createTime": "Posted by adsionli on June 24, 2022",
+            "created_at": "2022-06-24",
+            "tags": [
+                {
+                    "label": "project"
+                },
+                {
+                    "label": "nodejs"
+                }
+            ],
+            "description": "文件系统可视化及文件系统管理模块开发的开发日志记录-后端接口及数据库设计",
+            "routeLink": "/page/node/drawingBedPart04",
+            "toTop": 1,
+            "path": "/content/page/node/图床内容可视化/DrawingBed_part5.md",
+            "recommend": true
+        },
+        {
+            "title": "文件系统管理开发-Part5",
+            "subTitle": "使用Node与Vue3开发文件系统管理可视化模块内容系列-05",
+            "createTime": "Posted by adsionli on June 24, 2022",
+            "created_at": "2022-06-24",
+            "tags": [
+                {
+                    "label": "project"
+                },
+                {
+                    "label": "nodejs"
+                }
+            ],
+            "description": "文件系统可视化及文件系统管理模块开发的开发日志记录-前端可视化实现内容分析",
+            "routeLink": "/page/node/drawingBedPart05",
+            "toTop": 1,
+            "path": "/content/page/node/图床内容可视化/DrawingBed_part6.md",
+            "recommend": true
+        },
+        {
+            "title": "文件系统管理开发-Part6",
+            "subTitle": "使用Node与Vue3开发文件系统管理可视化模块内容系列-06",
+            "createTime": "Posted by adsionli on June 25, 2022",
+            "created_at": "2022-06-25",
+            "tags": [
+                {
+                    "label": "project"
+                },
+                {
+                    "label": "nodejs"
+                }
+            ],
+            "description": "文件系统可视化及文件系统管理模块开发的开发日志记录-`cascade-panel`讲解及数据处理",
+            "routeLink": "/page/node/drawingBedPart06",
+            "toTop": 1,
+            "path": "/content/page/node/图床内容可视化/DrawingBed_part7.md",
             "recommend": true
         }
     ]

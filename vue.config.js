@@ -11,7 +11,7 @@ module.exports = {
     outputDir: "adsionli",
     // eslint-loader 是否在保存的时候检查
     lintOnSave: false,
-    productionSourceMap: true,
+    productionSourceMap: false,
     // webpack-dev-server 相关配置
     devServer: {
         open: process.platform === "darwin",
